@@ -126,21 +126,29 @@
 					\label{tab1:direct_comput}
 				\end{table}
 			\subsubsection{Результаты эксперимента}
-				\par As mentioned in the introduction, we used a reciprocity principle to perform the vessel noise simulation. More precisely, we set up the source at the depth of 192.7~m at $x=0, y=0$ (the actual location of the measurement system) and performed the computation of the sound pressure field for all frequencies from 8 Hz to 891 Hz in the area $-3.3\mbox{ km} \leq x\leq 3.3\mbox{ km}$, $1\mbox{ km} \leq y\leq 1\mbox{ km}$ at $z=6.2\mbox{ m}$ which is specified in the scenario description as the effective depth of the source (see Cartesian coordinates in Fig.~\ref{fig2:bath1}). In other words, it was more efficient to simulate the sound propagation from the receiver to the source (hereafter this is called reciprocal modelling) than vice versa (direct modelling). After computing the horizontal cross-section of the acoustic field for a given frequency, acoustic pressure values were interpolated onto all points of the vessel track.
+%				\par As mentioned in the introduction, we used a reciprocity principle to perform the vessel noise simulation. More precisely, we set up the source at the depth of 192.7~m at $x=0, y=0$ (the actual location of the measurement system) and performed the computation of the sound pressure field for all frequencies from 8 Hz to 891 Hz in the area $-3.3\mbox{ km} \leq x\leq 3.3\mbox{ km}$, $1\mbox{ km} \leq y\leq 1\mbox{ km}$ at $z=6.2\mbox{ m}$ which is specified in the scenario description as the effective depth of the source (see Cartesian coordinates in Fig.~\ref{fig2:bath1}). In other words, it was more efficient to simulate the sound propagation from the receiver to the source (hereafter this is called reciprocal modelling) than vice versa (direct modelling). After computing the horizontal cross-section of the acoustic field for a given frequency, acoustic pressure values were interpolated onto all points of the vessel track.
 				
-				\par Для проведения моделирования распространения шума, создаваемого судном, был использован принцип взаимности. А именно, источник был расположен на глубине $129.7$ м. на $x=0,y=0$ (позиция, в которой на самом деле расположена система мониторинга) и было проведено вычисления поле акустического давления для всех частот из диапазона от 8 Гц. до 891 Гц. в области $-3.3\mbox{ км} \leq x\leq 3.3\mbox{ км}$, $1\mbox{ км} \leq y\leq 1\mbox{ км}$ at $z=6.2\mbox{ м}$. 
+				\par Для проведения моделирования распространения шума, создаваемого судном, был использован принцип взаимности. А именно, источник был расположен на глубине $129.7$ м. на $x=0,y=0$ (позиция, в которой на самом деле расположена система мониторинга) и было проведено вычисление поля акустического давления для всех частот из диапазона от 8 Гц. до 891 Гц. в области $-3.3\mbox{ км} \leq x\leq 3.3\mbox{ км}$, $1\mbox{ км} \leq y\leq 1\mbox{ км}$ at $z=6.2\mbox{ м}$, которая является эффективной глубиной источника шума (см. прямоугольную систему координат на Рис.~\ref{fig2:bath1}). Другими словами, более эффективным является моделирование распространения звука от приёмника к источнику (здесь и далее это называется взаимным моделированием) нежели наоборот (прямое моделирование). После вычисления горизонтальных срезов акустического поля для каждой частоты, значения акустического давления были интерполированы на все точки пути движения судна.  
 				
-				\par It was originally suggested by the organizers that the environment should be considered range-independent (i.e., homogeneous in $x,y$). Indeed, such simplification could be reasonable for distances of about $3-4\mbox{ km}$ for which horizontal refraction effects are usually insignificant. We decided, however, that it is interesting to evaluate the significance of these effects in this scenario. Thus, all computations were preformed both using a full 3D AMPLE code (in which the pseudodifferential parabolic equations were solved both in positive and negative directions of the $x$ axis) and its simple 2D counterpart (which is computationally cheaper by approximately a factor of $400$).
-				\par The first modelling results we obtained were rather discouraging. Even at the CPA the levels of the simulated noise substantially exceeded those obtained from the measurements data (see Fig.~\ref{fig5:CPA_comparison}). The difference is even more noticeable when comparing the noise levels for the CPA transit on a distance-frequency diagram as shown in Fig.~\ref{fig6:noise_ddec_non_opt}. Although partly higher levels in the simulated field can be explained by the fact that AMPLE program does not take bottom elasticity into account (which typically results in higher transmission loss), the discrepancy is too large to be explained exclusively by this factor. Other possible explanations of this disagreement include an inaccuracy in the information on the geoacoustic parameters of the bottom, a disagreement between the actual hydrological conditions on the measurement day with the historical SSP data, and inadequate representation of large source as an infinitesimal monopole (i.e., the far-field approximation). While little can be done to properly correct the source directivity pattern both in the vertical and the horizontal plane without undertaking additional measurements, media parameters can be adjusted using the existing data. 
+%				\par It was originally suggested by the organizers that the environment should be considered range-independent (i.e., homogeneous in $x,y$). Indeed, such simplification could be reasonable for distances of about $3-4\mbox{ km}$ for which horizontal refraction effects are usually insignificant. We decided, however, that it is interesting to evaluate the significance of these effects in this scenario. Thus, all computations were preformed both using a full 3D AMPLE code (in which the pseudodifferential parabolic equations were solved both in positive and negative directions of the $x$ axis) and its simple 2D counterpart (which is computationally cheaper by approximately a factor of $400$).
+				
+				\par Изначально авторами сценария было предложено считать параметры среды независящими от расстояния (то есть однородными по $x,y$). Действительно, такое упрощения может быть приемлемо для расстояний порядка $3-4\mbox{ км}$, для которых эффекты горизонтальной рефракции обычно считаются пренебрежимыми. Было решено, однако, что исследование степени влияния таких эффектов на результаты моделирования является интересной задаче в контексте данного сценария. Таким образом, все вычисления были проведены как с использованием полностью трёхмерного комплекса программ AMPLE (для которого псевдодифференциальные параболические уравнения были решены в обоих направлениях: положительном и отрицательном по оси $x$), так и с использованием простого двумерного аналога (для которого вычисления являются значительно более дешёвыми в приблизительно $400$ раз). 
+				
+%				\par The first modelling results we obtained were rather discouraging. Even at the CPA the levels of the simulated noise substantially exceeded those obtained from the measurements data (see Fig.~\ref{fig5:CPA_comparison}). The difference is even more noticeable when comparing the noise levels for the CPA transit on a distance-frequency diagram as shown in Fig.~\ref{fig6:noise_ddec_non_opt}. Although partly higher levels in the simulated field can be explained by the fact that AMPLE program does not take bottom elasticity into account (which typically results in higher transmission loss), the discrepancy is too large to be explained exclusively by this factor. Other possible explanations of this disagreement include an inaccuracy in the information on the geoacoustic parameters of the bottom, a disagreement between the actual hydrological conditions on the measurement day with the historical SSP data, and inadequate representation of large source as an infinitesimal monopole (i.e., the far-field approximation). While little can be done to properly correct the source directivity pattern both in the vertical and the horizontal plane without undertaking additional measurements, media parameters can be adjusted using the existing data. 
+				
+				\par Результаты первых вычислений оказались скорее неудовлетворительными. Даже в точке ближайшего прохода, уровни шума, полученные в результате моделирования, существенно превышали результаты измерений (см. Рис.~\ref{fig5:CPA_comparison}). Разнится становится ещё более заметной при сравнении уровней шума на графике по расстоянию и частоте, как показано на Рис.~\ref{fig6:noise_ddec_non_opt}. Не смотря на то, что высокие уровни в смоделированном поле могут быть частично объяснены тем, что программа AMPLE не учитывает упругость дна (что в большинстве случаев показывает увеличение потерь распространения), наблюдаемая разность является слишком большой, чтобы она могла быть объяснима лишь этим эффектом. Другими возможными объяснениями такого эффекта могут быть неточность информации об геоакустических параметрах дна, несогласованность между фактическими гидрологическими параметрами на момент проведения измерений и историческими данными профилей скорости звука, и неподходящее представления большого источника шума в виде бесконечного малого монополя (то есть аппроксимация в дальнем поле). В то время как невозможно провести правильную корректировку вида направленности источника как в вертикальной, так и в горизонтальной плоскости, без проведения дополнительных измерений, параметры среды могут быть изменены из уже имеющихся данных. 
 				
 				\begin{figure}[h]
 					\centering
 					\includegraphics[width=0.6\textwidth]{images/d1/compare.pdf}
-					\caption{(color online) Noise distribution over frequencies at CPA of the vessel transit track obtained from measurements data (solid line), and from the modelling results using the default (dashed line) and the optimized (dash-dot line) values of environment parameters.}
+%					\caption{(color online) Noise distribution over frequencies at CPA of the vessel transit track obtained from measurements data (solid line), and from the modelling results using the default (dashed line) and the optimized (dash-dot line) values of environment parameters.}
+					\caption{Распределение шума по частотам в точке ближайшего прохода судна, полученное из данных измерений (сплошная линия), и из результатов моделирования с использованием исходных (пунктирная линия) и оптимизированных (пунктирная линия с точками) значений параметров среды.}
 					\label{fig5:CPA_comparison}
 				\end{figure}
 				
-				\par Note that higher intensity of the simulated the vessel noise as compared to the data can be (at least partly) explained by somewhat stronger acoustic contrast across the water-bottom interface and somewhat smaller attenuation in the sediment layer than in the actual environment.
+%				\par Note that higher intensity of the simulated the vessel noise as compared to the data can be (at least partly) explained by somewhat stronger acoustic contrast across the water-bottom interface and somewhat smaller attenuation in the sediment layer than in the actual environment.
+				
+				\par Стоит также упомянуть, что высокая интенсивность шума судна, полученного в результатах моделирования, по сравнению с данными (по крайней мере частично) может быть объяснена сильным акустическим контрастом поперёк интерфейса вода-дно и несколько меньшим чем в действительности затуханием в слое осадков.
 				
 				\begin{figure}[h]
 					\centering
@@ -154,10 +162,13 @@
 						\includegraphics[width=\textwidth]{images/d1/ample_non_optimized.pdf}
 						\caption{Simulation}
 					\end{subfigure}
-					\caption{(color online) Noise levels (in dB) for the CPA transit obtained from measurement data (a) and the 3D modelling using the parameters provided by the workshop organizers (b).}\label{fig6:noise_ddec_non_opt}
+%					\caption{(color online) Noise levels (in dB) for the CPA transit obtained from measurement data (a) and the 3D modelling using the parameters provided by the workshop organizers (b).}\label{fig6:noise_ddec_non_opt}
+					\caption{Уровни шума (в Дб.) для прохождения судна, полученные из данных измерений (a) и результатов трёхмерного моделирования с использованием параметров, предложенных авторами сценария (b).\label{fig6:noise_ddec_non_opt}}
 				\end{figure}
 				
-				\par Some features of the field can be analyzed by considering its vertical cross-section (e.g., in $x,z$-plane) shown in Fig.~\ref{fig7:vertical_section}a for the frequency of 400 Hz (just as an example).
+%				\par Some features of the field can be analyzed by considering its vertical cross-section (e.g., in $x,z$-plane) shown in Fig.~\ref{fig7:vertical_section}a for the frequency of 400 Hz (just as an example).
+				
+				\par Некоторые свойства поля могут быть проанализированы, рассматривая его вертикальные срезы (то есть в плоскости $x,z$), показанные на Рис.~\ref{fig7:vertical_section} для частоты в $400$ Гц (в качестве примера). 
 				
 				\begin{figure}[h]
 					\centering
@@ -171,29 +182,89 @@
 						\includegraphics[width=\textwidth]{images/d1/cross_optimized_400.pdf}
 						\caption{optimized parameters}
 					\end{subfigure}
-					\caption{(color online) Vertical cross-section of acoustic field for $f=400\mbox{ Hz}$ (in dB re 1 m from the source) for the parameters from the scenario description (a) and for the optimized parameter values (b).}\label{fig7:vertical_section}
+%					\caption{(color online) Vertical cross-section of acoustic field for $f=400\mbox{ Hz}$ (in dB re 1 m from the source) for the parameters from the scenario description (a) and for the optimized parameter values (b).}
+					\caption{Вертикальный срез акустического поля для частоты $f=400\mbox{ Гц}$ (в Дб. отн. 1 м. от источника) с использованием параметров среды, предложенных авторами сценария (a) и их значений, полученных в результате оптимизации (b).\label{fig7:vertical_section}}
 				\end{figure}
 				
-				\par A typical feature of the interference pattern is that near the ocean surface the intensity maximum is located few hundred meters away in range from the source (obviously, exactly the same situation could be also observed in non-reciprocal computations). Such interference structure of the field results in the formation of sidelobes in the noise distribution in Fig.~\ref{fig6:noise_ddec_non_opt}(b), i.e., elongated features corresponding to high noise intensity areas aligned at an angle of roughly $\pi/4$ to the distance axis. Although similar features can be also found in Fig.~\ref{fig6:noise_ddec_non_opt}(a) after a careful examination (and in fact they are natural for the considered source and receiver depths), the respective noise intensity is significantly lower in the measurement data. 
-				\par Arguably, this discrepancy can partly result from a non-trivial source directivity pattern, while, on the other hand, it can be somewhat mitigated by correcting media parameters (especially for lower frequencies that carry the majority of the source energy).
+%				\par A typical feature of the interference pattern is that near the ocean surface the intensity maximum is located few hundred meters away in range from the source (obviously, exactly the same situation could be also observed in non-reciprocal computations). Such interference structure of the field results in the formation of sidelobes in the noise distribution in Fig.~\ref{fig6:noise_ddec_non_opt}(b), i.e., elongated features corresponding to high noise intensity areas aligned at an angle of roughly $\pi/4$ to the distance axis. Although similar features can be also found in Fig.~\ref{fig6:noise_ddec_non_opt}(a) after a careful examination (and in fact they are natural for the considered source and receiver depths), the respective noise intensity is significantly lower in the measurement data. 
+
+				\par Типичной характеристикой интерференсной картины является то, что максимум интенсивности поля около поверхности океана расположен на расстоянии в несколько сотен метров от источника (конечно, точно такая же ситуация наблюдалась бы при проведения прямого моделирования). Такая интерференсная структура поля формирует боковые лепестки в распределении шума на Рис.~\ref{fig6:noise_ddec_non_opt} (b), то есть продолговатые признаки относящиеся к областям с высокой интенсивностью шума расположенные под углом в примерно $\nicefrac{\pi}{4}$ к оси расстояния. Не смотря на то, что похожие признаки могут быть найдены на Рис.~\ref{fig6:noise_ddec_non_opt}(a) в результате тщательного исследования (и, на самом деле, они являются естественными для рассматриваемых глубин источника и приёмника), соответствующая им интенсивность шума является существенно меньшей в данных измерений.
+				
+%				\par Arguably, this discrepancy can partly result from a non-trivial source directivity pattern, while, on the other hand, it can be somewhat mitigated by correcting media parameters (especially for lower frequencies that carry the majority of the source energy).
+				
+				\par Конечно, такое различение от части может быть результатом нетривиальной структуры направленности источника, которое с другой стороны, может быть несколько устранено корректировкой параметров среды (особенно для низких частот, которые переносят большую часть энергии источника). 
+				
+				  
 			\subsubsection{Оптимизация параметров среды}
-				\par Since the agreement between the measurements data and the modelling results obtained using the suggested values of geoacoustic parameters was not acceptable, we decided to perform the optimization of the latter using the CPA levels (for the entire frequency band EC2) as a reference. 
+%				\par Since the agreement between the measurements data and the modelling results obtained using the suggested values of geoacoustic parameters was not acceptable, we decided to perform the optimization of the latter using the CPA levels (for the entire frequency band EC2) as a reference. 
 				
-				\par The optimization was focused on adjusting bottom parameters, namely thickness, sound speed, density and attenuation of the sediment, as well as the sound speed of the substrate. Since differentiating through mode computation is impractical, non-gradient methods were considered. We used the bayesian optimization method \cite{garnett_bayesoptbook_2023}, which quickly explores the target function and finds a value close to the local maximum using only a small number of target function evaluations. The latter is especially important since mode computation takes a considerable amount of time. The Bayesian optimization algorithm can be summarized in the following way
+				\par Так как не было достигнуто приемлемого согласования между данными измерений и результатами моделирования с использованием геоакустических параметров, предложенных авторами сценария, было решено провести их оптимизацию, используя данные в ближайшей точке прохода (для всей полосы частот EC2) в качестве опорного решения. 
+				
+%				\par The optimization was focused on adjusting bottom parameters, namely thickness, sound speed, density and attenuation of the sediment, as well as the sound speed of the substrate. Since differentiating through mode computation is impractical, non-gradient methods were considered. We used the bayesian optimization method \cite{garnett_bayesoptbook_2023}, which quickly explores the target function and finds a value close to the local maximum using only a small number of target function evaluations. The latter is especially important since mode computation takes a considerable amount of time. The Bayesian optimization algorithm can be summarized in the following way
+%				\begin{enumerate}
+%					\item Given a target function $f: \Theta\mapsto\mathbb{R}$ obtain a prior $p\pa{f|\theta\in\Theta}$, describing how the function is expected to behave with respect to $\theta$. Here $\Theta$ is the set of all possible combinations of the optimization parameters (i.e. all possible combinations of bottom parameters).
+%					\item Observe $n\in\mathbb{N}$ target function values $y_i=f\pa{\theta_i}$ at randomly selected points $\left\{\theta_i\right\}_{i=1}^n$.
+%					\item Obtain a posterior $p\pa{f|\theta_1,\dots,\theta_n,y_1,\dots,y_n}$.
+%					\item For each $j=\overline{1,m}\,,m\in\mathbb{N}$ do
+%					\begin{enumerate}
+%						\item Obtain the next best guess $\theta_{n+j}$ by maximizing some acquisition function $q: \Theta\mapsto\mathbb{R}$ that assigns a score to potential guesses based on their perceived ability to benefit the optimization process at the current posterior $p\pa{f|\theta_1,\dots,\theta_{n+j-1},y_1,\dots,y_{n+j-1}}$.
+%						\item Observe target function value at the newly obtained point $y_{n+j}=f\pa{\theta_{n+j}}$.
+%						\item Update the posterior $p\pa{f|\theta_1,\dots,\theta_{n+j},y_1,\dots,y_{n+j}}$.
+%					\end{enumerate}
+%					\item Output the maximal value $y_i$ with its respective point $\theta_i$.
+%				\end{enumerate}
+				
+				\par Оптимизация была ориентирована на изменение параметров дна, а именно толщину, скорость звука, плотность и затухание в слое осадков, а также скорость звука в корневой породе. Так как дифференцирование процесса вычисления мод является чрезмерно затратной операцией, были рассмотрены неградиентные методы оптимизации. Была использована байесовская оптимизация \cite{garnett_bayesoptbook_2023}, которая позволяет быстро исследовать целевую функцию и найти значение близкое к локальному максимуму, используя лишь небольшое количество вычислений целевой функции. Последнее является особенно важным, так как вычисление мод требует существенных временных затрат. Алгоритм байесовской оптимизации может быть кратко описан следующим образом
 				\begin{enumerate}
-					\item Given a target function $f: \Theta\mapsto\mathbb{R}$ obtain a prior $p\pa{f|\theta\in\Theta}$, describing how the function is expected to behave with respect to $\theta$. Here $\Theta$ is the set of all possible combinations of the optimization parameters (i.e. all possible combinations of bottom parameters).
-					\item Observe $n\in\mathbb{N}$ target function values $y_i=f\pa{\theta_i}$ at randomly selected points $\left\{\theta_i\right\}_{i=1}^n$.
-					\item Obtain a posterior $p\pa{f|\theta_1,\dots,\theta_n,y_1,\dots,y_n}$.
-					\item For each $j=\overline{1,m}\,,m\in\mathbb{N}$ do
+					\item Для заданной целевой функции $f: \Theta\mapsto\mathbb{R}$ получить априорное распределение $p\pa{f|\theta\in\Theta}$, которое описывает ожидаемое поведение функции в зависимости от параметра $\theta$. Здесь $\Theta$ является множеством  всех возможных комбинаций оптимизируемых параметров (то есть все возможные комбинации параметров дна).
+					\item Вычислить $n\in\mathbb{N}$ значений целевой функции $y_i=f\pa{\theta_i}$ в случайно выбранных точках $\left\{\theta_i\right\}_{i=1}^n$.
+					\item Получить апостериорное распределение $p\pa{f|\theta_1,\dots,\theta_n,y_1,\dots,y_n}$.
+					\item Для каждого $j=\overline{1,m}\,,m\in\mathbb{N}$ выполнить
 					\begin{enumerate}
-						\item Obtain the next best guess $\theta_{n+j}$ by maximizing some acquisition function $q: \Theta\mapsto\mathbb{R}$ that assigns a score to potential guesses based on their perceived ability to benefit the optimization process at the current posterior $p\pa{f|\theta_1,\dots,\theta_{n+j-1},y_1,\dots,y_{n+j-1}}$.
-						\item Observe target function value at the newly obtained point $y_{n+j}=f\pa{\theta_{n+j}}$.
-						\item Update the posterior $p\pa{f|\theta_1,\dots,\theta_{n+j},y_1,\dots,y_{n+j}}$.
+						\item Получить следующую лучшую точку $\theta_{n+j}$ путём максимизации некоторой функции оценки $q: \Theta\mapsto\mathbb{R}$, которая присваивает потенциальным точкам скор (score) основываясь на их предполагаемой возможности способствовать процессу оптимизации при текущем апостериорном распределении.
+						\item Вычислить значение целевой функции в новой найденной точке $y_{n+j}=f\pa{\theta_{n+j}}$.
+						\item Обновить апостериорное распределение $p\pa{f|\theta_1,\dots,\theta_{n+j},y_1,\dots,y_{n+j}}$.
 					\end{enumerate}
-					\item Output the maximal value $y_i$ with its respective point $\theta_i$.
-				\end{enumerate}
+					\item Выдать максимальное значение $y_{max}=\max\limits_{i=\overline{1,n+m}}y_i$ и соответствующую ему точку $\theta_{max}=\argmax\limits_{\theta_i,i=\overline{1,n+m}}y_i$ в качестве результата работы алгоритма.
+				\end{enumerate}  
 				
-				\par The most commonly used prior is that of a Gaussian process \cite{garnett_bayesoptbook_2023}. It takes the following form
+%				\par The most commonly used prior is that of a Gaussian process \cite{garnett_bayesoptbook_2023}. It takes the following form
+%				\begin{equation}
+%					\label{eq:prior}
+%					\begin{bmatrix}
+%						f\pa{\theta}\\
+%						f\pa{\theta_1}\\
+%						\vdots\\
+%						f\pa{\theta_n}
+%					\end{bmatrix}\sim
+%					\mathcal{N}\pa{\mu,
+%						\begin{bmatrix}
+%							k\pa{\theta, \theta} & k\pa{\theta,\theta_1} & \dots & k\pa{\theta,\theta_n}\\
+%							k\pa{\theta_1, \theta} & k\pa{\theta_1,\theta_1} & \dots & k\pa{\theta_1,\theta_n}\\
+%							\vdots & \vdots & \ddots & \vdots\\
+%							k\pa{\theta_n, \theta} & k\pa{\theta_n,\theta_1} & \dots & k\pa{\theta_n,\theta_n}
+%						\end{bmatrix}
+%					}
+%				\end{equation}
+%				which is a multivariate normal distribution with the mean $\mu$ and covariance matrix $\left\{k\pa{\theta_i,\theta_j}\right\}_{i,j}$, where $k: \Theta\times\Theta\mapsto\mathbb{R}$ is a so-called kernel or covariance function. The posterior distribution is then given by
+%				\begin{gather}
+%					p\pa{f\pa{\theta}|\theta_1,\dots,\theta_n,f\pa{\theta_1},\dots,f\pa{\theta_n}}\sim\mathcal{N}\pa{m,s^2}\nonumber\\
+%					m=\left\{k\pa{\theta,\theta_i}\right\}_{i=1}^n\cdot\pa{\left\{k\pa{\theta_i,\theta_j}\right\}_{i,j=1}^n}^{-1}\cdot\left\{f\pa{\theta_i}\right\}_{i=1}^n\label{eq:posterior}\\
+%					s^2=k\pa{\theta,\theta}-\left\{k\pa{\theta,\theta_i}\right\}_{i=1}^n\cdot\pa{\left\{k\pa{\theta_i,\theta_j}\right\}_{i,j=1}^n}^{-1}\cdot\left\{k\pa{\theta,\theta_i}\right\}_{i=1}^n\nonumber
+%				\end{gather}
+%				For this particular task in our study we used Mat\'ern kernel
+%				\begin{equation}
+%					k\pa{\theta_i, \theta_j}=\frac{1}{\Gamma\pa{\nu}^{\nu-1}}\pa{\frac{\sqrt{2\nu}}{l}d\pa{\theta_i, \theta_j}}^{\nu}K_\nu\pa{\frac{\sqrt{2\nu}}{l}d\pa{\theta_i, \theta_j}}\,,
+%				\end{equation}
+%				where $\nu,l\in\mathbb{R}$ are the kernel parameters, $d\pa{\cdot,\cdot}$ is the Euclidean distance, $K_\nu\pa{\cdot}$ is a modified Bessel function of the second kind and $\Gamma\pa{\cdot}$ is the gamma function. The parameter $\nu$ controls the smoothness of the resulting function (see Fig.~\ref{fig:metern_samples}) and $l$ is the length scale parameter.
+%				\begin{figure}[h]
+%					\centering
+%					\includegraphics[width=0.9\textwidth]{images/d1/matern_samples.pdf}
+%					\caption{(color online) The function $f\pa{\theta}$ sampled from a multivariate normal distribution \eqref{eq:prior} with zero mean and covariance matrix defined by the Mat\'ern kernel with different values for the parameter $\nu$. $f\pa{\theta}$ and $\theta$ are dimensionless and are plotted to show the impact of $\nu$.}
+%					\label{fig:metern_samples}
+%				\end{figure}
+				
+				\par Наиболее часто используемым априорным распределением является таковое из Гауссовского процесса \cite{garnett_bayesoptbook_2023}, которое принимает следующий вид
 				\begin{equation}
 					\label{eq:prior}
 					\begin{bmatrix}
@@ -211,65 +282,97 @@
 						\end{bmatrix}
 					}
 				\end{equation}
-				which is a multivariate normal distribution with the mean $\mu$ and covariance matrix $\left\{k\pa{\theta_i,\theta_j}\right\}_{i,j}$, where $k: \Theta\times\Theta\mapsto\mathbb{R}$ is a so-called kernel or covariance function. The posterior distribution is then given by
+				и в свою очередь является многомерным нормальным распределением со средним $\mu$ и матрицей ковариации  $\left\{k\pa{\theta_i,\theta_j}\right\}_{i,j}$, где $k: \Theta\times\Theta\mapsto\mathbb{R}$ является так называемым ядром или функцией ковариации. Таким образом апостериорное распределение может быть выражено как
 				\begin{gather}
 					p\pa{f\pa{\theta}|\theta_1,\dots,\theta_n,f\pa{\theta_1},\dots,f\pa{\theta_n}}\sim\mathcal{N}\pa{m,s^2}\nonumber\\
 					m=\left\{k\pa{\theta,\theta_i}\right\}_{i=1}^n\cdot\pa{\left\{k\pa{\theta_i,\theta_j}\right\}_{i,j=1}^n}^{-1}\cdot\left\{f\pa{\theta_i}\right\}_{i=1}^n\label{eq:posterior}\\
 					s^2=k\pa{\theta,\theta}-\left\{k\pa{\theta,\theta_i}\right\}_{i=1}^n\cdot\pa{\left\{k\pa{\theta_i,\theta_j}\right\}_{i,j=1}^n}^{-1}\cdot\left\{k\pa{\theta,\theta_i}\right\}_{i=1}^n\nonumber
 				\end{gather}
-				For this particular task in our study we used Mat\'ern kernel
+				В рамках данной работы было использована функция ковариации Матерна
 				\begin{equation}
 					k\pa{\theta_i, \theta_j}=\frac{1}{\Gamma\pa{\nu}^{\nu-1}}\pa{\frac{\sqrt{2\nu}}{l}d\pa{\theta_i, \theta_j}}^{\nu}K_\nu\pa{\frac{\sqrt{2\nu}}{l}d\pa{\theta_i, \theta_j}}\,,
 				\end{equation}
-				where $\nu,l\in\mathbb{R}$ are the kernel parameters, $d\pa{\cdot,\cdot}$ is the Euclidean distance, $K_\nu\pa{\cdot}$ is a modified Bessel function of the second kind and $\Gamma\pa{\cdot}$ is the gamma function. The parameter $\nu$ controls the smoothness of the resulting function (see Fig.~\ref{fig:metern_samples}) and $l$ is the length scale parameter.
-				\begin{figure}[h]
-					\centering
-					\includegraphics[width=0.9\textwidth]{images/d1/matern_samples.pdf}
-					\caption{(color online) The function $f\pa{\theta}$ sampled from a multivariate normal distribution \eqref{eq:prior} with zero mean and covariance matrix defined by the Mat\'ern kernel with different values for the parameter $\nu$. $f\pa{\theta}$ and $\theta$ are dimensionless and are plotted to show the impact of $\nu$.}
-					\label{fig:metern_samples}
-				\end{figure}
+				где $\nu,l\in\mathbb{R}$ являются параметрами ядра, $d\pa{\cdot,\cdot}$ -- евклидово расстояние, $K_\nu\pa{\cdot}$ -- модифицированная функция Бесселя второго рода и $\Gamma\pa{\cdot}$ -- гамма функция. Параметр $\nu$ задаёт гладкость функции, получаемой из распределения (см. Рис.~\ref{fig:metern_samples}), а $l$ является параметром масштаба.
 				
-				\par The value $\nu=\frac{5}{2}$ was used and the kernel is transformed to
+%				\par The value $\nu=\frac{5}{2}$ was used and the kernel is transformed to
+%				\begin{equation}
+%					k\pa{\theta_i, \theta_j}=\pa{1+\frac{\sqrt{5}}{l}d\pa{\theta_i, \theta_j}+\frac{5}{3l}d\pa{\theta_i, \theta_j}^2}\exp\pa{-\frac{\sqrt{5}}{l}d\pa{\theta_i, \theta_j}}\,.
+%				\end{equation}
+%				This value provides good balance between function smoothness and its ability to approximate coarse data and allows for computing the kernel without evaluating the modified Bessel function. The parameter $l$ is initially set to $1$ and gets updated during the optimization process to better fit the observed data.
+				
+				\par Было использовано значение $\nu=\frac{5}{2}$, при котором ядро преобразуется к следующему виду
 				\begin{equation}
 					k\pa{\theta_i, \theta_j}=\pa{1+\frac{\sqrt{5}}{l}d\pa{\theta_i, \theta_j}+\frac{5}{3l}d\pa{\theta_i, \theta_j}^2}\exp\pa{-\frac{\sqrt{5}}{l}d\pa{\theta_i, \theta_j}}\,.
 				\end{equation}
-				This value provides good balance between function smoothness and its ability to approximate coarse data and allows for computing the kernel without evaluating the modified Bessel function. The parameter $l$ is initially set to $1$ and gets updated during the optimization process to better fit the observed data.
-				\par For the acquisition function Upper Confidence Bound was used
+				Такое значение показывает хороший баланс между гладкостью функции и её возможность аппроксимировать шероховатые данные, а также позволяет провести вычисление ядра без необходимости оценивать значение функции Бесселя. Параметр $l$ изначально считается равным $1$, и затем обновляется в процессе обучения с целью более точно аппроксимировать наблюдаемые данные. 
+				
+%				\par For the acquisition function Upper Confidence Bound was used
+%				\begin{equation}
+%					q\pa{\theta}=\operatorname{E}\left[X_\theta\right]+\kappa\sqrt{\operatorname{Var}\pa{X_\theta}}\,,
+%				\end{equation}
+%				where $X_\theta\sim\mathcal{N}\pa{m,s^2}$ is a random variable distributed according to the posterior distribution \eqref{eq:posterior}. The parameter $\kappa\in\mathbb{R}$ controls the balance of exploitation and exploration with lower values promoting points around the target function peaks and higher values allow points to be selected from the whole range (see Fig.~\ref{fig:ucb}).
+%				\begin{figure}
+%					\centering
+%					\includegraphics[width=0.9\textwidth]{images/d1/ucb.pdf}
+%					\caption{(color online) Points selected during Bayesian optimization using Upper Confidence Bound acquisition function with different values for parameter $\kappa$. $f\pa{\theta}$ is an arbitrary function the optimization was performed for to show the impact of $\kappa$.}
+%					\label{fig:ucb}
+%				\end{figure}
+		
+				\par В качестве функции оценки была использована так называемая верхняя граница уверенности
 				\begin{equation}
 					q\pa{\theta}=\operatorname{E}\left[X_\theta\right]+\kappa\sqrt{\operatorname{Var}\pa{X_\theta}}\,,
 				\end{equation}
-				where $X_\theta\sim\mathcal{N}\pa{m,s^2}$ is a random variable distributed according to the posterior distribution \eqref{eq:posterior}. The parameter $\kappa\in\mathbb{R}$ controls the balance of exploitation and exploration with lower values promoting points around the target function peaks and higher values allow points to be selected from the whole range (see Fig.~\ref{fig:ucb}).
-				\begin{figure}
-					\centering
-					\includegraphics[width=0.9\textwidth]{images/d1/ucb.pdf}
-					\caption{(color online) Points selected during Bayesian optimization using Upper Confidence Bound acquisition function with different values for parameter $\kappa$. $f\pa{\theta}$ is an arbitrary function the optimization was performed for to show the impact of $\kappa$.}
-					\label{fig:ucb}
-				\end{figure}
+				где $X_\theta\sim\mathcal{N}\pa{m,s^2}$ является случайной переменной распределённой согласно апостериорному распределению \eqref{eq:posterior}. Параметр $\kappa\in\mathbb{R}$ задаёт баланс между эксплуатацией и исследованием, при этом для маленьких значений параметра предпочитаются точки, находящиеся около локальных максимумов функции, а большие значения позволяют точкам быть выбранным из всего диапазона (см. Рис.~\ref{fig:ucb}).
 				
-				\par The optimization was performed in Python using BayesianOptimization library \cite{bayesian_optimzation_lib}. To facilitate the process, the mode computation was re-implemented using Tensorflow library \cite{tensorflow2015-whitepaper} which allows the computations to be performed on a GPU and decreases the time it takes to obtain CPA levels for the entire frequency range from several hours to several minutes.
+%				\par The optimization was performed in Python using BayesianOptimization library \cite{bayesian_optimzation_lib}. To facilitate the process, the mode computation was re-implemented using Tensorflow library \cite{tensorflow2015-whitepaper} which allows the computations to be performed on a GPU and decreases the time it takes to obtain CPA levels for the entire frequency range from several hours to several minutes.
 				
-				\par For the target function the negative mean squared difference between logarithms of the noise level at CPA obtained from measurements data and from the modeling results was used
+				\par Оптимизация была выполнена на языке Python с использованием пакета BayesianOptimization \cite{bayesian_optimzation_lib}(Байесовская оптимизация). Для ускорения процесса, вычисление мод было переписано с использованием библиотеки Tensorflow \cite{tensorflow2015-whitepaper}, которая позволяет проводить вычисления на графическом процессоре и таким образом уменьшает время, затрачиваемое на получение уровней в ближайшей точке прохода для всего набора частот, с нескольких часов до нескольких минут.
+				
+%				\par For the target function the negative mean squared difference between logarithms of the noise level at CPA obtained from measurements data and from the modeling results was used
+%				\begin{equation}
+%					f\pa{\theta}=-\frac{1}{N_F}\sum\limits_{f_c}\pa{\log{\pa{E_{p,ddec}\pa{f_c, d_{CPA}}}}-\log{\pa{E_{p,ddec}^{mod}\pa{f_c, d_{CPA},\theta}}}}^2\,,
+%				\end{equation}
+%				where $N_F$ is number of decidecade bands taken into account, $E_{p,ddec}^{mod}\pa{f_c,d_{CPA},\theta}$ is the modeling result for central frequency $f_c$, distance $d_{CPA}$ and media parameters $\theta$.
+				
+				\par В качестве целевой функции был использован средний квадрат разности логарифмов уровней шума в ближайшей точке прохода, полученные из данных измерений и результатов моделирования
 				\begin{equation}
 					f\pa{\theta}=-\frac{1}{N_F}\sum\limits_{f_c}\pa{\log{\pa{E_{p,ddec}\pa{f_c, d_{CPA}}}}-\log{\pa{E_{p,ddec}^{mod}\pa{f_c, d_{CPA},\theta}}}}^2\,,
 				\end{equation}
-				where $N_F$ is number of decidecade bands taken into account, $E_{p,ddec}^{mod}\pa{f_c,d_{CPA},\theta}$ is the modeling result for central frequency $f_c$, distance $d_{CPA}$ and media parameters $\theta$.
+				где $N_F$ -- количество рассматриваемых децидекадных полос, а $E_{p,ddec}^{mod}\pa{f_c,d_{CPA},\theta}$ результат моделирования для центральной частоты $f_c$, расстояния $d_{CPA}$ и параметров среды $\theta$.
 				
-				\par The sound speed profile in the water column was also adjusted in course of the optimization. It was parameterized by a scalar parameter $t\in\left[-1,1\right]$ as an argument of a function linearly interpolated \textcolor{blue}{depth-by-depth} between the three nodes $-1\,,0\,,1$. \textcolor{blue}{The interpolation function can be expressed as follows}
+%				\par The sound speed profile in the water column was also adjusted in course of the optimization. It was parameterized by a scalar parameter $t\in\left[-1,1\right]$ as an argument of a function linearly interpolated \textcolor{blue}{depth-by-depth} between the three nodes $-1\,,0\,,1$. \textcolor{blue}{The interpolation function can be expressed as follows}
+%				\begin{equation}
+%					c_{water}\pa{z,t}=\begin{cases}
+%							c_{oct}\pa{z}+\pa{t+1}\pa{c_{nov}\pa{z}-c_{oct}\pa{z}}\,, & -1\leq t\leq 0\,,\\
+%							c_{nov}\pa{z}+t\pa{c_{dec}\pa{z}-c_{nov}\pa{z}}\,, & 0<t\leq 1\,,
+%					\end{cases}
+%				\end{equation}
+%				\textcolor{blue}{where $c_{oct},c_{nov},c_{dec}$ are the sound speed profiles for October, November, and December, respectively (see Fig.~\ref{fig3:ssp}).}
+				
+				\par Профиль скорости звука в воде также был рассмотрен во время проведения оптимизации. Он был параметризован единственным скалярным параметром $t\in\left[-1,1\right]$ как аргументом функции линейно интерполированной для каждой глубины между тремя узлами $-1\,,0\,,1$. Интерполированная функция может быть выражена как
 				\begin{equation}
 					c_{water}\pa{z,t}=\begin{cases}
-							c_{oct}\pa{z}+\pa{t+1}\pa{c_{nov}\pa{z}-c_{oct}\pa{z}}\,, & -1\leq t\leq 0\,,\\
-							c_{nov}\pa{z}+t\pa{c_{dec}\pa{z}-c_{nov}\pa{z}}\,, & 0<t\leq 1\,,
+						c_{oct}\pa{z}+\pa{t+1}\pa{c_{nov}\pa{z}-c_{oct}\pa{z}}\,, & -1\leq t\leq 0\,,\\
+						c_{nov}\pa{z}+t\pa{c_{dec}\pa{z}-c_{nov}\pa{z}}\,, & 0<t\leq 1\,,
 					\end{cases}
 				\end{equation}
-				\textcolor{blue}{where $c_{oct},c_{nov},c_{dec}$ are the sound speed profiles for October, November, and December, respectively (see Fig.~\ref{fig3:ssp}).}
+				где $c_{oct},c_{nov},c_{dec}$ -- профили скорости звука в воде за Октябрь, Ноябрь и Декабрь соответственно (см. Рис.~\ref{fig3:ssp}).
 				
-				\par \textcolor{blue}{The sound speed for the sediment bottom layer is parameterized as follows}
+%				\par \textcolor{blue}{The sound speed for the sediment bottom layer is parameterized as follows}
+%				\begin{equation}
+%					c_{sediment}\pa{z}=c+\frac{z-z_b}{\Delta z}\Delta c\,,
+%				\end{equation}
+%				\textcolor{blue}{where $z_b$ is the bottom depth, $\Delta z$ is the sediment layer thickness, $c$ is the sound speed at the top of the layer, and $\Delta c$ is the sound speed difference.}
+				
+				\par Скорость звука в слое осадков была параметризирована следующим образом
 				\begin{equation}
 					c_{sediment}\pa{z}=c+\frac{z-z_b}{\Delta z}\Delta c\,,
 				\end{equation}
-				\textcolor{blue}{where $z_b$ is the bottom depth, $\Delta z$ is the sediment layer thickness, $c$ is the sound speed at the top of the layer, and $\Delta c$ is the sound speed difference.}
+				где $z_b$ -- глубина дна, $\Delta z$ -- толщина слоя осадков, $c$ скорость звука на вершине слоя, и $\Delta c$ разница в скорости звука.
 				
-				\par The optimization parameter ranges and their values obtained during the optimization process are shown in Table.~\ref{tbl:optimization_parameters}. Note that the best agreement of the sound levels at CPA is achieved for October sound speed data and for somewhat lower sound speed in the upper part of the sediment layer that suggested by the workshop organizers. Optimization also results in a much higher sediment attenuation parameter that one might normally expect. This can be explained by the fact that the models we used do not take elasticity effects into account. Since the presence of shear waves in the bottom results in additional loss of acoustic energy, an unrealistically large value of attenuation in an equivalent fluid bottom model must compensate for it. Also note that the best model-data fit is achieved for the maximum sediment density value in the search interval. This can be explained by the low sensitivity to this parameter that is quite common for geoacoustic inversion problems. We decided not to extend this interval any further in order to keep this value reasonable. The quality of the optimization results can be assessed by comparing the sound level plots in Fig.~\ref{fig5:CPA_comparison}.
+%				\par The optimization parameter ranges and their values obtained during the optimization process are shown in Table.~\ref{tbl:optimization_parameters}. Note that the best agreement of the sound levels at CPA is achieved for October sound speed data and for somewhat lower sound speed in the upper part of the sediment layer that suggested by the workshop organizers. Optimization also results in a much higher sediment attenuation parameter that one might normally expect. This can be explained by the fact that the models we used do not take elasticity effects into account. Since the presence of shear waves in the bottom results in additional loss of acoustic energy, an unrealistically large value of attenuation in an equivalent fluid bottom model must compensate for it. Also note that the best model-data fit is achieved for the maximum sediment density value in the search interval. This can be explained by the low sensitivity to this parameter that is quite common for geoacoustic inversion problems. We decided not to extend this interval any further in order to keep this value reasonable. The quality of the optimization results can be assessed by comparing the sound level plots in Fig.~\ref{fig5:CPA_comparison}.
+				
+				\par Диапазоны оптимизируемых параметров и их значения, полученные в результате оптимизации показаны в Таб. ~\ref{tbl:optimization_parameters}. Стоит заметить, что наибольшее согласия уровней шума в ближайшей точке прохода было достигнуто для профиля скорости звука за Октябрь с несколько меньшей скоростью звука в слое осадков по сравнению с параметрами, предложенными авторами сценария. В результате оптимизации также были получены значительно большие значения параметра затухания, чем можно было бы ожидать. Это может быть объяснено тем, что используемые модели не учитывают эффекты упругости. Наличие поперечных волн в дне вносит дополнительную потерю акустической энергии, в результате чего неожиданно большое значение затухания в эквивалентной модели жидкого дна должен компенсировать этот эффект. Также стоит заметить, что наилучшее согласие модели и данных было достигнуто при максимальном значение плотности слоя осадков в рассматриваемом интервале. Это может быть объяснено низкой чувствительностью модели к данному параметру, что часто возникает в задачах геоакустической инверсии. Было решено не увеличивать интервал больше с целью удержать этот параметр в разумных пределах. Качество результатов оптимизации может быть оценено из графиков уровней шума на Рис.~\ref{fig5:CPA_comparison}.
 				
 				\begin{figure}[h]
 					\centering
@@ -354,20 +457,34 @@
 					\label{tbl:optimization_parameters}
 				\end{table}
 			\subsubsection{Simulation of the sound levels}
-				\par After performing optimization of the geoacoustic parameters of the media we simulated the CPA transit sound field again. The results for both the full-3D AMPLE model and its two-dimensional (range-independent) counterpart are shown in Fig.~\ref{fig8:noise_ddec_opt}. Fig.~\ref{fig8:noise_ddec_opt} also presents the difference between the two models (it is computed as a difference of fields in the logarithmic units in the first two subfigures). Firstly, one can observe a much better qualitative agreement with the measured sound field shown in Fig.~\ref{fig6:noise_ddec_non_opt}. Secondly, for certain distances and frequency bands the difference between the 2D and the 3D simulations is about 7-10 dB (it can be even as high as 15 dB for certain points of the noise diagram, however, these points correspond to relatively low sound levels both in the modelling results and in the measurement data). \textcolor{blue}{Such difference can be explained by manifestation of the horizontal refraction \cite{jensen,katsnelson} of acoustic waves over the inhomogeneous bottom. The significance of this effect can be seen in Fig.~\ref{fig10:indiv_freqs} where the simulation results for individual frequencies are presented (see also supplementary material to this paper). As it is expected, the sound is refracted towards the areas with greater water depth, and the wavefronts 1-2 km away from the source no longer resemble circles.}
+%				\par After performing optimization of the geoacoustic parameters of the media we simulated the CPA transit sound field again. The results for both the full-3D AMPLE model and its two-dimensional (range-independent) counterpart are shown in Fig.~\ref{fig8:noise_ddec_opt}. Fig.~\ref{fig8:noise_ddec_opt} also presents the difference between the two models (it is computed as a difference of fields in the logarithmic units in the first two subfigures). Firstly, one can observe a much better qualitative agreement with the measured sound field shown in Fig.~\ref{fig6:noise_ddec_non_opt}. Secondly, for certain distances and frequency bands the difference between the 2D and the 3D simulations is about 7-10 dB (it can be even as high as 15 dB for certain points of the noise diagram, however, these points correspond to relatively low sound levels both in the modelling results and in the measurement data). \textcolor{blue}{Such difference can be explained by manifestation of the horizontal refraction \cite{jensen,katsnelson} of acoustic waves over the inhomogeneous bottom. The significance of this effect can be seen in Fig.~\ref{fig10:indiv_freqs} where the simulation results for individual frequencies are presented (see also supplementary material to this paper). As it is expected, the sound is refracted towards the areas with greater water depth, and the wavefronts 1-2 km away from the source no longer resemble circles.}
 				
-				\par The accuracy of the modelling results obtained for the default and optimized environment parameters is illustrated by Fig.~\ref{fig9:accuracy}, where the difference to the measured noise levels for both waveguide models is presented. It can be seen that the optimization results in nearly perfect reproduction of the measurements data for all frequencies up to 141 Hz. Note that this frequency range is crucial for environmental impact assessment, as it captures most of the acoustic energy from this source. Major accuracy improvements can be also seen for higher frequencies for the track part near the CPA (namely, for $-0.7\mbox{ km}<x<0.7\mbox{ km}$). Certain improvements are also visible for the distant parts, i.e., for $|x|>2\mbox{ km}$. Within these areas of the sound field diagram the simulation-measurements discrepancy is comparable to the difference between the predictions of 3D and 2D models. Thus, for substantial part of the sound field the three-dimensional modelling can actually be important for the estimation accuracy.
+				\par После проведения оптимизации геокустических параметров среды, было ещё раз проведено моделирование звукового поля движения судна. Результаты, полученные с использованием полностью трёхмерной модели AMPLE и её двумерного (независящего от расстояния) аналога, отображены на Рис.~\ref{fig8:noise_ddec_opt}. Рис.~\ref{fig8:noise_ddec_opt} также содержит разницу между двумя моделями (которая представляет собой разницу, выраженную в логарифмических единицах, между первыми двумя графиками). В первую очередь стоит заметить более высокую качественную согласованность с измеренным звуковым полем, показанным на Рис.~\ref{fig6:noise_ddec_non_opt}. Также, для некоторых расстояний и частотных полос разница между результатами двумерного и трёхмерного моделирования достигает 7-10 Дб. (в некоторых точках графика она может даже достигать 15 Дб., однако эти точки соответствуют относительно небольшим уровням звука как в результатах моделирования, так и в данных измерений). Такая разница может быть объяснена проявлением эффектов горизонтальной рефракции \cite{jensen,katsnelson} акустических волн над неоднородным дном. Важность этого эффекта хорошо видна на Рис.~\ref{fig10:indiv_freqs}, на котором результаты моделирования приведены для отдельных частот. Как и ожидалось, звук преломляется в сторону областей с большой глубиной дна, и фронты волн на расстоянии $1-2$ км. от источника более не напоминают окружности.
+				
+%				\par The accuracy of the modelling results obtained for the default and optimized environment parameters is illustrated by Fig.~\ref{fig9:accuracy}, where the difference to the measured noise levels for both waveguide models is presented. It can be seen that the optimization results in nearly perfect reproduction of the measurements data for all frequencies up to 141 Hz. Note that this frequency range is crucial for environmental impact assessment, as it captures most of the acoustic energy from this source. Major accuracy improvements can be also seen for higher frequencies for the track part near the CPA (namely, for $-0.7\mbox{ km}<x<0.7\mbox{ km}$). Certain improvements are also visible for the distant parts, i.e., for $|x|>2\mbox{ km}$. Within these areas of the sound field diagram the simulation-measurements discrepancy is comparable to the difference between the predictions of 3D and 2D models. Thus, for substantial part of the sound field the three-dimensional modelling can actually be important for the estimation accuracy.
+				
+				\par Точность полученных результатов моделирования для исходных и оптимизированных параметров среды показана на Рис.~\ref{fig9:accuracy}, на котором отображена разница с измеренными уровнями шума для обеих моделей волновода. Можно заметить, что оптимизация параметров среды позволяет достичь высокой точности аппроксимации данных измерений для всех частот до 141 Гц. Стоит заметить, что такой диапазон частот является критически важным в задачах оценки влияния на окружающую среду, так как он содержит большую часть акустической энергии источника. Существенное улучшение точности может быть также замечено для более высоких частот около точки ближайшего прохода (а именно при  $-0.7\mbox{ км}<x<0.7\mbox{ км}$). Некоторые улучшения также могут быть замечены на больших расстояниях, а именно при $|x|>2\mbox{ км}$. В этих областях разница между результатами моделирования и данными измерений сравнима с разницей предсказаний двумерной и трёхмерной моделей. Таким образом, существенная часть звукового поля при трёхмерном моделировании на самом деле является важной для точности оценки.
 				
 			\subsubsection{Conclusion and discussion}
-				\par In this study we performed a numerical simulation of the sound field from a surface vessel moving past a hydrophone system. Such simulations could be of importance to extrapolate estimates of shipping noise emissions to the areas where measurements cannot be accomplished and to assess environmental impacts.
+%				\par In this study we performed a numerical simulation of the sound field from a surface vessel moving past a hydrophone system. Such simulations could be of importance to extrapolate estimates of shipping noise emissions to the areas where measurements cannot be accomplished and to assess environmental impacts.
+				
+				\par Таким образом, было проведено моделирование звукового поля, создаваемого судном, проходящего по поверхности моря мимо системы гидрофонов. Такое моделирование может быть важным для проведения оценки судовых шумов в областях, в которых измерения не могут быть получены, чтобы оценить их влияние на окружающую среду. 
 			
-				\par It was shown that accurate simulation of the sound field requires adequate knowledge of the environment parameters. Indeed, the optimization demonstrated that the sound field predictions were particularly sensitive to the acoustic impedance contrast at the seabed. Rough estimates on the basis of geologic maps and tables of typical geoacoustic properties of various rocks and sediments may be insufficient for this purpose. Instead, it is preferable to perform geoacoustic inversion (or, more broadly speaking, fitting of the parameters) using sources of opportunity or by setting up dedicated experiments on the propagation loss measurements. Some approaches to the estimation of the geoacoustic parameters of the bottom are known from the existing literature, e.g., \cite{gervaise2012,knobles2015, tollefsen2021}. In the scenario considered here, the use of the media parameters optimized using the measurements taken at a single point of the vessel track (namely the CPA) allowed us to substantially improve the accuracy of the sound level prediction. 
+%				\par It was shown that accurate simulation of the sound field requires adequate knowledge of the environment parameters. Indeed, the optimization demonstrated that the sound field predictions were particularly sensitive to the acoustic impedance contrast at the seabed. Rough estimates on the basis of geologic maps and tables of typical geoacoustic properties of various rocks and sediments may be insufficient for this purpose. Instead, it is preferable to perform geoacoustic inversion (or, more broadly speaking, fitting of the parameters) using sources of opportunity or by setting up dedicated experiments on the propagation loss measurements. Some approaches to the estimation of the geoacoustic parameters of the bottom are known from the existing literature, e.g., \cite{gervaise2012,knobles2015, tollefsen2021}. In the scenario considered here, the use of the media parameters optimized using the measurements taken at a single point of the vessel track (namely the CPA) allowed us to substantially improve the accuracy of the sound level prediction.
+				
+				\par Было показано, что точное моделирование звукового поля требует подходящего знания параметров среды. Действительно, оптимизация показала, что предсказания звукового поля были особенно чувствительны к контрасту акустической проницаемости морского дна. Грубая оценка, основанная на геологических картах и таблиц типичных геоакустических свойст различных видов камней и осадков, может быть недостаточной для данной задачи. Вместо этого стоит провести акустическую инверсию (или широко говоря оптимизацию параметров), используя подходящие источники или проводя эксперименты специализированные на измерении потерь распространения. Некоторые подходы к оценке геоакустических параметров дна известны в литературе, например  \cite{gervaise2012,knobles2015, tollefsen2021}. В рамках данного сценария, использование параметров, оптимизированных с учетом измерений в единственной точке (а именно точки ближайшего прохода), позволило существенно улучшить точность предсказания уровня шума. 
 			
-				\par It is important to stress that the optimized values of media parameters are likely to be somewhat nonphysical and merely parameterize the real bottom in terms of the propagation loss (for instance, an unusually large value of attenuation parameter apparently compensates for the absence of shear waves in the models we used, which can be considered a loss mechanism). Nevertheless, the optimization significantly improved the accuracy of the sound field simulation. It is also worth mentioning that, in our experience, the use of historical sound speed profile data may not provide an optimal solution. A better option may be to use ocean circulation model predictions, especially for areas where the models assimilate in-situ measurements.
+%				\par It is important to stress that the optimized values of media parameters are likely to be somewhat nonphysical and merely parameterize the real bottom in terms of the propagation loss (for instance, an unusually large value of attenuation parameter apparently compensates for the absence of shear waves in the models we used, which can be considered a loss mechanism). Nevertheless, the optimization significantly improved the accuracy of the sound field simulation. It is also worth mentioning that, in our experience, the use of historical sound speed profile data may not provide an optimal solution. A better option may be to use ocean circulation model predictions, especially for areas where the models assimilate in-situ measurements.
+				
+				\par Важно обратить внимание, что оптимизированные значения параметров среды с высокой долей вероятности будут в некотором смысле нефизическими и всего лишь параметризуют настоящее дно в терминах потерь распространения (например, неожиданно большое значения параметра затухания оказывается компенсирует отсутствие поперечных волн в использованных моделях, что может быть рассмотрено как механизм возникновения потерь). Тем не менее, оптимизация позволила существенно улучшить точность моделирования звукового поля. Стоит также упомянуть, что использование исторических данных о профиле скорости звук может не привести к оптимальному результату. Лучшим вариантом может быть использование предсказание моделей циркуляции океана, особенно в областях, в которых модели ассимилируют местные измерения.    
 			
-				\par Our study also highlights the significance of taking into account three-dimensional sound propagation effects when performing the simulation of the sound field. It is important to emphasize however that the use of relatively computationally expensive 3D methods makes sense only after the adjustment of media parameters, as otherwise much more significant inaccuracy would result from the uncertainty in the values of the latter.
+%				\par Our study also highlights the significance of taking into account three-dimensional sound propagation effects when performing the simulation of the sound field. It is important to emphasize however that the use of relatively computationally expensive 3D methods makes sense only after the adjustment of media parameters, as otherwise much more significant inaccuracy would result from the uncertainty in the values of the latter.
+				
+				\par Работа также ставит во внимание важность учёта трёхмерных эффектов распространения звука при проведении моделирования звукового поля. Однако важно отметить, что использование вычислительно дорогих трёхмерных моделей имеет смысл лишь после проведения оптимизации параметров дна, так как в обратном случае гораздое более высокая неточность будет возникать из неуверенности в самих параметрах среды.
 			
 				\par Finally, the it is likely that a large vessel cannot actually be accurately represented by a monopole point source, and its directivity pattern both in the horizontal and the vertical plane must be taken into account \cite{cybulski1977probable,gassman2017}, since otherwise even the CPA-optimized media parameters cannot guarantee perfect reproduction of the sound field over a large frequency range (e.g., EC2). Indeed, the size of the bulk carrier in the considered scenario is comparable to its CPA distance from the hydrophone. Having measurement data that contains the information on the phase (rather than only on the magnitude) variations one can consider a parametrization of the vessel by a set of point sources whose complex spectra can be probably estimated. Representations of vessels as spatially distributed noise sources is a subject of ongoing research at the ULS \cite{echo2021}.
+				
+				\par Конечно вероятно, что такое большое судно не может быть точно представлено в виде точечного источника, и вид его направленности должен быть учтён \cite{cybulski1977probable,gassman2017}, так как иначе даже параметры, оптимизированные относительно точки ближайшего прохода, не могут гарантировать идеальное представление звукового поля для большого интервала частот (например, EC2). Действительно, размеры сухогруза в рассматриваемом сценарии сравнимы с его расстоянием ближайшего прохода от гидрофона. Наличие данных измерений, содержащих информацию об изменениях фазы (а не только амплитуды) может позволить рассмотреть параметризацию источника множеством точечных источников, спектр которых наверное может быть оценен. Представление судов в виде пространственно распределённых источников шума при проведении измерений подводными акустическими станциями является предметом текущих исследований \cite{echo2021}.
 		\subsection{Сейсморазведка}
 			\subsubsection{Description}
 				\par During the seismic survey in the shallow part of the shelf Sakhalin Island, in~the Chayvo license area, seismic pulses were generated by the catamaran vessel, Iskatel-4, operating at depths of 8--30 m. The~total volume of airguns was $1300  \mbox{ in}^3$. In~sound emission mode a group of airguns was positioned at the depth of 4--4.2 m, while the draft of the vessel was 5~m. 
