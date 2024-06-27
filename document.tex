@@ -11,6 +11,8 @@
 \usepackage{subcaption}
 \usepackage{placeins}
 \usepackage{upgreek}
+\usepackage{scalerel}
+\usepackage{bm}
 \addbibresource{references.bib}
 \graphicspath{{./images/}}
 
@@ -19,6 +21,7 @@
 \newcommand{\paramrow}[4][-]{\code{#2} & \code{#3} & \code{#1} & #4\\}
 \newcommand{\paramrowlistvalue}[4][]{\code{#2} & \code{#3} & \code{[#1]} & #4\\}
 \newcommand{\niceref}[2]{\hyperref[#1]{#2 \ref{#1}}}
+\newcommand{\dd}{\mathrm{d}}
 \DeclareMathOperator{\sech}{sech}
 
 \author{Тыщенко Андрей Геннадьевич}
@@ -50,6 +53,9 @@
 \newacronym{wampe}{ШМПУ}{Широкоугольное Модовое Параболическое Уравнение}
 
 \DeclareMathOperator*{\argmax}{arg\,max}
+
+\newfontfamily{\catsfam}{Meows Nepil Illustration}[NFSSFamily=cats]
+\DeclareMathAlphabet{\mathcats}{TU}{cats}{m}{n}
 
 \begin{document}
     \maketitle{thesis}
