@@ -1,0 +1,166 @@
+%%
+%% This is file `fefu_style_default.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% fefu_style_default.dtx  (with options: `package')
+%% 
+%% IMPORTANT NOTICE:
+%% 
+%% For the copyright see the source file.
+%% 
+%% Any modified versions of this file must be renamed
+%% with new filenames distinct from fefu_style_default.sty.
+%% 
+%% For distribution of the original source see the terms
+%% for copying and modification in the file fefu_style_default.dtx.
+%% 
+%% This generated file may be distributed as long as the
+%% original source files, as listed above, are part of the
+%% same distribution. (The sources need not necessarily be
+%% in the same archive or directory.)
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{fefu_style_poi_phd}
+    [2024/06/27 LaTeX phd style for FEFU document]
+\renewcommand{\@FEFUheader}{%
+	{\setstretch{1.5}\normalsize
+		Тихоокеанский океанологический институт им. В. И. Ильичева\\
+		Дальневосточного отделения Российской Академии наук\\
+	}
+}
+\RequirePackage{multicol}
+
+\newcommand{\@FEFUdegree}{}
+\newcommand{\setdegree}[1]{\renewcommand{\@FEFUdegree}{#1}}
+\addtitle{thesis}{\setstretch{1.5}%
+	{\normalsize%
+		\begin{flushright}
+			На правах рукописи\\
+			УДК 534.2\\
+		\end{flushright}
+	}
+	\vfill%
+	{\normalsize%
+		{\large \@author}\\
+		\vskip 2em
+		{\Large\setstretch{1.5}\textbf{\@title}\\}
+		\vskip 2em
+		\@FEFUfaculty\\
+		\vskip 2em
+		ДИССЕРТАЦИЯ\\
+		на соискание учёной степени\\
+		\@FEFUifempty{\@FEFUdegree}{}{\@FEFUdegree}\\
+		\vskip 2em
+		\begin{multicols}{2}
+			\vfill\null
+			\columnbreak
+			\begin{flushleft}
+				Научный руководитель\\
+				\@FEFUsupervisortitle\\
+				\@FEFUsupervisor\\
+			\end{flushleft}
+		\end{multicols}
+	}
+}
+
+\renewcommand{\maketitle}[2][1]{%
+%	\newgeometry{left=2.5cm,right=1cm,top=1.2cm,bottom=2cm}
+	\@FEFUifempty{#1}{\setcounter{@FEFUpage}{\thepage}}{\setcounter{@FEFUpage}{#1}}
+	\begin{titlepage}
+		\setstretch{1}
+		\begin{center}
+			\@FEFUheader
+			{\setstretch{1.15}\vskip 2.5\bigskipamount}
+			\csname @FEFU@#2@titlepage\endcsname
+		\end{center}%
+		\vfill
+		{\centering{Владивосток -- \the\year}\par}
+		\setcounter{page}{\the@FEFUpage}
+		\stepcounter{@FEFUpage}
+	\end{titlepage}
+%	\restoregeometry
+	\setcounter{page}{\the@FEFUpage}
+}
+
+\newcommand{\inlineparagraph}[1]{%
+	\par\textbf{#1.}
+}
+
+\titlespacing{\section}{0pt}{1em}{1em}
+\titleformat{\section}[block]
+{\Large}{}{0pt}{\setstretch{1.5}\centering Глава \thesection\\\hyperlink{sec:contents}{\textbf{#1}}}
+\titlespacing{name=\section,numberless}{0pt}{0pt}{1em}
+\titleformat{name=\section,numberless}[block]
+{\bfseries\Large}{}{0pt}{\setstretch{1.5}%
+	\hfill%
+	\if@FEFUnotoc#1%
+	\else%
+	\phantomsection%
+	\addcontentsline{toc}{section}{#1}\hyperlink{sec:contents}{#1}%
+	\fi%
+	\hfill%
+}
+
+\titlespacing{\subsection}{0pt}{1em}{1em}
+\titleformat{\subsection}[block]
+{\bfseries\large}{}{0pt}{\setstretch{1.5}\thesubsection~\hyperlink{sec:contents}{#1}}
+\titlespacing{name=\subsection,numberless}{0pt}{0pt}{1em}
+\titleformat{name=\subsection,numberless}[block]
+{\bfseries\large}{}{0pt}{\setstretch{1.5}%
+	\hfill%
+	\if@FEFUnotoc#1%
+	\else%
+	\phantomsection%
+	\addcontentsline{toc}{subsection}{#1}\hyperlink{sec:contents}{#1}%
+	\fi%
+	\hfill%
+}
+
+\titlespacing{\subsubsection}{0pt}{1em}{1em}
+\titleformat{\subsubsection}[block]
+{\bfseries\normalsize}{}{0pt}{\setstretch{1.5}\thesubsubsection~\hyperlink{sec:contents}{#1}}
+\titlespacing{name=\subsubsection,numberless}{0pt}{0pt}{1em}
+\titleformat{name=\subsubsection,numberless}[block]
+{\bfseries\normalsize}{}{0pt}{\setstretch{1.5}%
+	\hfill%
+	\if@FEFUnotoc#1%
+	\else%
+	\phantomsection%
+	\addcontentsline{toc}{subsubsection}{#1}\hyperlink{sec:contents}{#1}%
+	\fi%
+	\hfill%
+}
+
+\titlespacing{\paragraph}{0pt}{1em}{1em}
+\titleformat{\paragraph}[block]
+{\bfseries\normalsize}{}{0pt}{\setstretch{1.5}\theparagraph~\hyperlink{sec:contents}{#1}}
+\titlespacing{name=\paragraph,numberless}{0pt}{0pt}{1em}
+\titleformat{name=\paragraph,numberless}[block]
+{\bfseries\normalsize}{}{0pt}{\setstretch{1.5}%
+	\hfill%
+	\if@FEFUnotoc#1%
+	\else%
+	\phantomsection%
+	\addcontentsline{toc}{paragraph}{#1}\hyperlink{sec:contents}{#1}%
+	\fi%
+	\hfill%
+}
+
+\fancypagestyle{plain}{\fancyhf{}\fancyhead[C]{\vfill\thepage\vfill}}
+\pagestyle{plain}
+\tocloftpagestyle{plain}
+\renewcommand{\cfttoctitlefont}{\hfill\Large\bfseries}
+\setcounter{tocdepth}{4}
+\renewcommand{\printbibliography}[1][]{\begingroup\sloppy\@FEFUifempty{#1}{\@FEFUprintbibliography[title=Список литературы]}{\@FEFUprintbibliography[title=Список литературы, #1]}\endgroup}
+
+\setlist[itemize,1]{itemsep=1ex,topsep=1ex,label=\textbullet,labelindent=\parindent}
+\setlist[itemize,2]{itemsep=1ex,topsep=1ex,label=\textperiodcentered,labelindent=1.5\parindent}
+\setlist[itemize,3]{itemsep=1ex,topsep=1ex,label=\textendash,labelindent=2\parindent}
+\setlist[enumerate,1]{itemsep=1ex,topsep=1ex,label=\arabic*.,labelindent=\parindent}
+\setlist[enumerate,2]{itemsep=1ex,topsep=1ex,label=\alph*),labelindent=1.5\parindent}
+\setlist[enumerate,3]{itemsep=1ex,topsep=1ex,label=\roman*.,labelindent=2\parindent}
+
+\endinput
+%%
+%% End of file `fefu_style_poi_phd.sty'.
