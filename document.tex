@@ -13,6 +13,14 @@
 \usepackage{upgreek}
 \usepackage{scalerel}
 \usepackage{bm}
+\usepackage{refcount}
+\usepackage{lastpage}
+\usepackage[figure,table]{totalcount}
+\usepackage{totcount}
+\newtotcounter{citenum}
+\AtEveryBibitem{\stepcounter{citenum}}
+
+\setmainfont{CMU Serif}
 \addbibresource{references.bib}
 \graphicspath{{./images/}}
 
@@ -25,47 +33,22 @@
 \DeclareMathOperator{\sech}{sech}
 
 \author{Тыщенко Андрей Геннадьевич}
-\setgroup{М9119-09.04.01иибд}
-\setfaculty{09.04.01 Информатика и вычислительная техника}
-\setprogram{Искусственный интеллект и большие данные}
-\setsupervisor{Петров Павел Сергеевич}{зав. лаб. 3/2 ТОИ ДВО РАН, к.ф.-м.н.}
-\setdirector{Мирин Илья Геннадьевич}{}
-\setdeputy{Сапрыкина Елена Валерьевна}{к.э.н.}
-\setreviewer{Луньков Андрей Аллександрович}{зав. лаб.  НЦВИ ИОФ РАН, к.ф.-м.н.}
-\setexportsupervisor{Сапрыкина Елена Валерьевна}{зам. директора ШЦЭ}
-\setsecretary{Тихонова Татьяна Сергеевна}{}
-\setschool{цифровой экономики}
+\setfaculty{05.13.18 -- Математическое моделирование, численные методы и комплексы программ}
+\setsupervisor{Петров Павел Сергеевич}{д.ф.-м.н.}
 \title{Численное моделирование распространения широкополосных акустических сигналов и шумов в мелком море с использованием модовых параболических уравнений}
-\setconsultant{Кленин Александр Сергеевич}
-\setplace{Школе цифровой экономики}
-\setpracticetitle{Преддипломная практика}
-
-\date{07.07.21}
-
-\disablehyphenation
-
-\makeglossaries
-
-\newacronym{pml}{PML}{\hyperref[sec::PML]{Perfectly Matched Layers}}
-\newacronym{ssp}{SSP}{\hyperref[sec::root_ssp]{Split-Step Pad\'e}}
-\newacronym{sel}{SEL}{\hyperref[sec::SEL]{Sound Exposure Level}}
-\newacronym{mpe}{МПУ}{Модовое Параболическое Уравнение}
-\newacronym{wampe}{ШМПУ}{Широкоугольное Модовое Параболическое Уравнение}
 
 \DeclareMathOperator*{\argmax}{arg\,max}
 
 \newfontfamily{\catsfam}{Meows Nepil Illustration}[NFSSFamily=cats]
 \DeclareMathAlphabet{\mathcats}{TU}{cats}{m}{n}
 
+\fefuloadstyle{poi_phd}
+\setdegree{кандидата физико-математических наук}
+
 \begin{document}
     \maketitle{thesis}
-    \makethesistitlebackside[1.2]
-    \setcounter{page}{3}
-    \subfile{subfiles/abstract.tex}
     \tableofcontents
     \subfile{subfiles/introduction.tex}
-    \newpage
-    \printglossary[type=\acronymtype,title={Глоссарий}]
     \newpage
     \subfile{subfiles/subject.tex}
     \newpage
@@ -77,7 +60,9 @@
     \newpage
     \subfile{subfiles/conclusion.tex}
     \newpage
+    \label{sec::bibliography}
     \printbibliography
+    \label{sec::bibliography_end}
     \newpage
     \subfile{subfiles/appendices.tex}
 \end{document}
