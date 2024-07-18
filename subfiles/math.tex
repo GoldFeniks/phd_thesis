@@ -133,11 +133,11 @@
                 \end{equation}
                 где 
                 \begin{align*}
-                    D_h^+=\mathcal{A}_j=\frac{\mathcal{A}_j^{n+1}-\mathcal{A}_j^n}{h}\,,&&\mathcal{A}_j^{\nicefrac{n+1}{2}}=\frac{\mathcal{A}_j^{n+1}+\mathcal{A}_j^n}{2}\,.
+                    D_h^+\mathcal{A}_j=\frac{\mathcal{A}_j^{n+1}-\mathcal{A}_j^n}{h}\,,&&\mathcal{A}_j^{\nicefrac{n+1}{2}}=\frac{\mathcal{A}_j^{n+1}+\mathcal{A}_j^n}{2}\,.
                 \end{align*}
                 Тогда, уравнение \eqref{eq::CNMPE} может быть преобразовано к виду
                 \begin{equation}
-                    \mathcal{A}_j^{n+1}=\frac{U\pa{L_j}}{W\pa{L_j}}\mathcal{A}_j^n\,,
+                    \mathcal{A}_j^{n+1}=\frac{U_{l,m}\pa{L_j}}{W_{l,m}\pa{L_j}}\mathcal{A}_j^n\,,
                 \end{equation}
                 где
                 \begin{alignat*}{3}
@@ -260,7 +260,7 @@
             \end{equation}
             Используя равенства \eqref{eq::D2} и $k_{j,0}^2L_j^\delta=D_\delta^2+k_j^2-k_{j,0}^2$, получим
             \begin{equation}
-                \underset{\alpha_{j,i}}{\underbrace{\frac{b_{l,m}^i}{k_0^2\delta^2}}}\mathcal{B}_{j,i}^{n+1,q-1}+\underset{\beta_{j,i}}{\underbrace{\pa{1+\frac{b_{l,m}^i}{k_0^2}\pa{k_j^2-k_0^2-\frac{2}{\delta^2}}}}}\mathcal{B}_{j,i}^{n+1,q}+\underset{\gamma_{j,i}}{\underbrace{\frac{b_{l,m}^i}{k_{j,0}^2\delta^2}}}\mathcal{B}_{j,i}^{n+1,q-1}=\mathcal{A}_j^{n,q}\,.
+                \underset{\alpha_{j,i}}{\underbrace{\frac{b_{l,m}^i}{k_{j,0}^2\delta^2}}}\mathcal{B}_{j,i}^{n+1,q-1}+\underset{\beta_{j,i}}{\underbrace{\pa{1+\frac{b_{l,m}^i}{k_{j,0}^2}\pa{k_j^2-k_{j,0}^2-\frac{2}{\delta^2}}}}}\mathcal{B}_{j,i}^{n+1,q}+\underset{\gamma_{j,i}}{\underbrace{\frac{b_{l,m}^i}{k_{j,0}^2\delta^2}}}\mathcal{B}_{j,i}^{n+1,q+1}=\mathcal{A}_j^{n,q}\,.
             \end{equation}
             Таким образом, коэффициенты $\mathcal{B}_{j,i}^{n+1,q}$ могут быть легко найдены обращением матриц с диагоналями $\alpha_{j,i},\beta_{j,i},\gamma_{j,i}$ методом прогонки \cite{abramov}.
         \subsection{Граничные условия}
@@ -378,7 +378,7 @@
                     \mathbf{P}_j\pa{\mathbf{A}_j^{-1}\mathbf{B}_j+\mathbf{I}}\mathbf{P}_j^{-1}\,,
                 \end{equation}
                 где $\mathbf{J}_j^1,\mathbf{J}_j^2\in\mathbb{C}^{\pa{p+1}\times\pa{p+1}}$ -- матрицы, содержащие Жордановы блоки, соответствующие решениям, затухающим и возрастающим при $q\rightarrow\infty$ соответственно,
-                и $\mathbf{P}_j^{-1}$ -- матрица левых собственных значений вида
+                и $\mathbf{P}_j^{-1}$ -- матрица левых собственных векторов вида
                 \begin{equation}
                     \mathbf{P}_j^{-1}=\begin{pmatrix}
                         \mathbf{P}_j^1 & \mathbf{P}_j^2\\
@@ -604,7 +604,7 @@
                 \begin{equation}\label{eq::ray_simple}
                     \begin{aligned}
                         S_j\pa{y}&=r\pa{y}\,,\\
-                        M_j\pa{y}&=\frac{M_{j,0}}{\sqrt{r\pa{y}}}\,,\\
+                        M_j\pa{y}&=\frac{M_{j,0}}{r\pa{y}}\,,\\
                         r\pa{y}&=\sqrt{x_0^2+y^2}\,.
                     \end{aligned}
                 \end{equation}
@@ -673,4 +673,4 @@
         \par В данной главе диссертации рассматривается теория широкоугольных модовых параболических уравнений в адиабатическом приближении и предлагается новый способ их решения. В основе этого метода лежит применение аппроксимации Паде к пропагатору уравнения горизонтальной рефракции. Для искусственного ограничения вычислительной области вводятся согласованные поглощающие слои или граничные условия прозрачности. Описывается лучевая теория для уравнения горизонтальной рефракции, на основе которой вводятся лучевые начальные условия, обладающие сколь угодно широкой апертурой. Описывается вычисление временных рядов в точках приёма при распространении импульсных акустических сигналов, а также уровней звуковой экспозиции. Предлагается способ расчёта колебательных ускорений, вносящий лишь незначительную добавку в общее время вычислений.
         \par Реализация описанных в данной главе методов, а также их валидация, описаны в третьей и четвёртой главах.
         \par Результаты второй главы опубликованы в работах \cite{jsv,jmse,acoustic_journal2023}.
-\end{document}}
+\end{document}
