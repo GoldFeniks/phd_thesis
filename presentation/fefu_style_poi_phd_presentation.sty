@@ -1,0 +1,47 @@
+%%
+%% This is file `fefu_style_default.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% fefu_style_default.dtx  (with options: `package')
+%% 
+%% IMPORTANT NOTICE:
+%% 
+%% For the copyright see the source file.
+%% 
+%% Any modified versions of this file must be renamed
+%% with new filenames distinct from fefu_style_default.sty.
+%% 
+%% For distribution of the original source see the terms
+%% for copying and modification in the file fefu_style_default.dtx.
+%% 
+%% This generated file may be distributed as long as the
+%% original source files, as listed above, are part of the
+%% same distribution. (The sources need not necessarily be
+%% in the same archive or directory.)
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{fefu_style_poi_phd_presentation}
+    [2024/06/27 LaTeX phd style for FEFU document]
+
+\newcommand{\@FEFUdegree}{}
+\newcommand{\setdegree}[1]{\renewcommand{\@FEFUdegree}{#1}}
+
+\if@FEFUdefaulttitlepage\else
+\setbeamertemplate{author}{
+  \vfill
+  Соискатель:\ \insertauthor%
+  \par%
+  \vspace*{1em}
+  Научный руководитель:\ \@FEFUsupervisortitle\ \@FEFUsupervisor%
+  \par%
+  \vspace*{1em}
+}
+\fi
+\if@FEFUdefaulttitlepage\else
+\subtitle{\small Доклад по материалам диссертации на соискание степени\ \@FEFUdegree\ по специальности \@FEFUfaculty}
+\fi
+
+\endinput
+%%
+%% End of file `fefu_style_poi_phd_presentation.sty'.
