@@ -5,20 +5,36 @@
         \subsection{Модовое представление звукового поля точечного источника\label{sec::sound_modes}}
             \par Звуковое поле $p\pa{x,y,z}$ (где $z$ обозначает глубину, а  $x,y$ --- координаты горизонтальной плоскости), создаваемое точечным источником в трёхмерном волноводе мелкого моря, расположенным по координатам $x=y=0$, $z=z_s$ и имеющего частоту $f$, описывается трёхмерным уравнением Гельмгольца \cite{jensen}
             \begin{equation}\label{eq::3DH}
-                \pa{\Delta + K^2\pa{x,y,z}}p\pa{x,y,z}=-\delta\pa{x}\delta\pa{y}\delta\pa{z-z_s}
+                \pa{\rho\pa{x,y,z}\nabla\pa{\frac{1}{\rho\pa{x,y,z}}\nabla} + K^2\pa{x,y,z}}p\pa{x,y,z}=-\delta\pa{x}\delta\pa{y}\delta\pa{z-z_s}
             \end{equation}
             с граничными условиями
             \begin{align}
                 p\bigr|_{z=0}&=0\,,\\
-                p\bigr|_{z=h^{-}}&=p\bigr|_{z=h^{+}}\,,\\
-                \frac{1}{\rho}\frac{\partial p}{\partial\mathbf{n}}\biggr|_{z=h^{-}}&=\frac{1}{\rho}\frac{\partial p}{\partial\mathbf{n}}\biggr|_{z=h^{+}}\,,\\
+                p\bigr|_{z=h_i^{-}}&=p\bigr|_{z=h_i^{+}}\,,\\
+                \frac{1}{\rho}\frac{\partial p}{\partial\mathbf{n}}\biggr|_{z=h_i^{-}}&=\frac{1}{\rho}\frac{\partial p}{\partial\mathbf{n}}\biggr|_{z=h_i^{+}}\,,\\
                 p\bigr|_{z=H}&=0
             \end{align}
-            где $\rho\pa{x,y,z}$ --- плотность среды, $H$ -- нижняя граница расчётной области, $\mathbf{n}$ --- нормаль к границе раздела слоёв среды, $h$ --- глубина этого раздела. Коэффициент $K\pa{x,y,z}$ определяется как
+            где $\rho\pa{x,y,z}$ --- плотность среды, $H$ -- нижняя граница расчётной области, $\mathbf{n}$ --- нормаль к границам разделов слоёв среды, $h_i,i=\overline{1,N_h}$ --- глубины этих разделов. Коэффициент $K\pa{x,y,z}$ определяется как
             \begin{equation}\label{eq::K}
                 K\pa{x,y,z}=\frac{\omega}{c\pa{x,y,z}}\pa{1+i\eta\beta\pa{x,y,z}}\,,
             \end{equation}
-            где $c\pa{x,y,z}$ --- скорость звука, $\omega=2\pi f$ --- циклическая частота, $\beta\pa{x,y,z}$ --- коэффициент затухания звука, $\eta=\nicefrac{1}{40\pi\log_{10}e}$. Рассматривая задачу в однородной среде, то есть $\rho\pa{x,y,z}=\rho\pa{z}$, $c\pa{x,y,z}=c\pa{z}$ и $\beta\pa{x,y,z}=\beta\pa{z}$, используя технику разделения переменных и представляя звуковое поле в виде
+            где $N_m=\left\lfloor\frac{\omega H}{\pi c}\right\rfloor$, $c\pa{x,y,z}$ --- скорость звука, $\omega=2\pi f$ --- циклическая частота, $\beta\pa{x,y,z}$ --- коэффициент затухания звука, $\eta=\nicefrac{1}{40\pi\log_{10}e}$. Для существования и единственности решения требуется также поставить условия излучения Свешникова \cite{sveshnikov,alekseev}
+            \begin{equation}\label{eq::radiation_condition}
+                \lim\limits_{r\to\infty}\sqrt{r}\pa{\frac{\partial}{\partial r}-i\sqrt{\frac{\omega}{c\pa{r}}}}p_j\pa{r}=0\,,\quad j=\overline{1,N_m}\,,
+            \end{equation}
+            где $N_m=\left\lfloor\frac{\omega H}{\pi c_\infty}\right\rfloor$, $r=\sqrt{x^2+y^2}$, а $p_j\pa{r}$ являются коэффициентами разложения решения $p\pa{x,y,z}$ уравнения Гельмгольца по собственным функциям $\phi_j$ оператора Штурма-Лиувилля $\pa{\Delta+K^2}$
+            \begin{equation}
+                p\pa{x,y,z}=\sum\limits_{j=1}^\infty p_j\pa{r}\phi_j\pa{z}\,.
+            \end{equation}
+            Рассмотрим сначала задачу в горизонтально однородной среде, то есть\\ $\rho\pa{x,y,z}=\rho\pa{z}$, $c\pa{x,y,z}=c\pa{z}$ и $\beta\pa{x,y,z}=\beta\pa{z}$, при этом также будем считать плотность среды $\rho\pa{z}$ кусочно-постоянной функцией по слоям среды
+            \begin{equation}
+                \rho\pa{z}=\begin{dcases}
+                    \rho_0,&0\leqslant z<h_1\\
+                    \rho_i,&h_i<z<h_{i+1},\quad i=\overline{1,N_h-1},\\
+                    \rho_{N_h},&h_{N_h}<z\leqslant H\,.
+                \end{dcases}
+            \end{equation}
+            Используя технику разделения переменных и представляя звуковое поле в виде
             \begin{equation}
                 p\pa{x,y,z}=A\pa{x,y}\varphi\pa{z}\,,
             \end{equation}
@@ -37,8 +53,8 @@
                 \begin{dcases}
                     \frac{\dd^2\varphi\pa{z}}{\dd z^2}+K^2\pa{z}\varphi\pa{z}=k^2\varphi\pa{z}\,,\\
                     \varphi\bigr|_{z=0}=0\,,\\
-                    \varphi\bigr|_{z=h^{-}}=\varphi\bigr|_{z=h^{+}}\,,\\
-                    \frac{1}{\rho}\frac{\dd \varphi}{\dd z}\bigr|_{z=h^{-}}=\frac{1}{\rho}\frac{\dd \varphi}{\dd z}\bigr|_{z=h^{+}}\,,\\
+                    \varphi\bigr|_{z=h_i^{-}}=\varphi\bigr|_{z=h_i^{+}}\,,\\
+                    \frac{1}{\rho}\frac{\dd \varphi}{\dd z}\bigr|_{z=h_i^{-}}=\frac{1}{\rho}\frac{\dd \varphi}{\dd z}\bigr|_{z=h_i^{+}}\,,\\
                     \varphi\bigr|_{z=H}=0\,.
                 \end{dcases}
                 \label{eq::SLP}
@@ -47,11 +63,11 @@
             \begin{enumerate}
                 \item без учёта затухания ($\beta\pa{z}\equiv0$) все волновые числа являются вещественными, с учётом -- комплексными,
                 \item без учёта затухания модовые функции образуют ортогональный базис в пространстве $L^2_{\rho}\left[0,H\right]$ со скалярным произведением $\mathcats{U}\cdot,\cdot\mathcats{T}$ определённым формулой
-                %                
+                %
                 \begin{equation}
                     \stretchleftright{\mathcats{U}}{f,g}{\mathcats{T}}_\rho=\int\limits_{0}^{H}\frac{f\pa{z}g\pa{z}}{\rho\pa{z}}\dd z\,,
                 \end{equation}
-                \item функции $\varphi_j\pa{z,x,y}$ имеют ровно $j+1$ корень на отрезке $\left[0,H\right]$,
+                \item функции $\varphi_j\pa{z}$ имеют ровно $j+1$ корень на отрезке $\left[0,H\right]$,
                 \item имеет место неравенство
                 \begin{equation}
                     k_1^2>k_2^2>k_3^2>\dots\,,
@@ -87,9 +103,13 @@
             \begin{equation}\label{eq::HRE}
                 \frac{\partial^2 A_j\pa{x,y}}{\partial x^2}+\frac{\partial^2 A_j\pa{x,y}}{\partial y^2}+k_j^2\pa{x,y}A_j\pa{x,y}=-\delta\pa{x}\delta\pa{y}\varphi_j\pa{z_s,0,0}\,.
             \end{equation}
-            Такое уравнение принято называть уравнением горизонтальной рефракции. 
-        \subsection{Модовые параболические уравнения}
-            \par Для получения параболических аппроксимаций уравнение горизонтальной рефракции \eqref{eq::HRE} представляется в виде
+            Такое уравнение принято называть уравнением горизонтальной рефракции. Для того, чтобы получить условия излучения, предположим также, что на некотором достаточно большом расстоянии $r_{max}$ параметры среды становятся постоянными по горизонтальным координатам, то есть $k_j\pa{r}=k_{j,\infty}$ при $r>r_{max}$. Тогда условия излучения \eqref{eq::radiation_condition} преобразуются к следующему виду \cite{dhia2009}
+            \begin{equation}
+                \varlimsup\limits_{r\to\infty}r^{\frac{3}{2}}\pa{\frac{\partial}{\partial r}-ik_{j,\infty}}A_{j}\ne\infty\,.
+            \end{equation}
+            В дальнейшем удовлетворение этому условию следует из построения модового параболического уравнения и численный схемы его решения: учёт только исходящих волн по $x$ (см. \ref{seq::MPE}) и подавление отражения по $y$ (см. \ref{seq::boundary_conditions}).
+        \subsection{Модовые параболические уравнения\label{seq::MPE}}
+            \par Для получения параболических аппроксимаций однородный аналог уравнения горизонтальной рефракции \eqref{eq::HRE} представляется в виде
             \begin{equation}
                 \pa{\frac{\partial}{\partial x}+i\sqrt{k_j^2\pa{x,y}+\frac{\partial^2}{\partial y^2}}}\pa{\frac{\partial}{\partial x}-i\sqrt{k_j^2\pa{x,y}+\frac{\partial^2}{\partial y^2}}}A_j\pa{x,y}=0\,,
             \end{equation}
@@ -108,7 +128,7 @@
                     \mathcal{A}_j\pa{0,y}=\mathcal{A}_{j,0}\pa{y}
                 \end{dcases}
             \end{equation}
-            где 
+            где
             \begin{equation}
                 k_{j,0}^2L_j=\frac{\partial^2}{\partial y^2}+k_j^2\pa{x,y}-k_{j,0}^2\,.\nonumber
             \end{equation}
@@ -131,7 +151,7 @@
                 \begin{equation}\label{eq::CNMPE}
                     D_h^+\mathcal{A}_j^n=\frac{P_{l,m}\pa{L_j}}{Q_{l,m}\pa{L_j}}\mathcal{A}_j^{\nicefrac{n+1}{2}}\,,
                 \end{equation}
-                где 
+                где
                 \begin{align*}
                     D_h^+\mathcal{A}_j=\frac{\mathcal{A}_j^{n+1}-\mathcal{A}_j^n}{h}\,,&&\mathcal{A}_j^{\nicefrac{n+1}{2}}=\frac{\mathcal{A}_j^{n+1}+\mathcal{A}_j^n}{2}\,.
                 \end{align*}
@@ -192,7 +212,7 @@
                             0&=c_{l+m}^F&+&\quad\sum\limits_{i=1}^{m}\quad\prescript{i}{}{\beta}_{l,m}^Fc_{l-i+m}^F\,.
                         \end{alignedat}
                     \end{equation}
-                    Таким образом, $\prescript{i}{}{\alpha}_{l,m}^F$ явно выражены через коэффициенты $\prescript{i}{}{\beta}_{l,m}^F$, которые могут найдены из решения правой системы уравнений.
+                    Таким образом, $\prescript{i}{}{\alpha}_{l,m}^F$ явно выражены через коэффициенты $\prescript{i}{}{\beta}_{l,m}^F$, которые могут быть найдены из решения правой системы уравнений.
                     \par В большинстве случаев выбор $l=m$ достаточно точно приближает аппроксимируемую функцию, однако в некоторых случаях использование $\theta$-комбинации \cite{chui,xavier} аппроксимаций с порядками полиномов $l=m$ и $l=m-1$ позволяет получить более точное решение. Пусть $\prescript{i}{}{\alpha}_{m,m}^F,\prescript{i}{}{\beta}_{m,m}^F$ и $\prescript{i}{}{\alpha}_{m-1,m}^F,\prescript{i}{}{\beta}_{m-1,m}^F$ коэффициенты соответствующих полиномов, тогда их $\theta$-комбинация при $\theta\in\left[0,1\right]$ может быть вычислена как
                     \begin{equation}
                         \begin{aligned}
@@ -263,7 +283,7 @@
                 \underset{\alpha_{j,i}}{\underbrace{\frac{b_{l,m}^i}{k_{j,0}^2\delta^2}}}\mathcal{B}_{j,i}^{n+1,q-1}+\underset{\beta_{j,i}}{\underbrace{\pa{1+\frac{b_{l,m}^i}{k_{j,0}^2}\pa{k_j^2-k_{j,0}^2-\frac{2}{\delta^2}}}}}\mathcal{B}_{j,i}^{n+1,q}+\underset{\gamma_{j,i}}{\underbrace{\frac{b_{l,m}^i}{k_{j,0}^2\delta^2}}}\mathcal{B}_{j,i}^{n+1,q+1}=\mathcal{A}_j^{n,q}\,.
             \end{equation}
             Таким образом, коэффициенты $\mathcal{B}_{j,i}^{n+1,q}$ могут быть легко найдены обращением матриц с диагоналями $\alpha_{j,i},\beta_{j,i},\gamma_{j,i}$ методом прогонки \cite{abramov}.
-        \subsection{Граничные условия}
+        \subsection{Граничные условия\label{seq::boundary_conditions}}
             \par Одной из особенностей МПУ является то, что их решение всегда рассмат­ривается в неограниченной области, в отличие от решения «обычных», или «вер­тикальных», параболических уравнений в подводной акустике, которое вычис­ляется в нескольких слоях, имеющих в качестве верхней границы поверхность океана и, как минимум в теории, некоторую границу на дне моря. Таким образом, искусственное ограничение вычислительной области является обязательным при численном решении МПУ. В рамках данной работы рассматривается два способа выполнения такого ограничения. В первом случае вычислительная области расширяется с обеих сторон с целью поглощения исходящих волн. Во втором, решение внутри области сопоставляется с решением, содержащим исходящие волны за её пределами, с использованием специальных искусственных граничных условий.
             \subsubsection{Согласованные поглощающие слои\label{sec::PML}}
                 \par Впервые метод согласованных поглощающих слоёв (perfectly matching layers, PML) для граничных условий был показан Беранже для уравнений Максвелла \cite{berenger}, а позднее Леви \cite{levy}, Лу и Чжу \cite{lu} исследовали применимость этого метода для решения параболических уравнений. В основе PML лежит расширение вычислительной области с целью плавного поглощения волн исходящих из неё. Пусть требуется найти решение уравнения \eqref{eq::PDMPE} в области $\Omega=\left[0,x_1\right]\times\left[y_0,y_1\right]$. Сформируем новую область $\overline{\Omega}=\left[0,x_1\right]\times\left[y_0-\varepsilon,y_1+\varepsilon\right]$, расширив $\Omega$ на $\varepsilon$ с обоих сторон вдоль оси $y$. Заменим оператор $L_j$ в уравнении \eqref{eq::PDMPE} оператором $L_j^{PML}$, определяемым как
@@ -285,7 +305,7 @@
                     \begin{equation}\label{eq::D1}
                         D^1_{\nicefrac{\delta}{2}}F^q=\frac{F^{q+\nicefrac{1}{2}}-F^{q-\nicefrac{1}{2}}}{\delta}\,.
                     \end{equation}
-                    Таким образом, выражение $\eqref{eq::BEQ}$ преобразуется к виду 
+                    Таким образом, выражение $\eqref{eq::BEQ}$ преобразуется к виду
                     \begin{equation}
                         \pa{1+b_{l,m}^i\prescript{q}{\delta}{L_j^{PML}}}\mathcal{B}_{j,i}^{n+1,q}=\mathcal{A}_j^{n,q}\,,\quad i=\overline{1,p}\,,
                     \end{equation}
@@ -456,7 +476,7 @@
                         \frac{dy_j\pa{l}}{dl}&=\frac{\eta_j\pa{l}}{n_j\pa{x_j,y_j}}\,,\qquad&\frac{d\eta_j\pa{l}}{dl}&=\frac{\partial n_j\pa{x_j,y_j}}{\partial y_j}\,,\\
                     \end{aligned}
                 \end{equation}
-                где $l$ является натуральным параметром, обозначающим длину кривой вдоль траектории распространения луча, а $\xi,\eta$ сопряжённые переменные к $x,y$ --- момент. Проекции решений этой системы из фазового пространства $\pa{x,y,\xi,\eta}$ на координатное $\pa{x,y}$ называются горизонтальными лучами, соответствующими вертикальным модам в океаническом волноводе.  
+                где $l$ является натуральным параметром, обозначающим длину кривой вдоль траектории распространения луча, а $\xi,\eta$ сопряжённые переменные к $x,y$ --- момент. Проекции решений этой системы из фазового пространства $\pa{x,y,\xi,\eta}$ на координатное $\pa{x,y}$ называются горизонтальными лучами, соответствующими вертикальным модам в океаническом волноводе.
             \subsubsection{Трассировка лучей, соответствующих вертикальным модам\label{sec::horizontal_rays}}
                 \paragraph{Математическая постановка задачи}
                     \par Задача трассировки лучей состоит в том, чтобы в области\\ $\left\{\pa{x,y,z_s}0\leqslant x\leqslant x_1,y_0\leqslant y\leqslant y_1\right\}$ вычислить координаты распространения лучей, соответствующих вертикальным модам, из источника, имеющего координаты $\pa{0,y_s,z_s}$, под углами распространения $\alpha_0\leqslant\alpha\leqslant\alpha_1$ и значениях натурального параметра кривой $l_0\leqslant l\leqslant l_1$, задаваемые Гамильтовой системой задач Коши
@@ -494,7 +514,7 @@
                     \begin{equation}
                         \boldsymbol{y}_{i+1}=\boldsymbol{y}_i+h_i\sum\limits_{j=1}^{s}b_j\boldsymbol{k}_j
                     \end{equation}
-                    где $\boldsymbol{k}$ значения функции $\boldsymbol{f}$, вычисленные в специальных промежуточных точках интервала
+                    где $\boldsymbol{k}_j$ значения функции $\boldsymbol{f}$, вычисленные в специальных промежуточных точках интервала
                     \begin{equation}
                         \begin{aligned}
                             \boldsymbol{k_1}&=\boldsymbol{f}\pa{x_i,\boldsymbol{y}_i}\,,\\
@@ -503,7 +523,7 @@
                             \boldsymbol{k_s}&=\boldsymbol{f}\pa{x_i+c_sh_i,\boldsymbol{y}_i+a_{s,1}h_i\boldsymbol{k}_1+a_{s,2}h_i\boldsymbol{k}_2+\dots+a_{s,s-1}h_i\boldsymbol{k}_{s-1}}
                         \end{aligned}
                     \end{equation}
-                    или в общем виде 
+                    или в общем виде
                     \begin{equation}
                         \boldsymbol{k}_j=\boldsymbol{f}\pa{x_i+c_jh_i,\boldsymbol{y}_i+h_i\sum\limits_{t=1}^{j-1}a_{j,t}\boldsymbol{k}_t}\,,\qquad j=\overline{1,s}\,.
                     \end{equation}
@@ -525,11 +545,11 @@
                         \boldsymbol{y}_i-\boldsymbol{y}\pa{x_i}=O\pa{h_i^{p+1}}\,.
                     \end{gather}
                 \paragraph{Плотная выдача}
-                    \par При уменьшении шага сетки использование методов Рунге-Кутты становится менее эффективными или невозможным из-за необходимости вычислять промежуточные значения функции $\boldsymbol{f}$. Одним из вариантов ускорения процесса вычислений является так называемая плотная выдача, позволяющая вычислять значения $\boldsymbol{y}\pa{x_i+\theta h_i}$ на всём отрезке $0\leqslant\theta\leqslant1$, при этом в худшем случае используя лишь незначительное по сравнению с основным методом количество вычислений функции $\boldsymbol{f}$. Метод $s^{\star}$-шаговой плотной выдачи может быть в общем виде записан как 
+                    \par При уменьшении шага сетки использование методов Рунге-Кутты становится менее эффективными или невозможным из-за необходимости вычислять промежуточные значения функции $\boldsymbol{f}$. Одним из вариантов ускорения процесса вычислений является так называемая плотная выдача, позволяющая вычислять значения $\boldsymbol{y}\pa{x_i+\theta h_i}$ на всём отрезке $0\leqslant\theta\leqslant1$, при этом в худшем случае используя лишь незначительное по сравнению с основным методом количество вычислений функции $\boldsymbol{f}$. Метод $s^{\star}$-шаговой плотной выдачи может быть в общем виде записан как
                     \begin{equation}
                         \boldsymbol{u}_i\pa{\theta}=\boldsymbol{y}_i+h_i\sum\limits_{j=1}^{s^{\star}}q_j\pa{\theta}\boldsymbol{k}_j\,,
                     \end{equation}
-                    где 
+                    где
                     \begin{equation}
                         \boldsymbol{k}_j=\boldsymbol{f}\pa{x_i+c_jh_i,y_i+h_i\sum\limits_{t=1}^{j-1}a_{j,t}\boldsymbol{k}_t}\,,\qquad j=\overline{1,s^{\star}}\,,
                     \end{equation}
@@ -593,7 +613,7 @@
                     \mathcal{A}_j\pa{x,y}=M_j\pa{x,y}e^{ik_{0,j}S_j\pa{x,y}}+o\pa{\nicefrac{1}{k_{0,j}}}\,,
                 \end{equation}
                 где $M_j\pa{x,y}$ --- амплитуда нулевого порядка, удовлетворяющая уравнению переноса \eqref{eq::transfer},
-                $S_j\pa{x,y}$ --- функция эйконала, удовлетворяющая уравнению Гамильтона-Якоби \eqref{eq::hamilton_jacoby}. 
+                $S_j\pa{x,y}$ --- функция эйконала, удовлетворяющая уравнению Гамильтона-Якоби \eqref{eq::hamilton_jacoby}.
                 Оба эти уравнения могут быть получены из решения системы Гамильтона \eqref{eq:hamilton_system} вдоль кривой распространения звукового луча в виде
                 \begin{align}
                     S_j\pa{l}&=\int\limits_0^ln_j\pa{l}dl\,,\\
@@ -643,7 +663,7 @@
                         \begin{equation}
                             \widehat{f^{\pa{n}}}=\pa{i\xi}^n\hat{f}
                         \end{equation}
-                    \end{enumerate}     
+                    \end{enumerate}
                 \end{subequations}
         \subsection{Уровень звуковой экспозиции\label{sec::SEL}}
             \par Уровень звуковой экспозиции (sound exposure level, SEL) в области $\Omega=\left\{\pa{x,y,z}\bigr|x_0\leqslant x\leqslant x_1,y_0\leqslant y\leqslant y_1,z_0\leqslant z\leqslant z_b\right\}$ для отрезка частот $\left[f_1,f_2\right]$ некоторого источника задаётся следующим интегралом
