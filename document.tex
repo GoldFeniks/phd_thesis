@@ -17,6 +17,8 @@
 \usepackage{lastpage}
 \usepackage[figure,table]{totalcount}
 \usepackage{totcount}
+\usepackage{filecontents}
+\usepackage{pgfkeys}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta,positioning}
 
@@ -47,6 +49,51 @@
 
 \fefuloadstyle{poi_phd}
 \setdegree{кандидата физико-математических наук}
+
+\newcounter{allpagescount}
+\newcounter{textpagescount}
+\newcounter{figurescount}
+\newcounter{tablescount}
+\newcounter{citescount}
+\newcounter{bibpagescount}
+\newcommand{\handlecounts}{%
+    \edef\bibpage{\getpagerefnumber{sec::bibliography}}%
+    \edef\bibpages{\number\numexpr\getpagerefnumber{sec::bibliography_end}-\bibpage+1\relax}%
+    \edef\textpages{\number\numexpr\bibpage-\getpagerefnumber{sec::introduction}\relax}%
+
+    \iftotalfigures
+        \let\totalfiguresbuffer\totalfigures%
+        \setcounter{figurescount}{\totalfiguresbuffer}%
+    \else
+        \setcounter{figurescount}{0}%
+    \fi
+
+    \iftotaltables
+        \let\totaltablesbuffer\totaltables%
+        \setcounter{tablescount}{\totaltablesbuffer}%
+    \else
+        \setcounter{tablescount}{0}%
+    \fi
+
+    \setcounter{allpagescount}{\getpagerefnumber{LastPage}}%
+    \setcounter{textpagescount}{\textpages{}}%
+
+    \setcounter{citescount}{\number\value{citenum@totc}}%
+    \setcounter{bibpagescount}{\bibpages{}}%
+
+    \begin{filecontents}{counters.tex}\end{filecontents}%
+    \newwrite\file%
+    \immediate\openout\file=counters.tex%
+
+    \immediate\write\file{\string\pgfkeyssetvalue{/counters/allpagescount}{\arabic{allpagescount}}}%
+    \immediate\write\file{\string\pgfkeyssetvalue{/counters/textpagescount}{\arabic{textpagescount}}}%
+    \immediate\write\file{\string\pgfkeyssetvalue{/counters/figurescount}{\arabic{figurescount}}}%
+    \immediate\write\file{\string\pgfkeyssetvalue{/counters/tablescount}{\arabic{tablescount}}}%
+    \immediate\write\file{\string\pgfkeyssetvalue{/counters/citescount}{\arabic{citescount}}}%
+    \immediate\write\file{\string\pgfkeyssetvalue{/counters/bibpagescount}{\arabic{bibpagescount}}}%
+
+    \immediate\closeout\file%
+}
 
 \begin{document}
     \maketitle{thesis}

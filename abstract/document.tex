@@ -3,6 +3,25 @@
 \addbibresource{../references.bib}
 \graphicspath{{../images/}}
 
+\fefuloadstyle[../]{poi_phd}
+
+\newcounter{allpagescount}
+\newcounter{textpagescount}
+\newcounter{figurescount}
+\newcounter{tablescount}
+\newcounter{citescount}
+\newcounter{bibpagescount}
+\newcommand{\handlecounts}{%
+    \input{../counters.tex}%
+
+    \setcounter{allpagescount}{\pgfkeysvalueof{/counters/allpagescount}}%
+    \setcounter{textpagescount}{\pgfkeysvalueof{/counters/textpagescount}}%
+    \setcounter{figurescount}{\pgfkeysvalueof{/counters/figurescount}}%
+    \setcounter{tablescount}{\pgfkeysvalueof{/counters/tablescount}}%
+    \setcounter{citescount}{\pgfkeysvalueof{/counters/citescount}}%
+    \setcounter{bibpagescount}{\pgfkeysvalueof{/counters/bibpagescount}}%
+}
+
 \begin{document}
 	\subfile{../subfiles/introduction.tex}
 	\newpage
