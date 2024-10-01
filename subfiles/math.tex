@@ -171,11 +171,11 @@
             \subsubsection{Метод аппроксимации Паде для пропагатора\label{sec::root_ssp}}
                 \par Другой подход к решению \eqref{eq::PDMPE} был независимо предложен Авиловым \cite{avilov} и Коллинзом \cite{collins}. В его основе лежит смена порядка дискретизации и применения аппроксимации Паде. При достаточно маленьком интервале $\Delta x=h$ уравнение \eqref{eq::PDMPE} может быть формально решено в виде
                 \begin{equation}
-                    \mathcal{A}_j^{n+1}=e^{ik_{j,0}h\pa{\sqrt{1+L}-1}}\mathcal{A}_j^n\,.
+                    \mathcal{A}_j^{n+1}=e^{ik_{j,0}h\pa{\sqrt{1+L_j}-1}}\mathcal{A}_j^n\,.
                 \end{equation}
                 Затем, применяя аппроксимацию Паде для экспоненты  в виде разложения на простые дроби аналогично аппроксимации квадратного корня
                 \begin{equation}\label{eq::SSPADE}
-                    e^{ik_{j,0}h\pa{\sqrt{1+L}-1}}\approx\frac{\tilde{U}\pa{L_j}}{\tilde{W}\pa{L_j}}=\tilde{a}_{l,m}^0+\sum\limits_{i=1}^p\frac{\tilde{a}_{l,m}^i}{1+\tilde{b}_{l,m}^iL_j}\,,
+                    e^{ik_{j,0}h\pa{\sqrt{1+L_j}-1}}\approx\frac{\tilde{U}_{l,m}\pa{L_j}}{\tilde{W_{l,m}}\pa{L_j}}=\tilde{a}_{l,m}^0+\sum\limits_{i=1}^p\frac{\tilde{a}_{l,m}^i}{1+\tilde{b}_{l,m}^iL_j}\,,
                 \end{equation}
                 получим
                 \begin{equation}\label{eq::dSSPADE}
@@ -246,7 +246,7 @@
                 \par Коэффициенты разложения оператора квадратного корня\\
                     $ik_{j,0}\pa{\sqrt{1+L_j}-1}$ могут быть выражены формулой
                     \begin{equation}
-                        c_0=0\,,\quad c_p=ik_{0,j}\frac{\pa{\frac{1}{2}}_p}{p!},\quad p=\overline{1,n}\,,
+                        c_0=0\,,\quad c_p=ik_{j,0}\frac{\pa{\frac{1}{2}}_p}{p!},\quad p=\overline{1,n}\,,
                     \end{equation}
                     где $\pa{x}_p=\prod\limits_{k=0}^{p-1}\pa{x-k}$ -- убывающий факториал.
                     \par Коэффициенты разложения экспоненты $e^{ik_{j,0}h\pa{\sqrt{1+L}-1}}$ могут быть получены из рекуррентного соотношения
@@ -610,7 +610,7 @@
             \subsubsection{Лучевые начальные условия}\label{sec::ray_starters}
                 \par Для использования высоких порядков аппроксимации Паде необходимо начальное условие, учитывающее широкоугольные особенности решаемого уравнения. Такое условие может быть получено с использованием лучевой теории распространения звука. Предположим, что при $0\leqslant x\leqslant x_0$, где $x_0$ сравнимо с длинной волны, свойства среды не зависят от $x$, то есть $k_j=k_j\pa{y}$. Тогда, решение \eqref{eq::PDMPE} может быть записано в виде
                 \begin{equation}
-                    \mathcal{A}_j\pa{x,y}=M_j\pa{x,y}e^{ik_{0,j}S_j\pa{x,y}}+o\pa{\nicefrac{1}{k_{0,j}}}\,,
+                    \mathcal{A}_j\pa{x,y}=M_j\pa{x,y}e^{ik_{j,0}S_j\pa{x,y}}+o\pa{\nicefrac{1}{k_{j,0}}}\,,
                 \end{equation}
                 где $M_j\pa{x,y}$ --- амплитуда нулевого порядка, удовлетворяющая уравнению переноса \eqref{eq::transfer},
                 $S_j\pa{x,y}$ --- функция эйконала, удовлетворяющая уравнению Гамильтона-Якоби \eqref{eq::hamilton_jacoby}.
@@ -619,7 +619,7 @@
                     S_j\pa{l}&=\int\limits_0^ln_j\pa{l}dl\,,\\
                     M_j\pa{l}&=\frac{M_{j,0}}{n_j\pa{l}}\sqrt{\frac{\cos\alpha}{\nicefrac{\partial y\pa{l,\alpha}}{\partial\alpha}}}\,,
                 \end{align}
-                где $M_{j,0}=\nicefrac{e^{\nicefrac{i\pi}{4}}}{\sqrt{8\pi k_{j,0}}}$ --- амплитуда на расстоянии 1 м. от источника, $n_j\pa{l}=\nicefrac{k_j\pa{l}}{k_{j,0}}$ -- показатель горизонтального преломления.
+                где $M_{j,0}=\nicefrac{e^{\nicefrac{i\pi}{4}}}{\sqrt{8\pi k_{j,0}}}$ --- амплитуда на расстоянии 1 м. от источника, $n_j\pa{l}=\nicefrac{k_j\pa{l}}{k_{j,0}}$ -- горизонтальный показатель преломления.
                 \par Так как значения функций $S_j\pa{x,y}$ и $M_j\pa{x,y}$ вычисляются лишь на небольшом расстоянии $x_0$, в большинстве случаев будет достаточно начального условия рассчитанного для однородной среды при $k_j=\pa{x,y}=k_{j,0}$. В таком случае получим
                 \begin{equation}\label{eq::ray_simple}
                     \begin{aligned}
@@ -701,8 +701,8 @@
                     \frac{\partial p}{\partial x}=\sum\limits_{i=1}^\infty\frac{\partial }{x}\pa{e^{ik_{j,0}x}\mathcal{A}_j\varphi_j}=\sum\limits_{i=1}^\infty e^{ik_{j,0}x}\pa{ik_{j,0}\mathcal{A}_j\varphi_j+\frac{\partial}{\partial x}\pa{\mathcal{A}_j\varphi_j}}=\\
                     \sum\limits_{i=1}^\infty e^{ik_{j,0}x}\pa{ik_{j,0}\mathcal{A}_j\varphi_j+\frac{\partial\mathcal{A}_j}{\partial x}\varphi_j+\frac{\partial\varphi_j}{\partial x}\mathcal{A}_j}\,,
                 \end{multlined}\\
-                &\frac{\partial p}{\partial y}=\sum\limits_{i=1}^\infty e^{ik_{0,j}x}\frac{\partial}{\partial y}\pa{\mathcal{A}_j\varphi_j}=\sum\limits_{i=1}^\infty e^{ik_{0,j}x}\pa{\frac{\partial\mathcal{A}_j}{\partial y}\varphi_j+\frac{\partial\varphi_j}{\partial y}\mathcal{A}_j}\,,\\
-                &\frac{\partial p}{\partial z}=\sum\limits_{i=1}^\infty e^{ik_{0,j}x}\frac{\partial}{\partial z}\pa{\mathcal{A}_j\varphi_j}=\sum\limits_{i=1}^\infty e^{ik_{0,j}x}\mathcal{A}_j\frac{\partial\varphi_j}{\partial z}\,.
+                &\frac{\partial p}{\partial y}=\sum\limits_{i=1}^\infty e^{ik_{j,0}x}\frac{\partial}{\partial y}\pa{\mathcal{A}_j\varphi_j}=\sum\limits_{i=1}^\infty e^{ik_{j,0}x}\pa{\frac{\partial\mathcal{A}_j}{\partial y}\varphi_j+\frac{\partial\varphi_j}{\partial y}\mathcal{A}_j}\,,\\
+                &\frac{\partial p}{\partial z}=\sum\limits_{i=1}^\infty e^{ik_{j,0}x}\frac{\partial}{\partial z}\pa{\mathcal{A}_j\varphi_j}=\sum\limits_{i=1}^\infty e^{ik_{j,0}x}\mathcal{A}_j\frac{\partial\varphi_j}{\partial z}\,.
             \end{align}
             Удаление главной осцилляции позволяет перейти к производным по медленно изменяющимся функциям, что в свою очередь приводит к высокой численной стабильности при проведении численного дифференцирования даже простыми конечными разностями.
             \par Колебательная скорость $\mathbf{v}\pa{x,y,z}$ также может быть выражена через градиент акустического давления. Используя тот факт, что в частотной области $\mathbf{a}=-i\omega\mathbf{v}$ получим
