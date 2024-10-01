@@ -117,26 +117,32 @@
 \setbeamersize{text margin left=3.5mm,text margin right=3.5mm}
 
 \author{Тыщенко Андрей Геннадьевич}
-\setfaculty{05.13.18 <<Математическое моделирование, численные методы и комплексы программ>>}
+%\setfaculty{05.13.18 <<Математическое моделирование, численные методы и комплексы программ>>}
+\setfaculty{1.3.7 <<Акустика>>}
 \setsupervisor{Петров Павел Сергеевич}{д.ф.-м.н.}
 \title{Численное моделирование распространения широкополосных акустических сигналов и шумов в мелком море с использованием модовых параболических уравнений}
 
 \fefuloadstyle{poi_phd_presentation}
 \setdegree{к.ф.-м.н.}
 
-%\newcommand{\forpoi}[1]{%
-%	\AtEndDocument{#1}%
-%}
+\newif\ifpoi
+\poitrue
 
+\ifpoi
+\newcommand{\forpoi}[1]{%
+	\AtEndDocument{#1}%
+}
+\else
 \newcommand{\forpoi}[1]{#1}
+\fi
 
 \begin{document}
 	\presentationtitlepage
-	
+
 	\nocite{*}
-	
+
 	\section{Введение}
-	
+
 	\begin{frame}[fragile]{Области применения моделирования звука}
 		\begin{block}{}
 			\vspace{-0.5cm}
@@ -166,9 +172,9 @@
 %			\caption{Оценка уровня антропогенного шума}
 %		\end{figure}
 	\end{frame}
-	
+
 	\begin{frame}[fragile]{Звуковое поле}
-		\begin{block}{Уравнение Гельмгольца}			
+		\begin{block}{Уравнение Гельмгольца}
 			\smallskip
 			\begin{equation}
 				\pa{\Delta + K^2\pa{x,y,z}}p\pa{x,y,z}=-\delta\pa{x}\delta\pa{y}\delta\pa{z-z_s}
@@ -187,49 +193,49 @@
 				$\rho\pa{z}$ --- плотность среды & \multirow{5}{*}{
 					\begin{tikzpicture}
 						\coordinate (ORIGIN) at (-2, 0, 1.5);
-						
+
 						\coordinate (B100) at (-2, 0, 0);
 						\coordinate (B200) at (2, 0, 0);
 						\coordinate (B202) at (2, 0, 3);
 						\coordinate (B102) at (-2, 0, 3);
-						
+
 						\coordinate (B120) at (-2, -2, 0);
 						\coordinate (B220) at (2, -2, 0);
 						\coordinate (B222) at (2, -2, 3);
 						\coordinate (B122) at (-2, -2, 3);
-						
+
 						\draw[-] (B120) -- (B220) -- (B222) -- (B122) -- cycle;
-						
+
 						\draw[-] (B100) -- (B120);
 						\draw[-] (B200) -- (B220);
 						\draw[-] (B102) -- (B122);
-					
+
 						\fill[draw,preaction={fill=gray!40},pattern={Lines[angle=45,distance=5]}] (-2, -0.5, 3) -- (-0.5, -0.5, 3) -- (0.5, -1, 3) -- (2, -1, 3) -- (2, -1.5, 3) -- (0.5, -1.5, 3) -- (-0.5, -1, 3) -- (-2, -1, 3) -- cycle;
-						
+
 						\fill[draw,preaction={fill=gray!40},pattern={Lines[angle=60,distance=2.5]}] (2, -1, 3) -- (2, -1, 1.5) -- (2, -0.25, 0) -- (2, -0.75, 0) -- (2, -1.5, 1.5) -- (2, -1.5, 3) -- cycle;
-						
+
 						\fill[draw,fill=gray!40] (-2, -0.5, 3) -- (-2, -0.5, 0) -- (-0.5, -0.5, 0) -- (-0.5, -0.5, 3) -- cycle;
 						\fill[draw,fill=gray!40] (-0.5, -0.5, 0) -- (2, -0.25, 0) -- (2, -1, 1.5) -- cycle;
 						\fill[draw,fill=gray!40] (-0.5, -0.5, 3) -- (0.5, -1, 3) -- (0.5, -1, 1.5) -- (-0.5, -0.5, 0) -- cycle;
 						\fill[draw,fill=gray!40] (0.5, -1, 3) -- (0.5, -1, 1.5) -- (2, -1, 1.5) --  (2, -1, 3) -- cycle;
 						\fill[draw,fill=gray!40] (-0.5, -0.5, 0) --  (2, -1, 1.5) -- (0.5, -1, 1.5) -- cycle;
-						
+
 						\draw[-{Latex}, very thick] (ORIGIN) -- ++(1,0,0) node[below right=-1mm] {$x$};
 						\draw[-{Latex}, very thick] (ORIGIN) -- ++(0,-1,0) node[above right] {$z$};
 						\draw[-{Latex}, very thick] (ORIGIN) -- ++(0,0,1) node[above] {$y$};
-						
+
 						\draw[-] (B100) -- (B200) -- (B202) -- (B102) -- cycle;
 						\draw[-] (B202) -- (B222);
-						
+
 						\fill[draw,preaction={fill=gray!60},pattern={Lines[angle=45,distance=3]}] (-2, -1, 3) -- (-0.5, -1, 3) -- (0.5, -1.5, 3) --  (2, -1.5, 3) -- (B222) -- (B122) -- cycle;
-						
+
 						\fill[draw,preaction={fill=gray!60},pattern={Lines[angle=60,distance=1.5]}] (2, -1.5, 3) -- (2, -1.5, 1.5) -- (2, -0.75, 0) -- (B220) -- (B222) -- cycle;
-						
+
 						\node at (-2.2, -0.5, 3) {$h_0$};
 						\node at (-2.2, -1, 3) {$h_1$};
 						\node at (-2.2, -2, 3) {$H$};
-						
-						\draw[fill=black] (ORIGIN) circle[radius=1mm];						
+
+						\draw[fill=black] (ORIGIN) circle[radius=1mm];
 					\end{tikzpicture}
 				}\\
 				$c\pa{x,y,z}$ --- скорость звука & \\
@@ -239,7 +245,7 @@
 			\end{tabular}
 		\end{block}
 	\end{frame}
-	
+
 	\begin{frame}[fragile]{Цель работы}
 		\begin{block}{}
 			Разработка эффективного метода моделирования распространения широкополосных акустических сигналов в трёхмерном волноводе мелкого моря и комплекса программ на основе этого метода, позволяющего решать широкий класс задач за разумное время
@@ -251,9 +257,9 @@
 			\end{itemize}
 		\end{block}
 	\end{frame}
-	
+
 	\section{Математические методы}
-	
+
 	\begin{frame}[fragile]{Модовое разложение поля}
 		\begin{block}{Модовое разложение}
 			\smallskip
@@ -279,7 +285,7 @@
 			\end{equation}
 		\end{block}
 	\end{frame}
-	
+
 	\begin{frame}[fragile]{Псевдодифференциальное МПУ}
 		\begin{block}{}
 			\begin{equation}
@@ -298,28 +304,30 @@
 			\end{equation}
 			\begin{equation}
 				k_{j,0}^2L_j=\frac{\partial^2}{\partial y^2}+k_j^2\pa{x,y}-k_{j,0}^2\nonumber
-			\end{equation}	
-		\end{block}
-	\end{frame}
-	
-	\begin{frame}[fragile]{Аппроксимация оператора квадратного корня}
-		\begin{block}{Аппроксимация Паде для функции $F\pa{\lambda}$}
-			\smallskip
-			\begin{equation}
-				F\pa{\lambda}\approx\mathcal{R}\pa{F,l,m}\pa{\lambda}\equiv\frac{P^F_{l,m}\pa{\lambda}}{Q^F_{l,m}\pa{\lambda}}
-			\end{equation}
-			$P^F_{l,m}, Q^F_{l,m}$ -- полиномы порядка $l$ и $m$ соответственно
-		\end{block}
-		\bigskip
-		\begin{block}{Широкоугольное МПУ с аппроксимацией Паде}
-			\smallskip
-			\begin{equation}
-				\frac{\partial\mathcal{A}_j\pa{x,y}}{\partial x}=\frac{P_{l,m}\pa{L_j}}{Q_{l,m}\pa{L_j}}\mathcal{A}_j\pa{x,y}
 			\end{equation}
 		\end{block}
 	\end{frame}
-	
-	\forpoi{
+
+    \forpoi{%
+    	\begin{frame}{Аппроксимация оператора квадратного корня}
+    		\begin{block}{Аппроксимация Паде для функции $F\pa{\lambda}$}
+    			\smallskip
+    			\begin{equation}
+    				F\pa{\lambda}\approx\mathcal{R}\pa{F,l,m}\pa{\lambda}\equiv\frac{P^F_{l,m}\pa{\lambda}}{Q^F_{l,m}\pa{\lambda}}
+    			\end{equation}
+    			$P^F_{l,m}, Q^F_{l,m}$ -- полиномы порядка $l$ и $m$ соответственно
+    		\end{block}
+    		\bigskip
+    		\begin{block}{Широкоугольное МПУ с аппроксимацией Паде}
+    			\smallskip
+    			\begin{equation}
+    				\frac{\partial\mathcal{A}_j\pa{x,y}}{\partial x}=\frac{P_{l,m}\pa{L_j}}{Q_{l,m}\pa{L_j}}\mathcal{A}_j\pa{x,y}
+    			\end{equation}
+    		\end{block}
+    	\end{frame}
+    }
+
+	\forpoi{%
 		\begin{frame}{Дискретизация по $x$}
 			\begin{block}{Дискретизация Крэнка-Николсон}
 				\smallskip
@@ -348,7 +356,7 @@
 			\end{block}
 		\end{frame}
 	}
-	
+
 	\begin{frame}[fragile]{Split-step Pad\'e}
 		\begin{block}{Пропагатор по $x$}
 			\smallskip
@@ -372,7 +380,7 @@
 			\end{equation}
 		\end{block}
 	\end{frame}
-	
+
 	\begin{frame}{Дискретизация оператора $L_j$}
 		\begin{block}{Центральная разница на равномерной сетке}
 			\smallskip
@@ -394,7 +402,7 @@
 			\end{equation}
 		\end{block}
 	\end{frame}
-	
+
 	\begin{frame}{Численная схема}
 		\begin{block}{Форма решения}
 			\begin{equation}
@@ -414,7 +422,7 @@
 			\end{equation}
 		\end{block}
 	\end{frame}
-	
+
 	\begin{frame}[fragile]{Perfectly matching layers}
 		\begin{figure}[t]
 			\begin{tikzpicture}
@@ -437,24 +445,24 @@
 				\draw[dashed] (C12) -- (C42);
 				\draw[dashed] (C16) -- (C46);
 				\draw[decorate, decoration={complete sines}] (C41) -- (C47);
-				
+
 				\node[above=0 of C12](Y0){$y_0$};
 				\node[above=0 of C16](Y1){$y_1$};
-				
+
 				\node[above=0 of C11]{$-\varepsilon$};
 				\node[above=0 of C17]{$+\varepsilon$};
-				
+
 				\node[between base=C24 and C34]{\Large $\Omega$};
 				\node[between base=C21 and C32]{PML};
 				\node[between base=C26 and C37]{PML};
-				
+
 				\coordinate[at=($(Y0.base)!0.4!(Y1.base)$)](YA1);
 				\coordinate[at=($(Y0.base)!0.6!(Y1.base)$)](YA2);
 				\draw[->] (YA1) -- (YA2) node[midway,yshift=2mm]{$y$};
-				
+
 				\coordinate[left=2mm of C11](X0);
 				\coordinate[left=2mm of C41](X1);
-				
+
 				\coordinate[at=($(X0.base)!0.4!(X1.base)$)](XA1);
 				\coordinate[at=($(X0.base)!0.6!(X1.base)$)](XA2);
 				\draw[->] (XA1) -- (XA2) node[midway,xshift=-2mm]{$x$};
@@ -470,8 +478,8 @@
 			\end{equation}
 		\end{block}
 	\end{frame}
-	
-	\forpoi{
+
+	\forpoi{%
 		\begin{frame}{Дискретизация оператора $L_j^{PML}$}
 			\begin{block}{Уравнение для $\mathcal{B}_{j,i}$ в PML области}
 				\smallskip
@@ -490,7 +498,7 @@
 			\end{block}
 		\end{frame}
 	}
-	
+
 	\begin{frame}{Граничные условия прозрачности}
 		\begin{block}{Уравнение для $\mathcal{B}_{j,i}$}
 			\smallskip
@@ -517,129 +525,129 @@
 			\end{equation}
 		\end{block}
 	\end{frame}
-	
-	\begin{frame}{Граничные условия прозрачности}
-		\begin{block}{Обозначим $\hat{\bm{\Psi}}_j^q=\pa{\hat{\mathcal{A}}_j^q,\hat{\mathcal{B}}_{j,1}^q,\dots,\hat{\mathcal{B}}_{j,p}^q}^T\in\mathbb{C}^{p+1}$}
-			\smallskip
-			\begin{equation}
-				\mathbf{X}_jD_\delta^2\hat{\bm{\Psi}}_j^q=\mathbf{Y}_j\hat{\bm{\Psi}}_j^q
-			\end{equation}
-		\end{block}
-		\vskip -1cm
-		\begin{block}{}
-			\begin{gather}
-				\mathbf{X}_j\coloneq\begin{pmatrix}
-					0 & -\zeta b_{l,m}^1&&\\
-					\vdots& & \ddots&&\\
-					0&&&-\zeta b_{l,m}^p\\
-					\zeta&0&\dots&0
-				\end{pmatrix}\\
-				\mathbf{Y}_j\coloneq\begin{pmatrix}
-					-k_{j,0}^2&\zeta k_{j,0}^2+\zeta b_{l,m}^1\pa{k_j^2-k_{j,0}^2}&&\\
-					\vdots&&\ddots&\\
-					-k_{j,0}^2&&&\zeta k_{j,0}^2+\zeta b_{l,m}^p\pa{k_j^2-k_{j,0}^2}\\
-					a_{l,m}^0&\zeta a_{l,m}^1&\dots&\zeta a_{l,m}^p
-				\end{pmatrix}
-			\end{gather}
-			\begin{equation*}
-				\mathbf{X}_j,\mathbf{Y}_j\in\mathbb{C}^{\pa{p+1}\times\pa{p+1}}
-			\end{equation*}
-		\end{block}
-	\end{frame}
-	
-	\begin{frame}{Граничные условия прозрачности}
-		\begin{block}{Введём переменную $\hat{\bm{\xi}}_j^q\coloneq D_q^-\hat{\bm{\Psi}}_j^q$}
-			\begin{gather}
-				\underbrace{\begin{pmatrix}
-						\mathbf{0} & \mathbf{X}_j\\
-						\mathbf{I} & -\mathbf{I}\delta
-				\end{pmatrix}}_{\mathbf{A}_j} D_\delta^+
-				\begin{pmatrix}
-					\hat{\bm{\Psi}}_j^q\\
-					\hat{\bm{\xi}}_j^q
-				\end{pmatrix}=
-				\underbrace{\begin{pmatrix}
-						\mathbf{Y}_j & \mathbf{0}\\
-						\mathbf{0} & \mathbf{I}
-				\end{pmatrix}}_{\mathbf{B}_j}
-				\begin{pmatrix}
-					\hat{\bm{\Psi}}_j^q\\
-					\hat{\bm{\xi}}_j^q
-				\end{pmatrix}\\
-				D_q^-\hat{\bm{\Psi}}_j^q=\frac{\hat{\bm{\Psi}}_j^q-\hat{\bm{\Psi}}_j^{q-1}}{\delta}\qquad D_q^+\hat{\bm{\Psi}}=\frac{\hat{\bm{\Psi}}_j^{q+1}-\hat{\bm{\Psi}}_j^q}{\delta}\nonumber
-			\end{gather}
-		\end{block}
-		\vskip -0.5cm
-		\begin{block}{Решение системы}
-			\begin{equation}
-				\begin{pmatrix}
-					\hat{\bm{\Psi}}_j^{q+1}\\
-					\hat{\bm{\xi}}_j^{q+1}
-				\end{pmatrix}=
-				\pa{\mathbf{A}_j^{-1}\mathbf{B}_j+\mathbf{I}}
-				\begin{pmatrix}
-					\hat{\bm{\Psi}}_j^q\\
-					\hat{\bm{\xi}}_j^q
-				\end{pmatrix}\,.
-			\end{equation}
-		\end{block}
-		\vskip -0.5cm
-		\begin{block}{Жорданова форма}
-			\begin{equation}
-				\begin{gathered}
-					\mathbf{J}_j=\begin{pmatrix}
-						\mathbf{J}_j^1 & \mathbf{0}\\
-						\mathbf{0} & \mathbf{J}_j^2
-					\end{pmatrix}=
-					\mathbf{P}_j\pa{\mathbf{A}_j^{-1}\mathbf{B}_j+\mathbf{I}}\mathbf{P}_j^{-1}\\
-					\mathbf{J}_j^1,\mathbf{J}_j^2,\mathbf{P}_j\in\mathbb{C}^{\pa{p+1}\times\pa{p+1}}
-				\end{gathered}
-			\end{equation}
-		\end{block}
-	\end{frame}
-	
-	\begin{frame}{Граничные условия прозрачности}
-		\begin{block}{\small Разложение решения по базису $\mathbf{P}_j^{-1}$}
-			\begin{equation}
-				\mathbf{P}_j^{-1}\begin{pmatrix}
-					\hat{\bm{\Psi}}_j^{q+1}\\
-					\hat{\bm{\xi}}_j^{q+1}
-				\end{pmatrix}=
-				\mathbf{P}_j^{-1}\pa{\mathbf{A}_j^{-1}\mathbf{B}_j+\mathbf{I}}\begin{pmatrix}
-					\hat{\bm{\Psi}}_j^q\\
-					\hat{\bm{\xi}}_j^q
-				\end{pmatrix}=
-				\begin{pmatrix}
-					\mathbf{J}_j^1 & \mathbf{0}\\
-					\mathbf{0} & \mathbf{J}_j^2
-				\end{pmatrix}
-				\begin{pmatrix}
-					\mathbf{P}_j^1\hat{\bm{\Psi}}_j^q+\mathbf{P}_j^2\hat{\bm{\xi}}_j^q\\
-					\mathbf{P}_j^3\hat{\bm{\Psi}}_j^q+\mathbf{P}_j^4\hat{\bm{\xi}}_j^q
-				\end{pmatrix}
-			\end{equation}
-		\end{block}
-		\vskip -0.5cm
-		\begin{block}{\small Потребуем равенству нулю решений возрастающих при $q\to\infty$}
-			\vskip -0.5cm
-			\begin{gather}
-				\mathbf{P}_j^3\hat{\bm{\Psi}}_j^Q+\mathbf{P}_j^4\hat{\bm{\xi}}_j^Q=0\\
-				D_\delta^-\hat{\bm{\Psi}}_j^Q=-\pa{\mathbf{P}_j^4}^{-1}\mathbf{P}_j^3\hat{\bm{\Psi}}_j^Q=\hat{\mathbf{D}}_j\hat{\bm{\Psi}}_j^Q
-			\end{gather}
-		\end{block}
-		\vskip -0.5cm
-		\begin{block}{\small Применив обратное преобразование получим}
-			\begin{equation}
-				\begin{gathered}
-					\bm{\Psi}_j^{n+1,Q}-\bm{\Psi}_j^{n+1,Q-1}=\sum\limits_{l=1}^{n}\mathbf{D}_j^{n+1-l}\bm{\Psi}_j^{l,Q}\\
-					\bm{\Psi}_j^{n,q}=\pa{\mathcal{A}_j^{n,q},\mathcal{B}_{j,1}^{n,q},\dots,\mathcal{B}_{j,1}^{n,q}}^T\in\mathbb{C}^{p+1}\\
-					\mathbf{D}_j^n=\mathcal{Z}^{-1}\left\{\hat{\mathbf{D}}_j\pa{\zeta}\right\}=\frac{\tau^n}{2\pi}\int\limits_0^{2\pi}\hat{\mathbf{D}}_j\pa{\tau e^{i\phi}}e^{in\phi}\dd\phi\,,\quad n\in\mathbb{Z}_0\,,\quad\tau > 0
-				\end{gathered}
-			\end{equation}
-		\end{block}
-	\end{frame}
-	
-	\forpoi{	
+
+   	\begin{frame}{Граничные условия прозрачности}
+   		\begin{block}{Обозначим $\hat{\bm{\Psi}}_j^q=\pa{\hat{\mathcal{A}}_j^q,\hat{\mathcal{B}}_{j,1}^q,\dots,\hat{\mathcal{B}}_{j,p}^q}^T\in\mathbb{C}^{p+1}$}
+   			\smallskip
+   			\begin{equation}
+   				\mathbf{X}_jD_\delta^2\hat{\bm{\Psi}}_j^q=\mathbf{Y}_j\hat{\bm{\Psi}}_j^q
+   			\end{equation}
+   		\end{block}
+   		\vskip -1cm
+   		\begin{block}{}
+   			\begin{gather}
+   				\mathbf{X}_j\coloneq\begin{pmatrix}
+   					0 & -\zeta b_{l,m}^1&&\\
+   					\vdots& & \ddots&&\\
+   					0&&&-\zeta b_{l,m}^p\\
+   					\zeta&0&\dots&0
+   				\end{pmatrix}\\
+   				\mathbf{Y}_j\coloneq\begin{pmatrix}
+   					-k_{j,0}^2&\zeta k_{j,0}^2+\zeta b_{l,m}^1\pa{k_j^2-k_{j,0}^2}&&\\
+   					\vdots&&\ddots&\\
+   					-k_{j,0}^2&&&\zeta k_{j,0}^2+\zeta b_{l,m}^p\pa{k_j^2-k_{j,0}^2}\\
+   					a_{l,m}^0&\zeta a_{l,m}^1&\dots&\zeta a_{l,m}^p
+   				\end{pmatrix}
+   			\end{gather}
+   			\begin{equation*}
+   				\mathbf{X}_j,\mathbf{Y}_j\in\mathbb{C}^{\pa{p+1}\times\pa{p+1}}
+   			\end{equation*}
+   		\end{block}
+   	\end{frame}
+
+   	\begin{frame}{Граничные условия прозрачности}
+   		\begin{block}{Введём переменную $\hat{\bm{\xi}}_j^q\coloneq D_q^-\hat{\bm{\Psi}}_j^q$}
+   			\begin{gather}
+   				\underbrace{\begin{pmatrix}
+   						\mathbf{0} & \mathbf{X}_j\\
+   						\mathbf{I} & -\mathbf{I}\delta
+   				\end{pmatrix}}_{\mathbf{A}_j} D_\delta^+
+   				\begin{pmatrix}
+   					\hat{\bm{\Psi}}_j^q\\
+   					\hat{\bm{\xi}}_j^q
+   				\end{pmatrix}=
+   				\underbrace{\begin{pmatrix}
+   						\mathbf{Y}_j & \mathbf{0}\\
+   						\mathbf{0} & \mathbf{I}
+   				\end{pmatrix}}_{\mathbf{B}_j}
+   				\begin{pmatrix}
+   					\hat{\bm{\Psi}}_j^q\\
+   					\hat{\bm{\xi}}_j^q
+   				\end{pmatrix}\\
+   				D_q^-\hat{\bm{\Psi}}_j^q=\frac{\hat{\bm{\Psi}}_j^q-\hat{\bm{\Psi}}_j^{q-1}}{\delta}\qquad D_q^+\hat{\bm{\Psi}}=\frac{\hat{\bm{\Psi}}_j^{q+1}-\hat{\bm{\Psi}}_j^q}{\delta}\nonumber
+   			\end{gather}
+   		\end{block}
+   		\vskip -0.5cm
+   		\begin{block}{Решение системы}
+   			\begin{equation}
+   				\begin{pmatrix}
+   					\hat{\bm{\Psi}}_j^{q+1}\\
+   					\hat{\bm{\xi}}_j^{q+1}
+   				\end{pmatrix}=
+   				\pa{\mathbf{A}_j^{-1}\mathbf{B}_j+\mathbf{I}}
+   				\begin{pmatrix}
+   					\hat{\bm{\Psi}}_j^q\\
+   					\hat{\bm{\xi}}_j^q
+   				\end{pmatrix}\,.
+   			\end{equation}
+   		\end{block}
+   		\vskip -0.5cm
+   		\begin{block}{Жорданова форма}
+   			\begin{equation}
+   				\begin{gathered}
+   					\mathbf{J}_j=\begin{pmatrix}
+   						\mathbf{J}_j^1 & \mathbf{0}\\
+   						\mathbf{0} & \mathbf{J}_j^2
+   					\end{pmatrix}=
+   					\mathbf{P}_j\pa{\mathbf{A}_j^{-1}\mathbf{B}_j+\mathbf{I}}\mathbf{P}_j^{-1}\\
+   					\mathbf{J}_j^1,\mathbf{J}_j^2,\mathbf{P}_j\in\mathbb{C}^{\pa{p+1}\times\pa{p+1}}
+   				\end{gathered}
+   			\end{equation}
+   		\end{block}
+   	\end{frame}
+
+    \begin{frame}{Граничные условия прозрачности}
+        \begin{block}{\small Разложение решения по базису $\mathbf{P}_j^{-1}$}
+            \begin{equation}
+                \mathbf{P}_j^{-1}\begin{pmatrix}
+                    \hat{\bm{\Psi}}_j^{q+1}\\
+                    \hat{\bm{\xi}}_j^{q+1}
+                \end{pmatrix}=
+                \mathbf{P}_j^{-1}\pa{\mathbf{A}_j^{-1}\mathbf{B}_j+\mathbf{I}}\begin{pmatrix}
+                    \hat{\bm{\Psi}}_j^q\\
+                    \hat{\bm{\xi}}_j^q
+                \end{pmatrix}=
+                \begin{pmatrix}
+                    \mathbf{J}_j^1 & \mathbf{0}\\
+                    \mathbf{0} & \mathbf{J}_j^2
+                \end{pmatrix}
+                \begin{pmatrix}
+                    \mathbf{P}_j^1\hat{\bm{\Psi}}_j^q+\mathbf{P}_j^2\hat{\bm{\xi}}_j^q\\
+                    \mathbf{P}_j^3\hat{\bm{\Psi}}_j^q+\mathbf{P}_j^4\hat{\bm{\xi}}_j^q
+                \end{pmatrix}
+            \end{equation}
+        \end{block}
+        \vskip -0.5cm
+        \begin{block}{\small Потребуем равенству нулю решений возрастающих при $q\to\infty$}
+            \vskip -0.5cm
+            \begin{gather}
+                \mathbf{P}_j^3\hat{\bm{\Psi}}_j^Q+\mathbf{P}_j^4\hat{\bm{\xi}}_j^Q=0\\
+                D_\delta^-\hat{\bm{\Psi}}_j^Q=-\pa{\mathbf{P}_j^4}^{-1}\mathbf{P}_j^3\hat{\bm{\Psi}}_j^Q=\hat{\mathbf{D}}_j\hat{\bm{\Psi}}_j^Q
+            \end{gather}
+        \end{block}
+        \vskip -0.5cm
+        \begin{block}{\small Применив обратное преобразование получим}
+            \begin{equation}
+                \begin{gathered}
+                    \bm{\Psi}_j^{n+1,Q}-\bm{\Psi}_j^{n+1,Q-1}=\sum\limits_{l=1}^{n}\mathbf{D}_j^{n+1-l}\bm{\Psi}_j^{l,Q}\\
+                    \bm{\Psi}_j^{n,q}=\pa{\mathcal{A}_j^{n,q},\mathcal{B}_{j,1}^{n,q},\dots,\mathcal{B}_{j,1}^{n,q}}^T\in\mathbb{C}^{p+1}\\
+                    \mathbf{D}_j^n=\mathcal{Z}^{-1}\left\{\hat{\mathbf{D}}_j\pa{\zeta}\right\}=\frac{\tau^n}{2\pi}\int\limits_0^{2\pi}\hat{\mathbf{D}}_j\pa{\tau e^{i\phi}}e^{in\phi}\dd\phi\,,\quad n\in\mathbb{Z}_0\,,\quad\tau > 0
+                \end{gathered}
+            \end{equation}
+        \end{block}
+    \end{frame}
+
+	\forpoi{%
 		\begin{frame}{Лучевая теория распространения звука}
 			\begin{block}{}
 				\begin{equation}
@@ -662,8 +670,8 @@
 			\end{block}
 		\end{frame}
 	}
-	
-	\forpoi{
+
+	\forpoi{%
 		\begin{frame}{Лучевая теория распространения звука}
 			\begin{block}{Гамильтонова система}
 				\smallskip
@@ -691,7 +699,7 @@
 			\end{block}
 		\end{frame}
 	}
-	
+
 	\begin{frame}{Лучевые начальные условия}
 		\begin{block}{Начальное условие}
 			\smallskip
@@ -710,7 +718,7 @@
 			\end{equation}
 		\end{block}
 	\end{frame}
-	
+
 	\begin{frame}{Временной ряд импульсного акустического сигнала}
 		\begin{block}{Спектр импульса}
 			\smallskip
@@ -733,7 +741,7 @@
 			\caption{Сигнал во временной области}
 		\end{figure}
 	\end{frame}
-	
+
 	\begin{frame}{Колебательное ускорение}
 		\begin{block}{}
 	       \begin{equation}
@@ -748,8 +756,8 @@
 	        \end{gather}
 	   \end{block}
 	\end{frame}
-	
-	\forpoi{
+
+	\forpoi{%
 		\begin{frame}{Численное дифференцирование}
 			\begin{block}{}
 				\begin{equation}
@@ -778,15 +786,15 @@
 			\end{block}
 		\end{frame}
 	}
-	
+
 	\begin{frame}{Выводы}
 		\begin{block}{}
 			Было рассмотрено вычисление решения уравнения Гельмгольца с использованием широкоугольных модовых параболических уравнений в адиабатическом приближении и предложена численная схема их решения, основанная на применении аппроксимации Паде к пропагатору. Введены согласованные поглощающие слои и граничные условия прозрачности. Рассмотрено вычисление верменного ряда импульсного акустического сигнала, SEL и колебательных ускорений.
 		\end{block}
 	\end{frame}
-	
+
 	\section{Программная реализация}
-	
+
 	\begin{frame}{Комплекс программ}
 		\begin{block}{}
 			\begin{itemize}
@@ -814,7 +822,7 @@
 			\node[xshift=-1.75cm,yshift=-2.75cm] at (current page.north east){\qrcode[height=2.5cm]{https://github.com/GoldFeniks/AMPLE}};
 		\end{tikzpicture}
 	\end{frame}
-	
+
 	\begin{frame}{Возможности разработанного комплекса программ}
 		\vskip -0.75cm
 		\begin{block}{}
@@ -830,7 +838,7 @@
 			\end{itemize}
 		\end{block}
 	\end{frame}
-	
+
 	\begin{frame}{Входные и выходные данные}
 		\begin{block}{Входные данные}
 			\begin{itemize}
@@ -861,44 +869,48 @@
 			\end{itemize}
 		\end{block}
 	\end{frame}
-	
-	\begin{frame}[fragile]{Волновод Пекериса}
-		\begin{figure}[h]
-			\centering
-			\vskip -0.25cm
-			\begin{subfigure}[t]{0.35\textwidth}
-				\centering
-				\includegraphics[width=\textwidth]{pekeris.pdf}
-				\caption{Аналитическое решение}
-			\end{subfigure}
-			\begin{subfigure}[t]{0.35\textwidth}
-				\centering
-				\includegraphics[width=\textwidth]{pekeris_wampe.pdf}
-				\caption{Решение ШМПУ}
-			\end{subfigure}\\
-			\begin{subfigure}[t]{0.35\textwidth}
-				\centering
-				\includegraphics[width=\textwidth]{pekeris_n5.pdf}
-				\caption{SSP, $p=5$}
-			\end{subfigure}
-			\begin{subfigure}[t]{0.35\textwidth}
-				\centering
-				\includegraphics[width=\textwidth]{pekeris_n17.pdf}
-				\caption{SSP, $p=17$}
-			\end{subfigure}
-			\vskip -0.25cm
-			\caption{Акустическое поле в волноводе Пекериса}
-		\end{figure}
-	\end{frame}
-	
-	\begin{frame}[fragile]{Принцип работы PML граничных условий}
-		\begin{figure}[h]
-			\centering
-			\includegraphics[width=0.7\textwidth]{pekeris_pml_n13.pdf}
-			\caption{Акустическое поле в волноводе Пекериса на глубине $z=30\ \text{м.}$, слои PML отмечены красной пунктирной линией, ширина слоёв составляет $1$ километр, порядок аппроксимации Паде $p=13$}
-		\end{figure}
-	\end{frame}
-	
+
+    \forpoi{%
+    	\begin{frame}{Волновод Пекериса}
+    		\begin{figure}[h]
+    			\centering
+    			\vskip -0.25cm
+    			\begin{subfigure}[t]{0.35\textwidth}
+    				\centering
+    				\includegraphics[width=\textwidth]{pekeris.pdf}
+    				\caption{Аналитическое решение}
+    			\end{subfigure}
+    			\begin{subfigure}[t]{0.35\textwidth}
+    				\centering
+    				\includegraphics[width=\textwidth]{pekeris_wampe.pdf}
+    				\caption{Решение ШМПУ}
+    			\end{subfigure}\\
+    			\begin{subfigure}[t]{0.35\textwidth}
+    				\centering
+    				\includegraphics[width=\textwidth]{pekeris_n5.pdf}
+    				\caption{SSP, $p=5$}
+    			\end{subfigure}
+    			\begin{subfigure}[t]{0.35\textwidth}
+    				\centering
+    				\includegraphics[width=\textwidth]{pekeris_n17.pdf}
+    				\caption{SSP, $p=17$}
+    			\end{subfigure}
+    			\vskip -0.25cm
+    			\caption{Акустическое поле в волноводе Пекериса}
+    		\end{figure}
+    	\end{frame}
+    }
+
+    \forpoi{%
+    	\begin{frame}{Принцип работы PML граничных условий}
+    		\begin{figure}[h]
+    			\centering
+    			\includegraphics[width=0.7\textwidth]{pekeris_pml_n13.pdf}
+    			\caption{Акустическое поле в волноводе Пекериса на глубине $z=30\ \text{м.}$, слои PML отмечены красной пунктирной линией, ширина слоёв составляет $1$ километр, порядок аппроксимации Паде $p=13$}
+    		\end{figure}
+    	\end{frame}
+    }
+
 	\begin{frame}[fragile]{Подводный каньон}
 		\vspace{-0.25cm}
 		\begin{figure}[h]
@@ -913,7 +925,7 @@
 			\caption{Акустическое поле в волноводе с подводным каньоном}
 		\end{figure}
 	\end{frame}
-	
+
 	\begin{frame}[fragile]{Подводный каньон. Сравнительный анализ}
 		\begin{figure}[h]
 			\centering
@@ -921,7 +933,7 @@
 			\caption{Сравнение результатов вычисления акустического поля в мелком море с подводным каньоном при $y=0\ \text{км.}$ на глубине $z=10\ \text{м}$.}
 		\end{figure}
 	\end{frame}
-	
+
 	\begin{frame}[fragile]{Клиновидный волновод}
 		\vspace{-0.25cm}
 		\begin{figure}[h]
@@ -945,7 +957,7 @@
 			\caption{Акустическое поле в клиновидном волноводе}
 		\end{figure}
 	\end{frame}
-	
+
 	\begin{frame}[fragile]{Клиновидный волновод. Сравнительный анализ}
 		\begin{figure}[h]
 			\centering
@@ -965,7 +977,7 @@
 			\caption{Сравнение результатов вычисления акустического поля вдоль $y$}
 		\end{figure}
 	\end{frame}
-	
+
 	\begin{frame}[fragile]{Клиновидный волновод. Сравнительный анализ}
 		\begin{figure}[h]
 			\centering
@@ -981,7 +993,51 @@
 			\caption{Сравнение результатов вычисления акустического поля вдоль $x$}
 		\end{figure}
 	\end{frame}
-	
+
+    \begin{frame}{Клиновидный волновод. Трассировка горизонт. лучей}
+        \begin{block}{}
+            \vspace{-0.5cm}
+            \begin{equation}
+                x\pa{S}=\int\limits_0^S\frac{y^\prime_t\pa{s}\dd s}{\sqrt{\frac{k_j^2\pa{y\pa{s}}}{k_j^2\pa{0}\cos^2\pa{\psi}}-1}}
+            \end{equation}
+        \end{block}
+        \vspace{-0.5cm}
+
+        \begin{figure}[h]
+            \centering
+            \includegraphics[width=0.7\textwidth]{rays1.pdf}
+            \caption{\small Сравнение трассировки лучей с использованием программы AMPLE (сплошная кривая) и численного интегрирования (пунктирная кривая) для первой распространяющейся моды}
+        \end{figure}
+    \end{frame}
+
+    \forpoi{%
+        \begin{frame}{Клиновидный волновод. Трассировка горизонт. лучей}
+            \begin{figure}[h]
+                \centering
+                \includegraphics[width=0.9\textwidth]{rays2.pdf}
+                \caption{\small Сравнение трассировки лучей с использованием программы AMPLE (сплошная кривая) и численного интегрирования (пунктирная кривая) для второй распространяющейся моды}
+            \end{figure}
+        \end{frame}
+    }
+
+    \forpoi{%
+        \begin{frame}{Клиновидный волновод. Трассировка горизонт. лучей}
+            \begin{figure}[h]
+                \centering
+                \includegraphics[width=0.9\textwidth]{rays3.pdf}
+                \caption{\small Сравнение трассировки лучей с использованием программы AMPLE (сплошная кривая) и численного интегрирования (пунктирная кривая) для третьей распространяющейся моды}
+            \end{figure}
+        \end{frame}
+    }
+
+    \begin{frame}{Клиновидный волновод. Импульсный сигнал}
+        \begin{figure}[h]
+            \centering
+            \includegraphics[width=0.75\textwidth]{fig7.pdf}
+            \caption{Сравнение спектров сигнала в точке приёма}
+        \end{figure}
+    \end{frame}
+
 	\forpoi{%
 		\begin{frame}{Волновод с реальной батиметрией}
 			\vspace{-0.25cm}
@@ -1006,7 +1062,7 @@
 			\end{block}
 		\end{frame}
 	}
-	
+
 	\forpoi{%
 		\begin{frame}{\normalsize Волновод с реальной батиметрией. Акустическое поле источника}
 			\begin{figure}[h]
@@ -1024,15 +1080,15 @@
 			\end{figure}
 		\end{frame}
 	}
-	
+
 	\begin{frame}{Выводы}
 		Выполнена программная реализация описанных математических методов. Большое внимание было уделено простоте конфигурации расчётов и скорости вычислений. Исходный код программы расмещён в открытом доступе. Проведена валидачия разработанной программы на модельных примерах.
 	\end{frame}
-	
+
 	\section{Моделирование акустических полей в задачах оценки уровней антропогенных шумов в океане}
-	
+
 	\begin{frame}{Моделирование шума одиночного судна}
-		\begin{block}{Выисляемые величины}
+		\begin{block}{Вычисляемые величины}
 			\vskip -0.5cm
 			\begin{gather}
 				E_{p,ddec}\pa{f_c,d} = 2\int_{f_1}^{f_2} |\hat{P}\pa{f,d}|^2 df\\
@@ -1053,7 +1109,7 @@
 			\caption{Карта глубин акватории вблизи станции мониторинга и траектория прохода судна}
 		\end{figure}
 	\end{frame}
-	
+
 	\begin{frame}{Первые результаты моделирования}
 		\begin{figure}[h]
 			\centering
@@ -1072,7 +1128,7 @@
 			\caption{Уровни шума (в дБ) для прохождения судна}
 		\end{figure}
 	\end{frame}
-	
+
 	\begin{frame}{Исследование источника ошибки}
 		\begin{figure}[h]
 			\centering
@@ -1080,7 +1136,7 @@
 			\caption{Вертикальный срез акустического поля для частоты $f=400\text{ Гц}$ (в Дб. отн. 1 м. от источника)}
 		\end{figure}
 	\end{frame}
-	
+
 	\begin{frame}{Оптимизация параметров среды}
 		\begin{block}{Байесовская оптимизация}
 			\begin{enumerate}
@@ -1097,7 +1153,7 @@
 			\end{enumerate}
 		\end{block}
 	\end{frame}
-	
+
 	\begin{frame}{Оптимизируемые параметры}
 		\small
 		\begin{table}[h]
@@ -1146,7 +1202,7 @@
 			\caption{Оптимизируемые параметры}
 		\end{table}
 	\end{frame}
-	
+
 	\begin{frame}{Результаты оптимизации}
 		\begin{figure}[h]
 			\centering
@@ -1154,7 +1210,7 @@
 			\caption{График зависимости распределения шума от частоты в точке ближайшего прохода судна}
 		\end{figure}
 	\end{frame}
-	
+
 	\begin{frame}{Результаты моделирования}
 		\vskip -0.25cm
 		\begin{figure}[h]
@@ -1172,9 +1228,9 @@
 			\end{subfigure}
 			\vskip -0.25cm
 			\caption{Вертикальный срез акустического поля для частоты $f=400\text{ Гц}$ (в Дб. отн. 1 м. от источника)}
-		\end{figure} 
+		\end{figure}
 	\end{frame}
-	
+
 	\begin{frame}{Результаты моделирования}
 		\vskip -0.25cm
 		\begin{figure}[h]
@@ -1192,9 +1248,9 @@
 			\end{subfigure}
 			\vskip -0.25cm
 			\caption{Уровни шума (в дБ) для прохождения судна}
-		\end{figure} 
+		\end{figure}
 	\end{frame}
-	
+
 	\begin{frame}{Результаты моделирования}
 		\vskip -0.25cm
 		\begin{figure}[h]
@@ -1215,7 +1271,7 @@
 			\caption{Уровни шума (в дБ) для прохождения судна}
 		\end{figure}
 	\end{frame}
-	
+
 	\begin{frame}{Точность моделирования}
 		\vskip -0.25cm
 		\begin{figure}[h]
@@ -1235,71 +1291,81 @@
 			\caption{График точности моделирования уровней шумов}
 		\end{figure}
 	\end{frame}
-	
-	\forpoi{
-		\begin{frame}{Задача мониторинга сейсморазведочных работ}
-			\begin{figure}[H]
-				\centering
-				\includegraphics[width=0.8\textwidth]{seismo/pic_map.eps}
-				\caption{Карта глубин в области проведения сейсморазведочных работ и график зависимости скорости звука от глубины}
-			\end{figure}
-		\end{frame}
-	
-		\begin{frame}{Задача мониторинга сейсморазведочных работ}
-			\begin{figure}[h]
-				\centering
-				\includegraphics[width=0.8\textwidth]{seismo/pic_signal2.eps}
-				\caption{Изменение акустического давления в приёмниках P1 и P2 и их спектры}
-			\end{figure}
-		\end{frame}
-		
-		\begin{frame}{Задача мониторинга сейсморазведочных работ}
-			\begin{figure}[h]
-				\centering
-				\includegraphics[width=0.8\textwidth]{seismo/pic_waveguide.eps}
-				\caption{Модель волновода и значения акустических параметров среды}
-			\end{figure}
-		\end{frame}
-		
-		\begin{frame}{Упрощённая модель батиметрии}
-			\begin{figure}[h]
-				\centering
-				\includegraphics[width=0.95\textwidth]{seismo/pic_lineField.eps}
-				\caption{Пространственное распределение уровня звуковой экспозиции при глубине 9 м в волноводе с упрощённой батиметрией}
-			\end{figure}
-		\end{frame}
-		
-		\begin{frame}{Реальная батиметрия}
-			\begin{figure}[h]
-				\centering
-				\includegraphics[width=0.95\textwidth]{seismo/pic_realField.eps}
-				\caption{Пространственное распределение уровня звуковой экспозиции при глубине 9 м в волноводе с реальной батиметрией}
-			\end{figure}
-		\end{frame}
-		
-		\begin{frame}{Результаты моделирования}
-			\begin{figure}[h]
-				\centering
-				\includegraphics[width=0.8\textwidth]{seismo/pic_test_sel.eps}
-				\caption{График зависимости уровня звуковой экспозиции от расстояния $x$ на прямой $y=0$ и глубине 9 м}
-			\end{figure}
-		\end{frame}
-		
-		\begin{frame}{Результаты моделирования}
-			\begin{figure}[h]
-				\centering
-				\includegraphics[width=0.9\textwidth]{seismo/pic_signal3.eps}
-				\caption{Сравнение импульсных сигналов (\textbf{a}) и их спектров (\textbf{b})}
-			\end{figure}
-		\end{frame}
-	}
-	
+
+    \begin{frame}{Методика моделирования}
+        \begin{block}{}
+            \begin{enumerate}
+                \item Провести измерение эффективного спектра источника шума некоторого опорного судна, а также величины $E_{p,ddec}\pa{f_c,d_{CPA}}$ в ближайшей точке прохода
+                \item Выполнить оптимизацию параметров среды согласно предложенному алгоритму
+                \item Использовать полученные параметры среды при проведении моделирования в рассматриваемой акватории
+            \end{enumerate}
+        \end{block}
+    \end{frame}
+
+	\begin{frame}{Задача мониторинга сейсморазведочных работ}
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=0.8\textwidth]{seismo/pic_map.eps}
+			\caption{Карта глубин в области проведения сейсморазведочных работ и график зависимости скорости звука от глубины}
+		\end{figure}
+	\end{frame}
+
+	\begin{frame}{Задача мониторинга сейсморазведочных работ}
+		\begin{figure}[h]
+			\centering
+			\includegraphics[width=0.8\textwidth]{seismo/pic_signal2.eps}
+			\caption{Изменение акустического давления в приёмниках P1 и P2 и их спектры}
+		\end{figure}
+	\end{frame}
+
+	\begin{frame}{Задача мониторинга сейсморазведочных работ}
+		\begin{figure}[h]
+			\centering
+			\includegraphics[width=0.8\textwidth]{seismo/pic_waveguide.eps}
+			\caption{Модель волновода и значения акустических параметров среды}
+		\end{figure}
+	\end{frame}
+
+    \forpoi{
+    	\begin{frame}{Упрощённая модель батиметрии}
+    		\begin{figure}[h]
+    			\centering
+    			\includegraphics[width=0.95\textwidth]{seismo/pic_lineField.eps}
+    			\caption{Пространственное распределение уровня звуковой экспозиции при глубине 9 м в волноводе с упрощённой батиметрией}
+    		\end{figure}
+    	\end{frame}
+    }
+
+	\begin{frame}{Реальная батиметрия}
+		\begin{figure}[h]
+			\centering
+			\includegraphics[width=0.95\textwidth]{seismo/pic_realField.eps}
+			\caption{Пространственное распределение уровня звуковой экспозиции при глубине 9 м в волноводе с реальной батиметрией}
+		\end{figure}
+	\end{frame}
+
+	\begin{frame}{Результаты моделирования}
+		\begin{figure}[h]
+			\centering
+			\includegraphics[width=0.8\textwidth]{seismo/pic_test_sel.eps}
+			\caption{График зависимости уровня звуковой экспозиции от расстояния $x$ на прямой $y=0$ и глубине 9 м}
+		\end{figure}
+	\end{frame}
+
+	\begin{frame}{Результаты моделирования}
+		\begin{figure}[h]
+			\centering
+			\includegraphics[width=0.9\textwidth]{seismo/pic_signal3.eps}
+			\caption{Сравнение импульсных сигналов (\textbf{a}) и их спектров (\textbf{b})}
+		\end{figure}
+	\end{frame}
+
 	\begin{frame}{Выводы}
 		\begin{block}{}
 			Проведено моделирование акустических полей в задачах оценки уровней антропогенных шумов. Предложен способ оптимизации парамектров среды и показана его эффективность. Исследована важность использования широкоугольного уравнения.
 		\end{block}
 	\end{frame}
-	
+
 	\begin{frame}{Положения, выносимы на зашиту}
 		\vskip -1cm
 		\begin{block}{}
@@ -1311,21 +1377,21 @@
 			\end{enumerate}
 		\end{block}
 	\end{frame}
-	
+
 	\begin{frame}{Научные труды. Статьи}
 		\AtNextBibliography{\changefontsizes{8pt}}
 		\printbibliography[heading=none,env=betterlabel,keyword={myarticles}]
 	\end{frame}
-	
+
 	\begin{frame}{Научные труды. Материалы конференций}
 		\AtNextBibliography{\changefontsizes{8pt}}
 		\printbibliography[heading=none,env=betterlabel,keyword={myproceedings}]
 	\end{frame}
-	
+
 	\begin{frame}
 		\thispagestyle{empty}
 		\addtocounter{framenumber}{-1}
 		\centerline{\Huge Спасибо за внимание}
 	\end{frame}
-	
+
 \end{document}
