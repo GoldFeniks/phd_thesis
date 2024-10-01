@@ -22,6 +22,8 @@
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta,positioning}
 
+\DeclareTotalCounter{section}
+
 \newtotcounter{citenum}
 \AtEveryBibitem{\stepcounter{citenum}}
 
@@ -35,6 +37,7 @@
 \newcommand{\paramrowlistvalue}[4][]{\code{#2} & \code{#3} & \code{[#1]} & #4\\}
 \newcommand{\niceref}[2]{\hyperref[#1]{#2 \ref{#1}}}
 \newcommand{\dd}{\mathrm{d}}
+\newcommand{\introductiontitle}{Введение}
 \DeclareMathOperator{\sech}{sech}
 
 \author{Тыщенко Андрей Геннадьевич}
@@ -50,6 +53,7 @@
 \fefuloadstyle{poi_phd}
 \setdegree{кандидата физико-математических наук}
 
+\newcounter{sectionscount}
 \newcounter{allpagescount}
 \newcounter{textpagescount}
 \newcounter{figurescount}
@@ -60,20 +64,27 @@
     \edef\bibpage{\getpagerefnumber{sec::bibliography}}%
     \edef\bibpages{\number\numexpr\getpagerefnumber{sec::bibliography_end}-\bibpage+1\relax}%
     \edef\textpages{\number\numexpr\bibpage-\getpagerefnumber{sec::introduction}\relax}%
+    
+    \iftotalsections%
+    	\let\totalsectionsbuffer\totalsections%
+    	\setcounter{sectionscount}{\totalsectionsbuffer}%
+   	\else%
+   		\setcounter{sectionscount}{0}%
+   	\fi%
 
-    \iftotalfigures
+    \iftotalfigures%
         \let\totalfiguresbuffer\totalfigures%
         \setcounter{figurescount}{\totalfiguresbuffer}%
-    \else
+    \else%
         \setcounter{figurescount}{0}%
-    \fi
+    \fi%
 
-    \iftotaltables
+    \iftotaltables%
         \let\totaltablesbuffer\totaltables%
         \setcounter{tablescount}{\totaltablesbuffer}%
-    \else
+    \else%
         \setcounter{tablescount}{0}%
-    \fi
+    \fi%
 
     \setcounter{allpagescount}{\getpagerefnumber{LastPage}}%
     \setcounter{textpagescount}{\textpages{}}%
@@ -84,7 +95,8 @@
     \begin{filecontents}{counters.tex}\end{filecontents}%
     \newwrite\file%
     \immediate\openout\file=counters.tex%
-
+    
+    \immediate\write\file{\string\pgfkeyssetvalue{/counters/sectionscount}{\arabic{sectionscount}}}%
     \immediate\write\file{\string\pgfkeyssetvalue{/counters/allpagescount}{\arabic{allpagescount}}}%
     \immediate\write\file{\string\pgfkeyssetvalue{/counters/textpagescount}{\arabic{textpagescount}}}%
     \immediate\write\file{\string\pgfkeyssetvalue{/counters/figurescount}{\arabic{figurescount}}}%

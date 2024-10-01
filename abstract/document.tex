@@ -1,10 +1,16 @@
 \documentclass{fefu}
+
+\usepackage{bm}
+\usepackage{amssymb}
 \usepackage{subfiles}
+
+\setmainfont{CMU Serif}
 \addbibresource{../references.bib}
 \graphicspath{{../images/}}
 
 \fefuloadstyle[../]{poi_phd}
 
+\newcounter{sectionscount}
 \newcounter{allpagescount}
 \newcounter{textpagescount}
 \newcounter{figurescount}
@@ -13,7 +19,8 @@
 \newcounter{bibpagescount}
 \newcommand{\handlecounts}{%
     \input{../counters.tex}%
-
+	
+	\setcounter{sectionscount}{\pgfkeysvalueof{/counters/sectionscount}}%
     \setcounter{allpagescount}{\pgfkeysvalueof{/counters/allpagescount}}%
     \setcounter{textpagescount}{\pgfkeysvalueof{/counters/textpagescount}}%
     \setcounter{figurescount}{\pgfkeysvalueof{/counters/figurescount}}%
@@ -22,8 +29,74 @@
     \setcounter{bibpagescount}{\pgfkeysvalueof{/counters/bibpagescount}}%
 }
 
+\newcommand{\pa}[1]{\left(#1\right)}
+\newcommand{\code}[2][text]{\mintinline{#1}{#2}}
+\newcommand{\niceref}[2]{\hyperref[#1]{#2 \ref{#1}}}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\introductiontitle}{Общая характеристика работы}
+
+\makeatletter
+\@FEFUnotoctrue
+\titleformat{name=\section,numberless}[block]
+{\bfseries\large}{}{0pt}{#1}
+\makeatother
+
+\defbibfilter{mine}{keyword=myarticles or keyword=myproceedings}
+
 \begin{document}
 	\subfile{../subfiles/introduction.tex}
 	\newpage
-	\printbibliography
+	\section*{Содержание работы}
+	\par\textbf{Во Введении} обоснована актуальность диссертационной работы, сформулирована цель и аргументирована научная новизна исследований, показана
+	практическая значимость полученных результатов, представлены выносимые
+	на защиту научные положения.
+	\par \textbf{В первой главе} приводится краткое описание задач, для которых моделирование трёхмерных звуковых полей 
+	НИЧЕГО
+	\par \textbf{Вторая глава} посвящена описанию математической части поставленной задачи и методам её решения. Приводится детальное описание предлагаемого алгоритма моделирования. Звуковое поле ищется в форме модового разложения
+	\begin{equation}
+		p\pa{x,y,z}=\sum\limits_{j=1}^\infty A_j\pa{x,y}\varphi_j\pa{z}\,,
+	\end{equation}
+	где $A_j\pa{x,y}$ называются модовыми амплитудами и удовлетворяют уравнению горизонтальной рефракции
+	\begin{equation}
+		\frac{\partial^2A_j\pa{x,y}}{\partial x^2}+\frac{\partial^2 A_j\pa{x,y}}{\partial y^2}+k_j^2\pa{x,y}A_j\pa{x,y}=-\delta\pa{x}\delta\pa{y}\varphi_j\pa{z_s,0,0}\,,
+	\end{equation}
+	при этом модовые функции $\varphi_j\pa{z,x,y}$ и соответствующие им волновые числа $k_j\pa{x,y}$ являются решениями соответствующей спектральной задачи при фиксированных $x$ и $y$. Решение уравнения горизонтальной рефракции далее сводится к решению псевдодифференциального модового параболического уравнения вида 
+	\begin{gather}\label{eq::PDMPE}
+		A_j\pa{x,y}=e^{ik_{j,0}x}\mathcal{A}_j\pa{x,y}\,,\\
+		\frac{\partial\mathcal{A}_j\pa{x,y}}{\partial x}=ik_{j,0}\pa{\sqrt{1+L_j}-1}\mathcal{A}_j\pa{x,y}\,,\\
+		k_{j,0}^2L_j=\frac{\partial^2}{\partial y^2}+k_j^2\pa{x,y}-k_{j,0}^,.
+	\end{gather}
+	\par В \textbf{разделе 2.3} подробно рассматриваются аппроксимация псевдодифференциального оператора и дискретизация уравнения \eqref{eq::PDMPE} по координате $x$ с использованием аппроксимации Паде и метода Split-step Pad\'e. Последний заключается в формальном решении уравнения в виде на равномерной сетке $\Delta x=h$
+	\begin{equation}
+		\mathcal{A}_j^{n+1}=e^{ik_{j,0}h\pa{\sqrt{1+L_j}}}\mathcal{A}_j^n\,.
+	\end{equation}
+	Затем аппроксимации Паде применяется к операторной экспоненте
+	\begin{equation}
+		e^{ik_{j,0}h\pa{\sqrt{1+L_j}}}\approx\frac{U_{l,m}\pa{L_j}}{W_{l,m}\pa{L_j}}=a_{l,m}^0+\sum\limits_{i=1}^{p=\max\left\{l,m\right\}}\frac{a_{l,m}^i}{1+b_{l,m}^iL_j}\,.
+	\end{equation}
+	Далее проводится дискретизация оператора $L_j$ на равномерной сетке $\Delta y=\delta$ и приводится численная схема решения уравнения \eqref{eq::PDMPE}
+	\begin{gather}
+		\mathcal{A}_j^{n+1,q}=a_{l,m}^0\mathcal{A}_j^{n,q}+\sum\limits_{i=1}^{p}a_{l,m}^i\mathcal{B}_{j,i}^{n+1,q}\,,\\
+		\pa{1+b_{l,m}^iL_j^\delta}\mathcal{B}_{j,i}^{n+1,q}=\mathcal{A}_j^{n,q},\quad i=\overline{1,p}\,,\\
+		\underset{\alpha_{j,i}}{\underbrace{\frac{b_{l,m}^i}{k_{j,0}^2\delta^2}}}\mathcal{B}_{j,i}^{n+1,q-1}+\underset{\beta_{j,i}}{\underbrace{\pa{1+\frac{b_{l,m}^i}{k_{j,0}^2}\pa{k_j^2-k_{j,0}^2-\frac{2}{\delta^2}}}}}\mathcal{B}_{j,i}^{n+1,q}+\underset{\gamma_{j,i}}{\underbrace{\frac{b_{l,m}^i}{k_{j,0}^2\delta^2}}}\mathcal{B}_{j,i}^{n+1,q+1}=\mathcal{A}_j^{n,q}\,.
+	\end{gather}
+	\par В \textbf{разделе 2.5} рассматриваются граничные условия, используемые для искусственного ограничения вычислительной области. Первыми рассматриваются согласованные поглощающие слои, заключающиеся в расширении вычислительной области на $\varepsilon$ с обоих сторон по координате $y$ и заменой оператора $L_j$ на оператор $L_j^{PML}$
+	\begin{equation}
+		k_{j,0}^2L_j^{PML}=\frac{1}{1+i\beta\pa{y}}\frac{\partial}{\partial y}\frac{1}{1+i\beta\pa{y}}\frac{\partial}{\partial y}+k_j^2+k_{j,0}^2\,,
+	\end{equation}
+	где $\beta\pa{y}$ -- некоторая гладкая функция, монотонно убывающая на интервале\\ $\left[y_0-\varepsilon,y_0\right)$, возрастающая на $\left(y_1,y_1+\varepsilon\right]$, и $\beta\pa{y}=0$ при $y\in\left[y_0,y_1\right]$. Затем рассматриваются граничные условия прозрачности имеющие следующий вид на правой границе области $y_Q=y_1$
+	\begin{equation}
+		\bm{\Psi}_j^{n+1,Q}-\bm{\Psi}_j^{n+1,Q-1}=\sum\limits_{l=1}^{n+1}\mathbf{D}_j^{n+1-l}\bm{\Psi}_j^{l,Q}\,,
+	\end{equation}
+	где $\bm{\Psi}_j^{n,q}=\pa{\mathcal{A}_j^{n,q},\mathcal{B}_{j,1}^{n,q},\dots,\mathcal{B}_{j,1}^{n,q}}^T\in\mathbb{C}^{p+1}$. Вычисление коэффициентов $D_j$ подробно описано в тексте работы.
+	\par В \textbf{разделе 2.6} описывается лучевая теория распространения звука и численный метод трассировки горизонтальных лучей, соответствующих вертикальным модам. Далее в \textbf{разделе 2.7} вводятся лучевые начальные условия, лучше удовлетворяющие широкоугольным свойствам аппроксимации Паде по сравнению с начальными условиями Гаусса и Грина. Условия ставятся на некотором небольшом расстоянии $x_0$ от источника в предположении $k_j=k_j\pa{y}$, и имеют следующий вид
+	\begin{gather}
+		\mathcal{A}_j\pa{x_0,y}=M_j\pa{x_0,y}e^{ik_{j,0}}S_j\pa{x_0,y}\,,\\
+		S_j\pa{x_0,y\pa{l,\alpha}}=\int\limits_0^ln_j\pa{y\pa{l,\alpha}}\dd\ell\,,\\
+		M_j\pa{x_0,y\pa{l,\alpha}}=\frac{M_{j,0}}{n_j\pa{y\pa{l,\alpha}}}\sqrt{\frac{\cos\alpha}{}}
+		
+	\end{gather}
+	\newpage
+	\printbibliography[title=Цитированная литература,notkeyword={myarticles},notkeyword={myproceedings}]
+	\printbibliography[title=Список публикаций,filter=mine]
 \end{document}
