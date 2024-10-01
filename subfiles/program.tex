@@ -3,7 +3,7 @@
 \begin{document}
     \section{Реализация методов и тестирование\label{sec::ample}}
         \subsection{Описание проекта}
-            \par \par Разрабатываемая в данной работе программа является усовершенствованием программы, написанной в рамках выпускной квалификационной работы бакалавра \cite{bachelor}. Исходный код программы расположен в открытом доступе по адресу: \url{https://github.com/GoldFeniks/Ample}. В рамках данной работы было сделано 162 коммита, добавлено 18028 и удалено 8505  строк кода на языке программирования C++.  
+            \par \par Разрабатываемая в данной работе программа является усовершенствованием программы, написанной в рамках выпускной квалификационной работы бакалавра \cite{bachelor}. Исходный код программы расположен в открытом доступе по адресу: \url{https://github.com/GoldFeniks/Ample}. В рамках данной работы было сделано 162 коммита, добавлено 18028 и удалено 8505  строк кода на языке программирования C++.
             \subsubsection{Средства реализации}
                 \par В качестве основного языка программирования для реализации проекта был выбран язык C++20 \cite{c++}, ввиду следующих соображений:
                 \begin{enumerate}
@@ -65,7 +65,7 @@
                         \item\code{buffer_manager} -- класс, позволяющий производить безопасные чтение и запись буферов данных из разных потоков выполнения программы;
                         \item\code{pool} -- класс, реализующий многопоточную очередь выполнения задач;
                         \item\code{task} -- класс, описывающий единичную задачу многопоточных вычислений.
-                    \end{itemize} 
+                    \end{itemize}
                 \paragraph{utils}
                     \par Содержит вспомогательные инструменты используемые остальными модулями программы.
                     \begin{itemize}
@@ -105,7 +105,7 @@
                     \item\code{rays} -- траектории распространения звуковых лучей;
                     \item\code{sel} -- интегральная характеристика SEL \eqref{eq::SEL};
                     \item\code{impulse} -- импульсы сигнала источника в приёмниках;
-                    \item\code{acceleration} -- колебательные ускорения по пространственным координатам $x,y,z$. 
+                    \item\code{acceleration} -- колебательные ускорения по пространственным координатам $x,y,z$.
                 \end{itemize}
                 При этом некоторые задачи зависят от других, в результате чего последние будут выполнены и без явно их указания в списке аргументов, однако результаты этих вычислений не будут сохранены. Аргумент \code{options} представляет собой произвольный набор опций программы, описание которых приведено далее.
                 \paragraph{Основные опции}
@@ -253,7 +253,7 @@
                             \caption{Описание значения поля \code{tapering}\label{tbl::tapering}}
                             \begin{tabular}{|C{3cm}|C{1.5cm}|C{2cm}|m{8.5cm}|}
                                 \hline
-                                \multicolumn{2}{|C{4.5cm}|}{Поле} & Тип значения & \multicolumn{1}{c|}{Описание} \\ 
+                                \multicolumn{2}{|C{4.5cm}|}{Поле} & Тип значения & \multicolumn{1}{c|}{Описание} \\
                                 \hline
                                 \multicolumn{2}{|C{4.5cm}|}{\multirow{3}{*}{\code{type}}} & \multirow{3}{*}{\code{string}} & \code{"angeled"} -- сглаживает начальное условие в угловом интервале, является значением по умолчанию\\
                                 \multicolumn{2}{|C{4.5cm}|}{} & & \code{"percentage"} -- сглаживает начальное условие на части сетки\\
@@ -271,7 +271,7 @@
                             \caption{Описание значения поля \code{coefficients}\label{tbl::coefficients}}
                             \begin{tabular}{|C{3cm}|C{1.5cm}|C{2cm}|m{8.5cm}|}
                                 \hline
-                                \multicolumn{2}{|C{4.5cm}|}{Поле} & Тип значения & \multicolumn{1}{c|}{Описание} \\ 
+                                \multicolumn{2}{|C{4.5cm}|}{Поле} & Тип значения & \multicolumn{1}{c|}{Описание} \\
                                 \hline
                                 \multicolumn{2}{|C{4.5cm}|}{\multirow{4}{*}{\code{type}}} & \multirow{4}{*}{\code{string}} & \code{"wampe"} -- коэффициенты для метода \ref{sec::root_wampe} \\
                                 \multicolumn{2}{|C{4.5cm}|}{} & & \code{"ssp"} -- коэффициенты для метода \ref{sec::root_ssp}, является значением по умолчанию\\
@@ -288,7 +288,7 @@
                             \caption{Описание значения поля \code{boundary_conditions}\label{tbl::boundary_conditions}}
                             \begin{tabular}{|C{3cm}|C{2.25cm}|C{2cm}|m{7.75cm}|}
                                 \hline
-                                \multicolumn{2}{|C{5.25cm}|}{Поле} & Тип значения & \multicolumn{1}{c|}{Описание} \\ 
+                                \multicolumn{2}{|C{5.25cm}|}{Поле} & Тип значения & \multicolumn{1}{c|}{Описание} \\
                                 \hline
                                 \multicolumn{2}{|C{5.25cm}|}{\code{type}} & \code{string} & \code{"pml"} -- PML граничные условия (см. \ref{sec::PML})\\
                                 \hline
@@ -303,7 +303,7 @@
                             \caption{Описание функции $\beta\pa{\zeta}$\label{tbl::betay}}
                             \begin{tabular}{|C{3cm}|C{1.5cm}|C{2cm}|m{8.5cm}|}
                                 \hline
-                                \multicolumn{2}{|C{4.5cm}|}{Поле} & Тип значения & \multicolumn{1}{c|}{Описание} \\ 
+                                \multicolumn{2}{|C{4.5cm}|}{Поле} & Тип значения & \multicolumn{1}{c|}{Описание} \\
                                 \hline
                                 \multicolumn{2}{|C{4.5cm}|}{\multirow{3}{*}{\code{type}}} & \multirow{3}{*}{\code{string}} & \code{"cubic"} -- функция \eqref{eq::betay}\\
                                 \multicolumn{2}{|C{4.5cm}|}{} & & \code{"tabular"} -- функция, заданная таблично на отрезке $\left[0, 1\right]$\\
@@ -340,13 +340,13 @@
                             \begin{itemize}
                                 \item вещественное число -- количество элементов измерения;
                                 \item JSON объект, формат которого описан в \niceref{tbl::dimension}{Таблице}, поля \code{values} и \code{bound} не могут быть указаны одновременно, но могут отсутствовать, в этом случае координаты измерения считаются равномерно распределёнными на отрезке $\left[0, 1\right]$, также указание координат может быть недопустимо для некоторых измерений определённых категорий данных (например, количество приёмников);
-                                \item список указанных выше значений, в этом случае измерение задаётся несколько раз, так называемое \guillemetleft равное\guillemetright измерение (например количество мод в зависимости от номера частоты); 
+                                \item список указанных выше значений, в этом случае измерение задаётся несколько раз, так называемое \guillemetleft равное\guillemetright измерение (например количество мод в зависимости от номера частоты);
                                 \begin{table}[h]
                                     \centering
                                     \caption{Описание измерения\label{tbl::dimension}}
                                     \begin{tabular}{|C{3cm}|C{2cm}|m{10cm}|}
                                         \hline
-                                        Поле & Тип значения & \multicolumn{1}{c|}{Описание} \\ 
+                                        Поле & Тип значения & \multicolumn{1}{c|}{Описание} \\
                                         \hline
                                         \code{n} & \code{integer} & количество элементов измерения\\
                                         \hline
@@ -363,7 +363,7 @@
                                     \caption{Описание равномерной сетки координат\label{tbl::bounds}}
                                     \begin{tabular}{|C{3cm}|C{2cm}|m{10cm}|}
                                         \hline
-                                        Поле & Тип значения & \multicolumn{1}{c|}{Описание} \\ 
+                                        Поле & Тип значения & \multicolumn{1}{c|}{Описание} \\
                                         \hline
                                         \code{a} & \code{double} & левая граница интервала\\
                                         \hline
@@ -395,7 +395,7 @@
                                 \item\code{sel} -- значения SEL в вычислительной области, имеет 3 измерения: $x,y,z$;
                                 \item\code{impulse} -- импульс источника вычисленный в точках приёма, имеет 2 измерения: номер приёмника и время (см. \ref{sec::impulse});
                                 \item\code{solution} -- вычисленное звуковое поле, имеет 4 координаты: номер частоты и $x,y,z$;
-                                \item\code{acceleration_x}, \code{acceleration_y}, \code{acceleration_z} -- колебательные ускорения по соответствующим пространственным координатам, имеют 4 координаты: номер частоты и $x,y,z$. 
+                                \item\code{acceleration_x}, \code{acceleration_y}, \code{acceleration_z} -- колебательные ускорения по соответствующим пространственным координатам, имеют 4 координаты: номер частоты и $x,y,z$.
                             \end{itemize}
                     \end{itemize}
                     Данные, зависящие от частоты, будут сохранены в отдельных папках, содержащих файл \code{meta.json}, описывающий эти данные, и отдельные файлы с данными для каждой частоты, имеющие названия \code{frequency.(txt|bin)}, где \code{frequency} -- частота при которой были получены данные. Измерения, представляющие собой количество мод, имеют разный размер в зависимости от номера частоты, для которой выполняются расчёты.
@@ -405,7 +405,7 @@
                 \begin{equation}
                     p\pa{x,y,z}=\frac{i}{4}\sum\limits_{j=1}^{\infty}\varphi_j\pa{z_s}\varphi_j\pa{z}H_0^{\pa{1}}\pa{k_j\sqrt{x^2+y^2}}\,,
                 \end{equation}
-                где $\pa{z}H_0^{\pa{1}}$ -- функция Ханкеля нулевого порядка первого рода \cite{hankel}. При проведении экспериментов были установлены следующие параметры 
+                где $\pa{z}H_0^{\pa{1}}$ -- функция Ханкеля нулевого порядка первого рода \cite{hankel}. При проведении экспериментов были установлены следующие параметры
                 \begin{itemize}
                     \item источник расположен на глубине $z_s=100\ \text{м}$;
                     \item глубина дна равна $200\ \text{м}$;
@@ -633,6 +633,55 @@
                     \caption{Сравнение результатов вычисления акустического поля (в дБ отн. 1 м.) в мелком море с подводным клином при $y=0\ \text{км}$.\label{fig::wedge_compare}}
                 \end{figure}
                 \FloatBarrier
+                \paragraph{Трассировка горизонтальных лучей}
+                    \par При распространении в среде, однородной по пространственной координате $x$, то есть при $k_j\pa{x,y}\equiv k_j\pa{y}$, справедлив закон Снеллиуса
+                    \begin{equation}
+                        k_j\pa{y}\cos\pa{\alpha_{j,\psi}\pa{y}}=C\,,
+                    \end{equation}
+                    где $\alpha_{j,\psi}\pa{y}$ -- угол скольжения луча относительно оси $x$, $\psi$ -- угол скольжения луча в источнике (см. Рис. \ref{fig:ray}), $C\in\mathbb{R}$ -- некоторая константа.
+                    \begin{figure}[h]
+                        \centering
+                        \begin{tikzpicture}
+                            \draw[very thick] (0,0)  arc (150:100:5);
+                            \draw[->]  (-0.5,  0.71)  -- (4.25,0.71);
+                            \draw[->]  (2.62, -0.29)  -- (2.62, 3.25);
+                            \draw[<->] ( 0.5,  0.5)   -- (2.62, 0.5)  node[midway,below]{$dx$};
+                            \draw[<->] (2.83,  0.71)  -- (2.83, 2.2)  node[midway,right]{$dy$};
+                            \draw      ( 0.5,  0.25)  -- (0.5,  0.71);
+                            \draw      (2.62,  2.2)   -- (3.08, 2.2);
+                            \draw      (   1,  0.71) arc (0:24.5:1)   node[midway,above right=-0.25 and 0]{\small $\alpha_{j,i}\pa{y}$};
+
+                            \node at (0.1,1) {\small $\pa{x,y}$};
+                            \node[circle,fill,inner sep=1.5pt] at (0.5,0.71) {};
+                        \end{tikzpicture}
+                        \caption{\label{fig:ray} Схематичное изображение распространения горизонтального луча.}
+                    \end{figure}
+                    Тогда, положив $C=k_j\pa{0}\cos\pa{\psi}$, получим
+                    \begin{gather}
+                        \tan\pa{\alpha_{j,\psi}\pa{y}}=\frac{dy}{dx}\,,\\
+                        1+\tan^2\pa{\alpha_{j,\psi}\pa{y}}=\frac{1}{\cos^2\pa{\alpha_{j,\psi}\pa{y}}}\,,\\
+                        \frac{k_j\pa{y}}{C^2}=\frac{1}{\cos^2\pa{\alpha_{j,\psi}\pa{y}}}=1+\pa{\frac{dy}{dx}}^2\,,\\
+                        \frac{dy}{dx}=\sqrt{\frac{k_j^2\pa{y}}{k_j^2\pa{0}\cos^2\pa{\psi}}-1}\,,\\
+                        dx=\frac{dy}{\sqrt{\frac{k_j^2\pa{y}}{k_j^2\pa{0}\cos^2\pa{\psi}}-1}}\,.
+                    \end{gather}
+                    Представляя луч в виде кривой $\left\{x\pa{s},y\pa{s}\right\}$, исходящий из точки $x\pa{0}=y\pa{0}=0$, получим представление координаты $x$ в виде криволинейного интеграла второго рода вдоль кривой $l: y\pa{s}$
+                    \begin{equation}\label{eq::ray_line_integral}
+                        x\pa{S}=\int\limits_{l_S}\frac{\dd y\pa{s}}{\sqrt{\frac{k_j^2\pa{y\pa{s}}}{k_j^2\pa{0}\cos^2\pa{\psi}}-1}}=\int\limits_0^S\frac{y^\prime_t\pa{s}\dd s}{\sqrt{\frac{k_j^2\pa{y\pa{s}}}{k_j^2\pa{0}\cos^2\pa{\psi}}-1}}\,.
+                    \end{equation}
+                    Сравнение результатов моделирования с использованием программы AMPLE и численного интегрирования \eqref{eq::ray_line_integral} представлены на Рис. \ref{fig::rays}.
+                    \begin{figure}
+                        \centering
+                        \begin{subfigure}{0.8\textwidth}
+                            \includegraphics[width=\textwidth]{rays1.pdf}
+                        \end{subfigure}
+                        \begin{subfigure}{0.8\textwidth}
+                            \includegraphics[width=\textwidth]{rays2.pdf}
+                        \end{subfigure}
+                        \begin{subfigure}{0.8\textwidth}
+                            \includegraphics[width=\textwidth]{rays3.pdf}
+                        \end{subfigure}
+                        \caption{Сравнение трассировки лучей путём численного решения системы \eqref{eq::ray_hamilton} (сплошная кривая) и численного интегрирования \eqref{eq::ray_line_integral} (пунктирная кривая) для трёх распространяющихся мод.\label{fig::rays}}
+                    \end{figure}
             \subsubsection{Волновод с реальной батиметрией}
                 \par В качестве последнего эксперимента было проведено моделирование распространения звуковых волн в волноводе с использованием реальных данных батиметрии, рельеф дна которого изображён на \niceref{fig::sakhalin}{Рисунке}.
                 \begin{figure}[h]
