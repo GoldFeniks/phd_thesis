@@ -119,7 +119,7 @@
             \end{equation}
             Вводя модовое опорное волновое число $k_{j,0}$ и выделяя главную осцилляцию из $A_j\pa{x,y}$
             \begin{equation}
-                A_j\pa{x,y}=e^{k_{j,0}x}\mathcal{A}_j\pa{x,y}\,,\nonumber
+                A_j\pa{x,y}=e^{ik_{j,0}x}\mathcal{A}_j\pa{x,y}\,,\nonumber
             \end{equation}
             получим задачу Коши для псевдодифференциального модового параболического уравнения
             \begin{equation}\label{eq::PDMPE}
@@ -480,7 +480,7 @@
             \subsubsection{Трассировка лучей, соответствующих вертикальным модам\label{sec::horizontal_rays}}
                 \paragraph{Математическая постановка задачи}
                     \par Задача трассировки лучей состоит в том, чтобы в области\\ $\left\{\pa{x,y,z_s}0\leqslant x\leqslant x_1,y_0\leqslant y\leqslant y_1\right\}$ вычислить координаты распространения лучей, соответствующих вертикальным модам, из источника, имеющего координаты $\pa{0,y_s,z_s}$, под углами распространения $\alpha_0\leqslant\alpha\leqslant\alpha_1$ и значениях натурального параметра кривой $l_0\leqslant l\leqslant l_1$, задаваемые Гамильтовой системой задач Коши
-                    \begin{equation}
+                    \begin{equation}\label{eq::ray_hamilton}
                         \begin{aligned}
                             \begin{dcases}
                                 \frac{dx_j\pa{l}}{dl}=\frac{\xi_j\pa{l}}{n_j\pa{x_j,y_j}}\,,\\
@@ -510,7 +510,7 @@
                         \end{dcases}
                     \end{equation}
                     где $\boldsymbol{y}:\mathbb{R}\mapsto\mathbb{R}^n$ --- искомая функция, $\boldsymbol{f}:\mathbb{R}^{n+1}\mapsto\mathbb{R}^n$ --- функция зависимости, $\boldsymbol{y}_0\in\mathbb{R}^n$ --- начальное значение функции, $x,x_0\in\mathbb{R}$ --- аргумент и его начальное значение.
-                    \par Пусть задана некоторая дискретная сетка\\ $\Omega=\left\{\pa{x_i,\boldsymbol{y}_i}\bigr|x_i=x_{i-1}+h_i,\boldsymbol{y}_i\approx\boldsymbol{y}\pa{x_i},x_i,h_i\in\mathbb{R},\boldsymbol{y}_i\in\mathbb{R}^n\right\}$, тогда явный $s$-ша\-говый метод Рунге-Кутты может быть записан в виде
+                    \par Пусть задана некоторая равномерная дискретная сетка\\ $\Omega=\left\{\pa{x_i,\boldsymbol{y}_i}\bigr|x_i=x_{i-1}+h_i,\boldsymbol{y}_i\approx\boldsymbol{y}\pa{x_i},x_i,h_i\in\mathbb{R},\boldsymbol{y}_i\in\mathbb{R}^n\right\}$, тогда явный $s$-ша\-говый метод Рунге-Кутты может быть записан в виде
                     \begin{equation}
                         \boldsymbol{y}_{i+1}=\boldsymbol{y}_i+h_i\sum\limits_{j=1}^{s}b_j\boldsymbol{k}_j
                     \end{equation}
@@ -688,6 +688,26 @@
                         f_s&=f_1+sd_f\,,\qquad s=\overline{0,n_f-1}\,.
                     \end{aligned}
                 \end{gathered}
+            \end{equation}
+        \subsection{Колебательные скорость и ускорение}
+            \par Колебательное ускорение $\mathbf{a}\pa{x,y,z}$ в области\\
+            $\Omega=\left\{\pa{x,y,z}\bigr|x_0\leqslant x\leqslant x_1,y_0\leqslant y\leqslant y_1,z_0\leqslant z\leqslant z_b\right\}$ может быть вычислено через градиент акустического давления
+            \begin{equation}
+                \mathbf{a}=\left\{a_x,a_y,a_z\right\}=\left\{-\frac{1}{\rho}\frac{\partial p}{\partial x},-\frac{1}{\rho}\frac{\partial p}{\partial y},-\frac{1}{\rho}\frac{\partial p}{\partial z}\right\}=-\frac{1}{\rho}\nabla p\,.
+            \end{equation}
+            Используя модовое разложение \eqref{eq::MD} и извлекая главную осцилляцию $e^{ik_{j,0}x}$, запишем производные акустического давления по пространственным координатам
+            \begin{align}
+                &\begin{multlined}
+                    \frac{\partial p}{\partial x}=\sum\limits_{i=1}^\infty\frac{\partial }{x}\pa{e^{ik_{j,0}x}\mathcal{A}_j\varphi_j}=\sum\limits_{i=1}^\infty e^{ik_{j,0}x}\pa{ik_{j,0}\mathcal{A}_j\varphi_j+\frac{\partial}{\partial x}\pa{\mathcal{A}_j\varphi_j}}=\\
+                    \sum\limits_{i=1}^\infty e^{ik_{j,0}x}\pa{ik_{j,0}\mathcal{A}_j\varphi_j+\frac{\partial\mathcal{A}_j}{\partial x}\varphi_j+\frac{\partial\varphi_j}{\partial x}\mathcal{A}_j}\,,
+                \end{multlined}\\
+                &\frac{\partial p}{\partial y}=\sum\limits_{i=1}^\infty e^{ik_{0,j}x}\frac{\partial}{\partial y}\pa{\mathcal{A}_j\varphi_j}=\sum\limits_{i=1}^\infty e^{ik_{0,j}x}\pa{\frac{\partial\mathcal{A}_j}{\partial y}\varphi_j+\frac{\partial\varphi_j}{\partial y}\mathcal{A}_j}\,,\\
+                &\frac{\partial p}{\partial z}=\sum\limits_{i=1}^\infty e^{ik_{0,j}x}\frac{\partial}{\partial z}\pa{\mathcal{A}_j\varphi_j}=\sum\limits_{i=1}^\infty e^{ik_{0,j}x}\mathcal{A}_j\frac{\partial\varphi_j}{\partial z}\,.
+            \end{align}
+            Удаление главной осцилляции позволяет перейти к производным по медленно изменяющимся функциям, что в свою очередь приводит к высокой численной стабильности при проведении численного дифференцирования даже простыми конечными разностями.
+            \par Колебательная скорость $\mathbf{v}\pa{x,y,z}$ также может быть выражена через градиент акустического давления. Используя тот факт, что в частотной области $\mathbf{a}=-i\omega\mathbf{v}$ получим
+            \begin{equation}
+                \mathbf{v}=\left\{v_x,v_y,v_z\right\}=\left\{\frac{i}{\omega}a_x,\frac{i}{\omega}a_y,\frac{i}{\omega}a_z\right\}=-\frac{i}{\omega\rho}\nabla p\,.
             \end{equation}
     \subsection{Выводы ко второй главе}
         \par В данной главе диссертации рассматривается теория широкоугольных модовых параболических уравнений в адиабатическом приближении и предлагается новый способ их решения. В основе этого метода лежит применение аппроксимации Паде к пропагатору уравнения горизонтальной рефракции. Для искусственного ограничения вычислительной области вводятся согласованные поглощающие слои или граничные условия прозрачности. Описывается лучевая теория для уравнения горизонтальной рефракции, на основе которой вводятся лучевые начальные условия, обладающие сколь угодно широкой апертурой. Описывается вычисление временных рядов в точках приёма при распространении импульсных акустических сигналов, а также уровней звуковой экспозиции. Предлагается способ расчёта колебательных ускорений, вносящий лишь незначительную добавку в общее время вычислений.
