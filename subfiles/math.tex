@@ -290,7 +290,7 @@
                 \begin{equation}\label{eq::LPML}
                     k_{j,0}^2L_j^{PML}=\frac{1}{1+i\beta\pa{y}}\frac{\partial}{\partial y}\frac{1}{1+i\beta\pa{y}}\frac{\partial}{\partial y}+k_j^2+k_{j,0}^2\,,
                 \end{equation}
-                где $\beta\pa{y}$ -- некоторая гладкая функция, монотонно убывающая на интервале\\ $\left[y_0-\varepsilon,y_0\right)$, возрастающая на $\left(y_1,y_1+\varepsilon\right]$, и $\beta\pa{y}=0$ при $y\in\left[y_0,y_1\right]$. Таким образом, оператор $L_j^{PML}$ совпадает с оператором $L_j$ внутри области $\Omega$. На границах $y_0-\varepsilon$, $y_1+\varepsilon$ устанавливаются стандартные однородные условия Дирихле
+                где $\beta\pa{y}$ -- некоторая гладкая функция, монотонно убывающая на интервале $\left[y_0-\varepsilon,y_0\right)$, возрастающая на $\left(y_1,y_1+\varepsilon\right]$, и $\beta\pa{y}=0$ при $y\in\left[y_0,y_1\right]$. Таким образом, оператор $L_j^{PML}$ совпадает с оператором $L_j$ внутри области $\Omega$. На границах $y_0-\varepsilon$, $y_1+\varepsilon$ устанавливаются стандартные однородные условия Дирихле
                 \begin{equation}
                     \mathcal{A}_j\bigr|_{y=y_0-\varepsilon}=\mathcal{A}_j\bigr|_{y=y_1+\varepsilon}=0\,.
                 \end{equation}
@@ -616,11 +616,11 @@
                 $S_j\pa{x,y}$ --- функция эйконала, удовлетворяющая уравнению Гамильтона-Якоби \eqref{eq::hamilton_jacoby}.
                 Оба эти уравнения могут быть получены из решения системы Гамильтона \eqref{eq:hamilton_system} вдоль кривой распространения звукового луча в виде
                 \begin{align}
-                    S_j\pa{l}&=\int\limits_0^ln_j\pa{l}dl\,,\\
-                    M_j\pa{l}&=\frac{M_{j,0}}{n_j\pa{l}}\sqrt{\frac{\cos\alpha}{\nicefrac{\partial y\pa{l,\alpha}}{\partial\alpha}}}\,,
+                    S_j\pa{y\pa{l,\alpha}}&=\int\limits_0^ln_j\pa{y\pa{\ell,\alpha}}d\ell\,,\\
+                    M_j\pa{y\pa{l,\alpha}}&=\frac{M_{j,0}}{n_j\pa{y\pa{l,\alpha}}}\sqrt{\frac{\cos\alpha}{\nicefrac{\partial y\pa{l,\alpha}}{\partial\alpha}}}\,,
                 \end{align}
                 где $M_{j,0}=\nicefrac{e^{\nicefrac{i\pi}{4}}}{\sqrt{8\pi k_{j,0}}}$ --- амплитуда на расстоянии 1 м. от источника, $n_j\pa{l}=\nicefrac{k_j\pa{l}}{k_{j,0}}$ -- горизонтальный показатель преломления.
-                \par Так как значения функций $S_j\pa{x,y}$ и $M_j\pa{x,y}$ вычисляются лишь на небольшом расстоянии $x_0$, в большинстве случаев будет достаточно начального условия рассчитанного для однородной среды при $k_j=\pa{x,y}=k_{j,0}$. В таком случае получим
+                \par Так как значения функций $S_j\pa{x,y}$ и $M_j\pa{x,y}$ вычисляются лишь на небольшом расстоянии $x_0$ (несколько десятков метров), в большинстве случаев будет достаточно начального условия рассчитанного для однородной среды при $k_j\pa{x,y}\equiv k_{j,0}$. В таком случае получим
                 \begin{equation}\label{eq::ray_simple}
                     \begin{aligned}
                         S_j\pa{y}&=r\pa{y}\,,\\

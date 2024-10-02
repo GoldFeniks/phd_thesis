@@ -1,8 +1,10 @@
-\documentclass{fefu}
+\documentclass[defernumbers,nosortbib]{fefu}
 
 \usepackage{bm}
+\usepackage{minted}
 \usepackage{amssymb}
 \usepackage{subfiles}
+\usepackage{nicefrac}
 
 \setmainfont{CMU Serif}
 \addbibresource{../references.bib}
@@ -19,7 +21,7 @@
 \newcounter{bibpagescount}
 \newcommand{\handlecounts}{%
     \input{../counters.tex}%
-	
+
 	\setcounter{sectionscount}{\pgfkeysvalueof{/counters/sectionscount}}%
     \setcounter{allpagescount}{\pgfkeysvalueof{/counters/allpagescount}}%
     \setcounter{textpagescount}{\pgfkeysvalueof{/counters/textpagescount}}%
@@ -50,7 +52,7 @@
 	\par\textbf{Во Введении} обоснована актуальность диссертационной работы, сформулирована цель и аргументирована научная новизна исследований, показана
 	практическая значимость полученных результатов, представлены выносимые
 	на защиту научные положения.
-	\par \textbf{В первой главе} приводится краткое описание задач, для которых моделирование трёхмерных звуковых полей 
+	\par \textbf{В первой главе} приводится краткое описание задач, для которых моделирование трёхмерных звуковых полей
 	НИЧЕГО
 	\par \textbf{Вторая глава} посвящена описанию математической части поставленной задачи и методам её решения. Приводится детальное описание предлагаемого алгоритма моделирования. Звуковое поле ищется в форме модового разложения
 	\begin{equation}
@@ -60,7 +62,7 @@
 	\begin{equation}
 		\frac{\partial^2A_j\pa{x,y}}{\partial x^2}+\frac{\partial^2 A_j\pa{x,y}}{\partial y^2}+k_j^2\pa{x,y}A_j\pa{x,y}=-\delta\pa{x}\delta\pa{y}\varphi_j\pa{z_s,0,0}\,,
 	\end{equation}
-	при этом модовые функции $\varphi_j\pa{z,x,y}$ и соответствующие им волновые числа $k_j\pa{x,y}$ являются решениями соответствующей спектральной задачи при фиксированных $x$ и $y$. Решение уравнения горизонтальной рефракции далее сводится к решению псевдодифференциального модового параболического уравнения вида 
+	при этом модовые функции $\varphi_j\pa{z,x,y}$ и соответствующие им волновые числа $k_j\pa{x,y}$ являются решениями соответствующей спектральной задачи при фиксированных $x$ и $y$. Решение уравнения горизонтальной рефракции далее сводится к решению псевдодифференциального модового параболического уравнения вида
 	\begin{gather}\label{eq::PDMPE}
 		A_j\pa{x,y}=e^{ik_{j,0}x}\mathcal{A}_j\pa{x,y}\,,\\
 		\frac{\partial\mathcal{A}_j\pa{x,y}}{\partial x}=ik_{j,0}\pa{\sqrt{1+L_j}-1}\mathcal{A}_j\pa{x,y}\,,\\
@@ -80,23 +82,36 @@
 		\pa{1+b_{l,m}^iL_j^\delta}\mathcal{B}_{j,i}^{n+1,q}=\mathcal{A}_j^{n,q},\quad i=\overline{1,p}\,,\\
 		\underset{\alpha_{j,i}}{\underbrace{\frac{b_{l,m}^i}{k_{j,0}^2\delta^2}}}\mathcal{B}_{j,i}^{n+1,q-1}+\underset{\beta_{j,i}}{\underbrace{\pa{1+\frac{b_{l,m}^i}{k_{j,0}^2}\pa{k_j^2-k_{j,0}^2-\frac{2}{\delta^2}}}}}\mathcal{B}_{j,i}^{n+1,q}+\underset{\gamma_{j,i}}{\underbrace{\frac{b_{l,m}^i}{k_{j,0}^2\delta^2}}}\mathcal{B}_{j,i}^{n+1,q+1}=\mathcal{A}_j^{n,q}\,.
 	\end{gather}
+    Таким образом решение уравнения может быть получено путём последовательного обращения трёхдиагональных матриц.
 	\par В \textbf{разделе 2.5} рассматриваются граничные условия, используемые для искусственного ограничения вычислительной области. Первыми рассматриваются согласованные поглощающие слои, заключающиеся в расширении вычислительной области на $\varepsilon$ с обоих сторон по координате $y$ и заменой оператора $L_j$ на оператор $L_j^{PML}$
 	\begin{equation}
 		k_{j,0}^2L_j^{PML}=\frac{1}{1+i\beta\pa{y}}\frac{\partial}{\partial y}\frac{1}{1+i\beta\pa{y}}\frac{\partial}{\partial y}+k_j^2+k_{j,0}^2\,,
 	\end{equation}
-	где $\beta\pa{y}$ -- некоторая гладкая функция, монотонно убывающая на интервале\\ $\left[y_0-\varepsilon,y_0\right)$, возрастающая на $\left(y_1,y_1+\varepsilon\right]$, и $\beta\pa{y}=0$ при $y\in\left[y_0,y_1\right]$. Затем рассматриваются граничные условия прозрачности имеющие следующий вид на правой границе области $y_Q=y_1$
+	где $\beta\pa{y}$ -- некоторая гладкая функция, монотонно убывающая на интервале $\left[y_0-\varepsilon,y_0\right)$, возрастающая на $\left(y_1,y_1+\varepsilon\right]$, и $\beta\pa{y}=0$ при $y\in\left[y_0,y_1\right]$. Затем рассматриваются граничные условия прозрачности имеющие следующий вид на правой границе области $y_Q=y_1$
 	\begin{equation}
 		\bm{\Psi}_j^{n+1,Q}-\bm{\Psi}_j^{n+1,Q-1}=\sum\limits_{l=1}^{n+1}\mathbf{D}_j^{n+1-l}\bm{\Psi}_j^{l,Q}\,,
 	\end{equation}
-	где $\bm{\Psi}_j^{n,q}=\pa{\mathcal{A}_j^{n,q},\mathcal{B}_{j,1}^{n,q},\dots,\mathcal{B}_{j,1}^{n,q}}^T\in\mathbb{C}^{p+1}$. Вычисление коэффициентов $D_j$ подробно описано в тексте работы.
+	где $\bm{\Psi}_j^{n,q}=\pa{\mathcal{A}_j^{n,q},\mathcal{B}_{j,1}^{n,q},\dots,\mathcal{B}_{j,1}^{n,q}}^T\in\mathbb{C}^{p+1}$. Вычисление коэффициентов $\textbf{D}_j$ подробно описано в тексте работы. Граничные условия на левой границе имеют аналогичную форму.
 	\par В \textbf{разделе 2.6} описывается лучевая теория распространения звука и численный метод трассировки горизонтальных лучей, соответствующих вертикальным модам. Далее в \textbf{разделе 2.7} вводятся лучевые начальные условия, лучше удовлетворяющие широкоугольным свойствам аппроксимации Паде по сравнению с начальными условиями Гаусса и Грина. Условия ставятся на некотором небольшом расстоянии $x_0$ от источника в предположении $k_j=k_j\pa{y}$, и имеют следующий вид
 	\begin{gather}
-		\mathcal{A}_j\pa{x_0,y}=M_j\pa{x_0,y}e^{ik_{j,0}}S_j\pa{x_0,y}\,,\\
-		S_j\pa{x_0,y\pa{l,\alpha}}=\int\limits_0^ln_j\pa{y\pa{l,\alpha}}\dd\ell\,,\\
-		M_j\pa{x_0,y\pa{l,\alpha}}=\frac{M_{j,0}}{n_j\pa{y\pa{l,\alpha}}}\sqrt{\frac{\cos\alpha}{}}
-		
+        \mathcal{A}_j\pa{x_0,y}=M_j\pa{x_0,y}e^{ik_{j,0}S_j\pa{x_0,y}}\,,\\
+		S_j\pa{y\pa{l,\alpha}}=\int\limits_0^ln_j\pa{y\pa{\ell,\alpha}}d\ell\,,\\
+        M_j\pa{y\pa{l,\alpha}}=\frac{M_{j,0}}{n_j\pa{y\pa{l,\alpha}}}\sqrt{\frac{\cos\alpha}{\nicefrac{\partial y\pa{l,\alpha}}{\partial\alpha}}}\,,\\
+        M_{j,0}=\nicefrac{e^{\nicefrac{i\pi}{4}}}{\sqrt{8\pi k_{j,0}}}\,,\quad n_j\pa{y}=\nicefrac{k_j\pa{y}}{k_{j,0}}\,.\nonumber
 	\end{gather}
+    Так как расстояние $x_0$ является небольшим (несколько десятков метров) имеет место предложить однородность $k_j$ по обеим координатам $k_j\pa{x,y}\equiv k_{j,0}$, тогда
+    \begin{equation}
+        \begin{gathered}
+            S_j\pa{y}=r\pa{y}\,,\quad M_j\pa{y}=\nicefrac{M_{j,0}}{r\pa{y}}\,,\\
+            r\pa{y}=\sqrt{x_0^2+y^2}\,.
+        \end{gathered}
+    \end{equation}
 	\newpage
-	\printbibliography[title=Цитированная литература,notkeyword={myarticles},notkeyword={myproceedings}]
-	\printbibliography[title=Список публикаций,filter=mine]
+    \begin{refsegment}
+        \printbibliography[title=Цитированная литература,notkeyword={myarticles},notkeyword={myproceedings}]
+    \end{refsegment}
+    \begin{refsegment}
+        \newrefcontext[labelprefix=A]
+        \printbibliography[title=Список публикаций,filter=mine,resetnumbers=true]
+    \end{refsegment}
 \end{document}
