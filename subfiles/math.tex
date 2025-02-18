@@ -18,7 +18,7 @@
             \begin{equation}\label{eq::K}
                 K\pa{x,y,z}=\frac{\omega}{c\pa{x,y,z}}\pa{1+i\eta\beta\pa{x,y,z}}\,,
             \end{equation}
-            где $N_m=\left\lfloor\frac{\omega H}{\pi c}\right\rfloor$, $c\pa{x,y,z}$ --- скорость звука, $\omega=2\pi f$ --- циклическая частота, $\beta\pa{x,y,z}$ --- коэффициент затухания звука, $\eta=\nicefrac{1}{40\pi\log_{10}e}$. Для существования и единственности решения требуется также поставить условия излучения Свешникова \cite{sveshnikov,alekseev}
+            где $c\pa{x,y,z}$ --- скорость звука, $\omega=2\pi f$ --- циклическая частота, $\beta\pa{x,y,z}$ --- коэффициент затухания звука, $\eta=\nicefrac{1}{40\pi\log_{10}e}$. Для существования и единственности решения требуется также поставить условия излучения Свешникова \cite{sveshnikov,alekseev}
             \begin{equation}\label{eq::radiation_condition}
                 \lim\limits_{r\to\infty}\sqrt{r}\pa{\frac{\partial}{\partial r}-i\sqrt{\frac{\omega}{c\pa{r}}}}p_j\pa{r}=0\,,\quad j=\overline{1,N_m}\,,
             \end{equation}
@@ -77,14 +77,14 @@
                     \int\limits_0^{H}\frac{\varphi_i\pa{z}\varphi_j\pa{z}}{\rho\pa{z}}\operatorname{dz}=\delta_{i,j}\,.
                 \end{equation}
             \end{enumerate}
-            \par Так как изменение параметров среды по координатам $x, y$ в задачах подводной акустики является существенно более медленным по сравнению с изменением по $z$, решение для неоднородной среды может быть поучено путём рассмотрения модовых функций локально при фиксированных значениях $x,y$, то есть искать решение задачи \eqref{eq::SLP} отдельно в каждой точке $x,y$. Таким образом, звуковое поле $p\pa{x,y,z}$ может быть представлено в виде модового разложения
+            \par Так как изменение параметров среды по координатам $x, y$ в задачах подводной акустики является существенно более медленным по сравнению с изменением по $z$, решение для неоднородной среды может быть получено путём рассмотрения модовых функций локально при фиксированных значениях $x,y$, то есть решение задачи \eqref{eq::SLP} может быть получено отдельно в каждой точке $x,y$. Таким образом, звуковое поле $p\pa{x,y,z}$ может быть представлено в виде модового разложения
             \begin{equation}\label{eq::MD}
                 p\pa{x,y,z}=\sum\limits_{j=1}^\infty A_j\pa{x,y}\varphi_j\pa{z,x,y}\,,
             \end{equation}
             при этом $x,y$ в $\varphi_j\pa{z,x,y}$ понимаются как параметры функции. С использованием этого разложения \eqref{eq::3DH} преобразуется к следующему виду
             \begin{multline}
-                \sum\limits_{j=1}^\infty\left(\frac{\partial^2 A_j\pa{x,y}}{\partial x^2}+2\frac{\partial A_j\pa{x,y}}{\partial x}\frac{\partial\varphi_j\pa{z,x,y}}{\partial x}+\frac{\partial^2\varphi_j\pa{z,x,y}}{\partial x^2}\right.+\\
-                \frac{\partial^2 A_j\pa{x,y}}{\partial y^2}+2\frac{\partial A_j\pa{x,y}}{\partial y}\frac{\partial\varphi_j\pa{z,x,y}}{\partial y}+\frac{\partial^2\varphi_j\pa{z,x,y}}{\partial y^2}+\\
+                \sum\limits_{j=1}^\infty\left(\frac{\partial^2 A_j\pa{x,y}}{\partial x^2}\varphi_j\pa{z,x,y}+2\frac{\partial A_j\pa{x,y}}{\partial x}\frac{\partial\varphi_j\pa{z,x,y}}{\partial x}+\frac{\partial^2\varphi_j\pa{z,x,y}}{\partial x^2}A_j\pa{x,y}\right.+\\
+                \frac{\partial^2 A_j\pa{x,y}}{\partial y^2}\varphi_j\pa{z,x,y}+2\frac{\partial A_j\pa{x,y}}{\partial y}\frac{\partial\varphi_j\pa{z,x,y}}{\partial y}+\frac{\partial^2\varphi_j\pa{z,x,y}}{\partial y^2}A_j\pa{x,y}+\\
                 k_j^2\pa{x,y}A_j\pa{x,y}\varphi_j\pa{z,x,y}\biggr)=-\delta\pa{x}\delta\pa{y}\delta\pa{z-z_s}\,.
             \end{multline}
             Уравнение для одной моды $j$ теперь может быть получено умножением в смысле скалярного произведения на $\varphi_j\pa{z,x,y}$ (то есть применением оператора $\int\limits_{0}^{H}\pa{\cdot}\frac{\varphi_j\pa{z,x,y}}{\rho\pa{x,y,z}}\dd z$)
@@ -107,7 +107,7 @@
             \begin{equation}
                 \varlimsup\limits_{r\to\infty}r^{\frac{3}{2}}\pa{\frac{\partial}{\partial r}-ik_{j,\infty}}A_{j}\ne\infty\,.
             \end{equation}
-            В дальнейшем удовлетворение этому условию следует из построения модового параболического уравнения и численный схемы его решения: учёт только исходящих волн по $x$ (см. \ref{seq::MPE}) и подавление отражения по $y$ (см. \ref{seq::boundary_conditions}).
+            В дальнейшем удовлетворение этому условию следует из построения модового параболического уравнения и численной схемы его решения: учёт только исходящих волн по $x$ (см. \ref{seq::MPE}) и подавление отражения по $y$ (см. \ref{seq::boundary_conditions}).
         \subsection{Модовые параболические уравнения\label{seq::MPE}}
             \par Для получения параболических аппроксимаций однородный аналог уравнения горизонтальной рефракции \eqref{eq::HRE} представляется в виде
             \begin{equation}
@@ -132,7 +132,7 @@
             \begin{equation}
                 k_{j,0}^2L_j=\frac{\partial^2}{\partial y^2}+k_j^2\pa{x,y}-k_{j,0}^2\,.\nonumber
             \end{equation}
-        \subsection{Аппроксимация Паде}
+        \subsection{Аппроксимация Паде\label{seq::pade}}
             \par Для решения уравнения \eqref{eq::PDMPE} необходимо выполнить линеаризацию оператора квадратного корня с использованием аппроксимации Паде. Пусть есть некоторая функция $F\pa{\lambda}$ тогда её аппроксимация может быть записана в виде
             \begin{equation}\label{eq::pade}
                 F\pa{\lambda}\approx\mathcal{R}\pa{F,l,m}\pa{\lambda}\equiv\frac{P_{l,m}^F\pa{\lambda}}{Q_{l,m}^F\pa{\lambda}}\,,
@@ -189,7 +189,7 @@
                 \end{equation}
                 \paragraph{Вычисление коэффициентов полиномов}
                     \par Пусть известно разложение функции $F\pa{\lambda}$ в ряд Тейлора вида
-                    \begin{equation}
+                    \begin{equation}\label{eq::taylor}
                         F\pa{\lambda}\approx T_{l+m}^F\pa{\lambda}=c_0^F+\sum\limits_{i=1}^{l+m}c_i^F\lambda^n+o\pa{\lambda^{l+m}}\,,
                     \end{equation}
                     тогда
@@ -244,12 +244,12 @@
                     где $a_i$ коэффициенты полинома.
                 \paragraph{Разложение в ряд Тейлора оператора квадратного корня и экспоненты}
                 \par Коэффициенты разложения оператора квадратного корня\\
-                    $ik_{j,0}\pa{\sqrt{1+L_j}-1}$ могут быть выражены формулой
+                    $ik_{j,0}\pa{\sqrt{1+L_j}-1}$ в ряд \eqref{eq::taylor} могут быть выражены формулой
                     \begin{equation}
                         c_0=0\,,\quad c_p=ik_{j,0}\frac{\pa{\frac{1}{2}}_p}{p!},\quad p=\overline{1,n}\,,
                     \end{equation}
                     где $\pa{x}_p=\prod\limits_{k=0}^{p-1}\pa{x-k}$ -- убывающий факториал.
-                    \par Коэффициенты разложения экспоненты $e^{ik_{j,0}h\pa{\sqrt{1+L}-1}}$ могут быть получены из рекуррентного соотношения
+                    \par Аналогично, коэффициенты разложения экспоненты $e^{ik_{j,0}h\pa{\sqrt{1+L}-1}}$ могут быть получены из рекуррентного соотношения
                     \begin{equation}
                         \begin{aligned}
                             c_0&=1\,,\\
@@ -284,7 +284,7 @@
             \end{equation}
             Таким образом, коэффициенты $\mathcal{B}_{j,i}^{n+1,q}$ могут быть легко найдены обращением матриц с диагоналями $\alpha_{j,i},\beta_{j,i},\gamma_{j,i}$ методом прогонки \cite{abramov}.
         \subsection{Граничные условия\label{seq::boundary_conditions}}
-            \par Одной из особенностей МПУ является то, что их решение всегда рассмат­ривается в неограниченной области, в отличие от решения «обычных», или «вер­тикальных», параболических уравнений в подводной акустике, которое вычис­ляется в нескольких слоях, имеющих в качестве верхней границы поверхность океана и, как минимум в теории, некоторую границу на дне моря. Таким образом, искусственное ограничение вычислительной области является обязательным при численном решении МПУ. В рамках данной работы рассматривается два способа выполнения такого ограничения. В первом случае вычислительная области расширяется с обеих сторон с целью поглощения исходящих волн. Во втором, решение внутри области сопоставляется с решением, содержащим исходящие волны за её пределами, с использованием специальных искусственных граничных условий.
+            \par Одной из особенностей МПУ является то, что их решение всегда рассмат­ривается в неограниченной области, в отличие от решения «обычных», или «вер­тикальных», параболических уравнений в подводной акустике, которое вычис­ляется в нескольких слоях, имеющих в качестве верхней границы поверхность океана и, как минимум в теории, некоторую границу на дне моря. Таким образом, искусственное ограничение вычислительной области является обязательным при численном решении МПУ. В рамках данной работы рассматривается два способа выполнения такого ограничения. В первом случае вычислительная область расширяется с обеих сторон с целью поглощения исходящих волн. Во втором, решение внутри области сопоставляется с решением, содержащим исходящие волны за её пределами, с использованием специальных искусственных граничных условий.
             \subsubsection{Согласованные поглощающие слои\label{sec::PML}}
                 \par Впервые метод согласованных поглощающих слоёв (perfectly matching layers, PML) для граничных условий был показан Беранже для уравнений Максвелла \cite{berenger}, а позднее Леви \cite{levy}, Лу и Чжу \cite{lu} исследовали применимость этого метода для решения параболических уравнений. В основе PML лежит расширение вычислительной области с целью плавного поглощения волн исходящих из неё. Пусть требуется найти решение уравнения \eqref{eq::PDMPE} в области $\Omega=\left[0,x_1\right]\times\left[y_0,y_1\right]$. Сформируем новую область $\overline{\Omega}=\left[0,x_1\right]\times\left[y_0-\varepsilon,y_1+\varepsilon\right]$, расширив $\Omega$ на $\varepsilon$ с обоих сторон вдоль оси $y$. Заменим оператор $L_j$ в уравнении \eqref{eq::PDMPE} оператором $L_j^{PML}$, определяемым как
                 \begin{equation}\label{eq::LPML}
@@ -294,7 +294,7 @@
                 \begin{equation}
                     \mathcal{A}_j\bigr|_{y=y_0-\varepsilon}=\mathcal{A}_j\bigr|_{y=y_1+\varepsilon}=0\,.
                 \end{equation}
-                Таким образом, применимость PML граничных условий зависит от значения параметра $\varepsilon$, который должен быть существенно большим, чтобы погладить исходящие волны, и функции $\beta\pa{y}$, которая в свою очередь должна существенно гладко достигать своего максимального значения при погружении в PML, так, при слишком быстром возрастании исходящие волны будут отражаться внутри поглощающего слоя.
+                Таким образом, применимость PML граничных условий зависит от значения параметра $\varepsilon$, который должен быть существенно большим, чтобы сгладить исходящие волны, и функции $\beta\pa{y}$, которая в свою очередь должна существенно гладко достигать своего максимального значения при погружении в PML, так, при слишком быстром возрастании исходящие волны будут отражаться внутри поглощающего слоя.
                 \par В рамках данной работы была использована следующая функция $\beta\pa{y}$
                 \begin{equation}\label{eq::betay}
                     \beta\pa{y}=\beta_0\pa{\frac{\left|y-y_b\right|}{\varepsilon}}^3=\beta_0\zeta^3\equiv\beta\pa{\zeta}\,,\quad\zeta\in\left[0, 1\right]\,,
@@ -324,7 +324,7 @@
                 \begin{equation}\label{eq::TBC_start}
                     k_{j,0}^2\mathcal{B}_{j,i}^{n+1,q}+b_{l,m}^iD_\delta^2\mathcal{B}_{j,i}^{n+1,q}+b_{l,m}^i\pa{k_j^2-k_{j,0}^2}\mathcal{B}_{j,i}^{n+1,q}=k_{j,0}^2\mathcal{A}_j^{n,q}\,.
                 \end{equation}
-                Решение такой системы может быть найдено с использованием $\mathcal{Z}$-преобра\-зования по эволюционной координате $x$
+                Решение такой системы может быть найдено с использованием $\mathcal{Z}$-преобра\-зования (см. \niceref{seq::ztransform}{Главу}) по эволюционной координате $x$
                 \begin{equation}
                     \mathcal{Z}\left\{\mathcal{A}_j^{n,q}\right\}=\hat{\mathcal{A}}_j^q\pa{\zeta}\coloneq\sum\limits_{n=0}^\infty\zeta^{-n}\mathcal{A}_j^{n,q}\,,\quad\zeta\in\mathbb{C}\,,\quad\left|\zeta\right|>R_{\hat{\mathcal{A}}_j^q}\,,
                 \end{equation}
@@ -332,7 +332,7 @@
                 \begin{equation}
                     -\zeta b_{l,m}^iD_\delta^2\hat{\mathcal{B}}_{j,i}^q=\zeta k_{j,0}^2\hat{\mathcal{B}}_{j,i}^q+\zeta b_{l,m}^i\pa{k_j^2-k_{j,0}^2}\hat{\mathcal{B}}_{j,i}^q-k_{j,0}^2\hat{\mathcal{A}}_j^q\,.
                 \end{equation}
-                Обозначим $\hat{\bm{\Psi}}_j^q=\pa{\hat{\mathcal{A}}_j^q,\hat{\mathcal{B}}_{j,1}^q,\dots,\hat{\mathcal{B}}_{j,p}^q}^T\in\mathbb{C}^{p+1}$, добавим к системе $Z$-преобра\-зование уравнения \eqref{eq::BtoA}
+                Обозначим $\hat{\bm{\Psi}}_j^q=\pa{\hat{\mathcal{A}}_j^q,\hat{\mathcal{B}}_{j,1}^q,\dots,\hat{\mathcal{B}}_{j,p}^q}^T\in\mathbb{C}^{p+1}$, добавим к системе $\mathcal{Z}$-преобра\-зование уравнения \eqref{eq::BtoA}
                 \begin{equation}
                     \zeta\hat{\mathcal{A}}_j^q=a_{l,m}^0\hat{\mathcal{A}}_j^q+\zeta\sum\limits_{i=1}^pa_{l,m}^i\hat{\mathcal{B}}_{j,i}^q\,,
                 \end{equation}
@@ -415,7 +415,7 @@
                         \hat{\bm{\Psi}}_j^q\\
                         \hat{\bm{\xi}}_j^q
                     \end{pmatrix}=\\
-                    \mathbf{P}_j^{-1}\mathbf{P}\begin{pmatrix}
+                    \mathbf{P}_j^{-1}\mathbf{P}_j\begin{pmatrix}
                         \mathbf{J}_j^1 & \mathbf{0}\\
                         \mathbf{0} & \mathbf{J}_j^2
                     \end{pmatrix}
@@ -444,7 +444,7 @@
                 \begin{equation}
                     D_\delta^-\hat{\bm{\Psi}}_j^Q=\hat{\mathbf{D}}_j\hat{\bm{\Psi}}_j^Q\,,
                 \end{equation}
-                где $\hat{\mathbf{D}}_j=-\pa{\mathbf{P}_j^4}^{-1}\mathbf{P}_j^3$. Применяя обратное $\mathcal{Z}$-преобразование получим дискретные правые прозрачные граничные условия
+                где $\hat{\mathbf{D}}_j=-\pa{\mathbf{P}_j^4}^{-1}\mathbf{P}_j^3$. Применяя обратное $\mathcal{Z}$-преобразование \cite{lynn1986} получим дискретные правые прозрачные граничные условия
                 \begin{equation}
                     \bm{\Psi}_j^{n+1,Q}-\bm{\Psi}_j^{n+1,Q-1}=\sum\limits_{l=1}^{n+1}\mathbf{D}_j^{n+1-l}\bm{\Psi}_j^{l,Q}\,,
                 \end{equation}
@@ -456,27 +456,58 @@
                 \begin{equation}
                     \mathbf{P}_j^1\hat{\bm{\Psi}}_j^0+\mathbf{P}_j^2\hat{\bm{\xi}}_j^0=0\,.
                 \end{equation}
-            \subsection{Лучевая теория для уравнения горизонтальной рефракции}
-                \par Предполагая, что волновые числа $k_j\pa{x,y}$ являются медленно изменяющейся функцией, решение уравнения \eqref{eq::HRE} с использованием лучевой теории распространения звука может быть выражено в виде
+            \subsubsection{$\mathcal{Z}$-преобразование\label{seq::ztransform}}
+                \par Под $\mathcal{Z}$-преобразованием \cite{lynn1986} понимается свёртывание некоторой последовательности вещественных чисел во временной области в аналитическую функцию комплексной частоты. одностороннее $\mathcal{Z}$-преобразование последовательности $x_n$ при $n\geq 0$ задаётся как
                 \begin{equation}
-                    A_j\pa{x,y}=M_j\pa{x,y}e^{ik_{j,0}S_j\pa{x,y}}+o\pa{\nicefrac{1}{k_{j,0}}}\,,
+                    X\pa{z}=\mathcal{Z}\left\{x_n\right\}=\sum\limits_{n=0}^\infty x_nz^{-n}\,.
                 \end{equation}
-                где функция $S_j\pa{x,y}$ называется эйконалом и может быть найдена из уравнения Гамильтона-Якоби
-                \begin{equation}\label{eq::hamilton_jacoby}
-                    \pa{\frac{\partial S_j\pa{x,y}}{\partial x}}^2+\pa{\frac{\partial S_j\pa{x,y}}{\partial y}}^2=n_j\pa{x,y}\,,
+                При этом соответствующее ему обратное преобразование может быть выражено как
+                \begin{equation}
+                    x_n=\mathcal{Z}\left\{X\pa{z}\right\}=\frac{1}{2\pi i}\oint\limits_C X\pa{z}z^{n-1}\dd z\,,
                 \end{equation}
-                где $n_j\pa{x,y}\equiv \nicefrac{k_j\pa{x,y}}{k_{j,0}}$ --- индекс горизонтальной рефракции \cite{burridge}. Амплитуда $M_j\pa{x,y}$ может быть получена из уравнения переноса вида
-                \begin{multline}\label{eq::transfer}
-                    2\pa{\frac{\partial S_j\pa{x,y}}{\partial x}\frac{\partial M_j\pa{x,y}}{\partial x}+\frac{\partial S_j\pa{x,y}}{\partial y}\frac{\partial M_j\pa{x,y}}{\partial y}}+\\\pa{\frac{\partial^2S_j\pa{x,y}}{\partial x^2}+\frac{\partial^2S_j\pa{x,y}}{\partial y^2}}M_j\pa{x,y}=0\,.
-                \end{multline}
-                Решение этих уравнений связано с решением системы Гамильтона
-                \begin{equation}\label{eq:hamilton_system}
-                    \begin{aligned}
-                        \frac{dx_j\pa{l}}{dl}&=\frac{\xi_j\pa{l}}{n_j\pa{x_j,y_j}}\,,\qquad&\frac{d\xi_j\pa{l}}{dl}&=\frac{\partial n_j\pa{x_j,y_j}}{\partial x_j}\,,\\
-                        \frac{dy_j\pa{l}}{dl}&=\frac{\eta_j\pa{l}}{n_j\pa{x_j,y_j}}\,,\qquad&\frac{d\eta_j\pa{l}}{dl}&=\frac{\partial n_j\pa{x_j,y_j}}{\partial y_j}\,,\\
-                    \end{aligned}
+                где $C$ -- контур, охватывающий область сходимости $X\pa{z}$
+                \begin{equation}
+                    D=\left\{z\bigr|\lim\limits_{m\mapsto\infty}\sum_{n=0}^mx_nz^{-n}<\infty\right\}\,.
                 \end{equation}
-                где $l$ является натуральным параметром, обозначающим длину кривой вдоль траектории распространения луча, а $\xi,\eta$ сопряжённые переменные к $x,y$ --- момент. Проекции решений этой системы из фазового пространства $\pa{x,y,\xi,\eta}$ на координатное $\pa{x,y}$ называются горизонтальными лучами, соответствующими вертикальным модам в океаническом волноводе.
+                \par Основными свойствами $\mathcal{Z}$-преобразования для области подводной акустики являются
+                \begin{subequations}
+                    \begin{enumerate}
+                        \item Линейность:
+                            \begin{equation}
+                                \mathcal{Z}\left\{\alpha x_n+\beta y_n\right\}=\alpha\mathcal{Z}\left\{x_n\right\}+\beta\mathcal{Z}\left\{y_n\right\}\,,\quad\alpha,\beta\in\mathbb{R}
+                            \end{equation}
+                        \item Задержка по времени
+                            \begin{equation}
+                                \mathcal{Z}\left\{x_{n-k}\right\}=z^{-k}\mathcal{Z}\left\{x_n\right\}\pa{z}\,,\quad k>0,x_n=0\forall n<0\,.
+                            \end{equation}
+                    \end{enumerate}
+                \end{subequations}
+                \par Дополнительно $\mathcal{Z}$-преобразование принято считать дискретным аналогом преобразования Лапласа
+                \begin{equation}
+                    \mathcal{L}\pa{f}\pa{s}=\int\limits_{0}^{\infty}f\pa{t}e^{-st}\dd t\,.
+                \end{equation}
+                При работе с дифференциальными уравнениями в частных производных преобразование Лапласа позволяет перейти к уравнению без частной производной по времени (или другой маршевой переменной). Являясь дискретным аналогом преобразования Лапласа, $\mathcal{Z}$-преобразование позволяет перейти к дискретному уравнению без численного дифференцирования по временной переменной.
+        \subsection{Лучевая теория для уравнения горизонтальной рефракции}
+            \par Предполагая, что волновые числа $k_j\pa{x,y}$ являются медленно изменяющейся функцией, решение уравнения \eqref{eq::HRE} с использованием лучевой теории распространения звука может быть выражено в виде
+            \begin{equation}
+                A_j\pa{x,y}=M_j\pa{x,y}e^{ik_{j,0}S_j\pa{x,y}}+o\pa{\nicefrac{1}{k_{j,0}}}\,,
+            \end{equation}
+            где функция $S_j\pa{x,y}$ называется эйконалом и может быть найдена из уравнения Гамильтона-Якоби
+            \begin{equation}\label{eq::hamilton_jacoby}
+                \pa{\frac{\partial S_j\pa{x,y}}{\partial x}}^2+\pa{\frac{\partial S_j\pa{x,y}}{\partial y}}^2=n_j\pa{x,y}\,,
+            \end{equation}
+            где $n_j\pa{x,y}\equiv \nicefrac{k_j\pa{x,y}}{k_{j,0}}$ --- индекс горизонтальной рефракции \cite{burridge}. Амплитуда $M_j\pa{x,y}$ может быть получена из уравнения переноса вида
+            \begin{multline}\label{eq::transfer}
+                2\pa{\frac{\partial S_j\pa{x,y}}{\partial x}\frac{\partial M_j\pa{x,y}}{\partial x}+\frac{\partial S_j\pa{x,y}}{\partial y}\frac{\partial M_j\pa{x,y}}{\partial y}}+\\\pa{\frac{\partial^2S_j\pa{x,y}}{\partial x^2}+\frac{\partial^2S_j\pa{x,y}}{\partial y^2}}M_j\pa{x,y}=0\,.
+            \end{multline}
+            Решение этих уравнений связано с решением системы Гамильтона
+            \begin{equation}\label{eq:hamilton_system}
+                \begin{aligned}
+                    \frac{dx_j\pa{l}}{dl}&=\frac{\xi_j\pa{l}}{n_j\pa{x_j,y_j}}\,,\qquad&\frac{d\xi_j\pa{l}}{dl}&=\frac{\partial n_j\pa{x_j,y_j}}{\partial x_j}\,,\\
+                    \frac{dy_j\pa{l}}{dl}&=\frac{\eta_j\pa{l}}{n_j\pa{x_j,y_j}}\,,\qquad&\frac{d\eta_j\pa{l}}{dl}&=\frac{\partial n_j\pa{x_j,y_j}}{\partial y_j}\,,\\
+                \end{aligned}
+            \end{equation}
+            где $l$ является натуральным параметром, обозначающим длину кривой вдоль траектории распространения луча, а $\xi,\eta$ сопряжённые переменные к $x,y$ --- момент. Проекции решений этой системы из фазового пространства $\pa{x,y,\xi,\eta}$ на координатное $\pa{x,y}$ называются горизонтальными лучами, соответствующими вертикальным модам в океаническом волноводе.
             \subsubsection{Трассировка лучей, соответствующих вертикальным модам\label{sec::horizontal_rays}}
                 \paragraph{Математическая постановка задачи}
                     \par Задача трассировки лучей состоит в том, чтобы в области\\ $\left\{\pa{x,y,z_s}0\leqslant x\leqslant x_1,y_0\leqslant y\leqslant y_1\right\}$ вычислить координаты распространения лучей, соответствующих вертикальным модам, из источника, имеющего координаты $\pa{0,y_s,z_s}$, под углами распространения $\alpha_0\leqslant\alpha\leqslant\alpha_1$ и значениях натурального параметра кривой $l_0\leqslant l\leqslant l_1$, задаваемые Гамильтовой системой задач Коши
@@ -501,6 +532,7 @@
                             \end{dcases}
                         \end{aligned}
                     \end{equation}
+                    Каждое уравнение системы представляет собой обыкновенное дифференциальное уравнение, численное решение которых может быть выполнено с использованием методов Рунге-Кутты, описанных в следующей главе.
                 \paragraph{Явные методы Рунге-Кутты}
                     \par Явные методы Рунге-Кутты являются семейством численных методов для решения систем обыкновенных дифференциальных уравнений вида
                     \begin{equation}
@@ -689,7 +721,7 @@
                     \end{aligned}
                 \end{gathered}
             \end{equation}
-        \subsection{Колебательные скорость и ускорение}
+        \subsection{Колебательные скорость и ускорение\label{seq::particle_acceleration}}
             \par Колебательное ускорение $\mathbf{a}\pa{x,y,z}$ в области\\
             $\Omega=\left\{\pa{x,y,z}\bigr|x_0\leqslant x\leqslant x_1,y_0\leqslant y\leqslant y_1,z_0\leqslant z\leqslant z_b\right\}$ может быть вычислено через градиент акустического давления
             \begin{equation}
