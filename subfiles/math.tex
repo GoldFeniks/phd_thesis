@@ -456,36 +456,36 @@
                 \begin{equation}
                     \mathbf{P}_j^1\hat{\bm{\Psi}}_j^0+\mathbf{P}_j^2\hat{\bm{\xi}}_j^0=0\,.
                 \end{equation}
-            \subsubsection{$\mathcal{Z}$-преобразование\label{seq::ztransform}}
-                \par Под $\mathcal{Z}$-преобразованием \cite{lynn1986} понимается свёртывание некоторой последовательности вещественных чисел во временной области в аналитическую функцию комплексной частоты. одностороннее $\mathcal{Z}$-преобразование последовательности $x_n$ при $n\geq 0$ задаётся как
-                \begin{equation}
-                    X\pa{z}=\mathcal{Z}\left\{x_n\right\}=\sum\limits_{n=0}^\infty x_nz^{-n}\,.
-                \end{equation}
-                При этом соответствующее ему обратное преобразование может быть выражено как
-                \begin{equation}
-                    x_n=\mathcal{Z}\left\{X\pa{z}\right\}=\frac{1}{2\pi i}\oint\limits_C X\pa{z}z^{n-1}\dd z\,,
-                \end{equation}
-                где $C$ -- контур, охватывающий область сходимости $X\pa{z}$
-                \begin{equation}
-                    D=\left\{z\bigr|\lim\limits_{m\mapsto\infty}\sum_{n=0}^mx_nz^{-n}<\infty\right\}\,.
-                \end{equation}
-                \par Основными свойствами $\mathcal{Z}$-преобразования для области подводной акустики являются
-                \begin{subequations}
-                    \begin{enumerate}
-                        \item Линейность:
-                            \begin{equation}
-                                \mathcal{Z}\left\{\alpha x_n+\beta y_n\right\}=\alpha\mathcal{Z}\left\{x_n\right\}+\beta\mathcal{Z}\left\{y_n\right\}\,,\quad\alpha,\beta\in\mathbb{R}
-                            \end{equation}
-                        \item Задержка по времени
-                            \begin{equation}
-                                \mathcal{Z}\left\{x_{n-k}\right\}=z^{-k}\mathcal{Z}\left\{x_n\right\}\pa{z}\,,\quad k>0,x_n=0\forall n<0\,.
-                            \end{equation}
-                    \end{enumerate}
-                \end{subequations}
-                \par Дополнительно $\mathcal{Z}$-преобразование принято считать дискретным аналогом преобразования Лапласа
-                \begin{equation}
-                    \mathcal{L}\pa{f}\pa{s}=\int\limits_{0}^{\infty}f\pa{t}e^{-st}\dd t\,.
-                \end{equation}
+                \paragraph{$\mathcal{Z}$-преобразование\label{seq::ztransform}}
+                    \par Под $\mathcal{Z}$-преобразованием \cite{lynn1986} понимается свёртывание некоторой последовательности вещественных чисел во временной области в аналитическую функцию комплексной частоты. одностороннее $\mathcal{Z}$-преобразование последовательности $x_n$ при $n\geq 0$ задаётся как
+                    \begin{equation}
+                        X\pa{z}=\mathcal{Z}\left\{x_n\right\}=\sum\limits_{n=0}^\infty x_nz^{-n}\,.
+                    \end{equation}
+                    При этом соответствующее ему обратное преобразование может быть выражено как
+                    \begin{equation}
+                        x_n=\mathcal{Z}\left\{X\pa{z}\right\}=\frac{1}{2\pi i}\oint\limits_C X\pa{z}z^{n-1}\dd z\,,
+                    \end{equation}
+                    где $C$ -- контур, охватывающий область сходимости $X\pa{z}$
+                    \begin{equation}
+                        D=\left\{z\bigr|\lim\limits_{m\mapsto\infty}\sum_{n=0}^mx_nz^{-n}<\infty\right\}\,.
+                    \end{equation}
+                    \par Основными свойствами $\mathcal{Z}$-преобразования для области подводной акустики являются
+                    \begin{subequations}
+                        \begin{enumerate}
+                            \item Линейность:
+                                \begin{equation}
+                                    \mathcal{Z}\left\{\alpha x_n+\beta y_n\right\}=\alpha\mathcal{Z}\left\{x_n\right\}+\beta\mathcal{Z}\left\{y_n\right\}\,,\quad\alpha,\beta\in\mathbb{R}
+                                \end{equation}
+                            \item Задержка по времени
+                                \begin{equation}
+                                    \mathcal{Z}\left\{x_{n-k}\right\}=z^{-k}\mathcal{Z}\left\{x_n\right\}\pa{z}\,,\quad k>0,x_n=0\forall n<0\,.
+                                \end{equation}
+                        \end{enumerate}
+                    \end{subequations}
+                    \par Дополнительно $\mathcal{Z}$-преобразование принято считать дискретным аналогом преобразования Лапласа
+                    \begin{equation}
+                        \mathcal{L}\pa{f}\pa{s}=\int\limits_{0}^{\infty}f\pa{t}e^{-st}\dd t\,.
+                    \end{equation}
                 При работе с дифференциальными уравнениями в частных производных преобразование Лапласа позволяет перейти к уравнению без частной производной по времени (или другой маршевой переменной). Являясь дискретным аналогом преобразования Лапласа, $\mathcal{Z}$-преобразование позволяет перейти к дискретному уравнению без численного дифференцирования по временной переменной.
         \subsection{Лучевая теория для уравнения горизонтальной рефракции}
             \par Предполагая, что волновые числа $k_j\pa{x,y}$ являются медленно изменяющейся функцией, решение уравнения \eqref{eq::HRE} с использованием лучевой теории распространения звука может быть выражено в виде
