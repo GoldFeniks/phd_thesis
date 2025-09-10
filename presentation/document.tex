@@ -23,6 +23,7 @@
 
 \definecolor{redish}{rgb}{0.8,0.2,0.2}
 \definecolor{greenish}{rgb}{0,0.7,0.3}
+\definecolor{journal}{rgb}{0.96,0.96,0.55}
 
 \DeclareMathOperator*{\argmax}{arg\,max}
 
@@ -121,223 +122,309 @@
 \fefuloadstyle{poi_phd_presentation}
 \setdegree{к.ф.-м.н.}
 
-\setmainlanguage{english}
-\setotherlanguage{russian}
+\setmainlanguage{russian}
+\setotherlanguage{english}
 
 \fefuiflanguage{russian}{%
     \author{Тыщенко Андрей Геннадьевич}
     \setfaculty{1.3.7 <<Акустика>>}
     \setsupervisor{Петров Павел Сергеевич}{д.ф.-м.н.}
-    \title{Численное моделирование распространения широкополосных акустических сигналов и шумов в мелком море с использованием модовых параболических уравнений}
+    \title{Численное моделирование распространения широкополосных акустических сигналов в мелком море с использованием модовых параболических уравнений}
 }{
     \author{Andrey Tyshchenko}
     \setsupervisor{Pavel Petrov}{}
     \title{\LARGE Numerical modeling of broadband acoustic signals in shallow water by mode parabolic equations}
-    \subtitle{\small Численное моделирование распространения широкополосных акустических сигналов и шумов в мелком море с использованием модовых параболических уравнений}
+    \subtitle{\small Численное моделирование распространения широкополосных акустических сигналов в мелком море с использованием модовых параболических уравнений}
 }
 
-\newif\ifpoi
-%\poitrue
+\usepackage{luacolor}
+\usepackage{lua-ul}
 
-\ifpoi
-\newcommand{\forpoi}[1]{%
-	\AtEndDocument{#1}%
+\DeclareFieldFormat[article]{journaltitle}{\highLight[journal]{#1}}
+\DeclareFieldFormat[inproceedings]{booktitle}{\highLight[journal]{#1}}
+
+\newcommand{\claims}{%
+    \begin{frame}{\fefuchooselanguage{russian={Положения, выносимы на зашиту},english={Key claims to be defended}}}
+        \vskip -0.5cm
+        \begin{block}{}
+            \fontsize{8}{8}\selectfont
+            \begin{enumerate}
+                \item \fefuchooselanguage{
+                    russian={Метод решения псевдодифференциальных модовых параболических уравнений с искусственным ограничением расчётной области путём постановки граничных условий прозрачности или добавления к ней согласованных поглощающих слоёв, а также с использованием лучевого стартера позволяет корректно моделировать распространение звука в трехмерных волноводах мелкого моря в адиабатическом приближении и обеспечивает высокую скорость расчетов благодаря использованию шагов сетки превышающих длину волны.},
+                    english={The method for solving pseudodifferential mode parabolic equations with artificial transparent boundary conditions and the ray starter is correct within adiabatic approximation constraitns and has high computational performance due to large numerical grid step size.}
+                }
+                \item \fefuchooselanguage{
+                    russian={Комплекс программ AMPLE, основанный на данном алгоритме и разработанный на языке программирования C++, позволяет моделировать распространение тональных и импульсных сигналов в океане с возможностью учёта трехмерных неоднородностей дна, а также двумерного поля скорости звука и структуры слоёв дна.},
+                    english={The AMPLE software, based on the proposed algorithm and developed in C++, allows for modelling of tone and impulse signal propagation in three dimensional shallow sea waveguides with two dimensional sound speed profile and bottom layer structure.}
+                }
+                \item \fefuchooselanguage{
+                    russian={Моделирование распространения сигналов, связанных с сейсморазведочными работами и судоходством, проведённое с использованием разработанного комплекса прикладных программ, позволяет добиться точности до 1 дБ при сравнении уровней звукового воздействия (SEL) с данными прямых измерений, а также позволяет адекватно воспроизвести при моделировании распределение энергии сигналов этих типов по частотам.},
+                    english={The modeling of anthropogenic noise related to seismic survey and vessel transfer performed using the developed software achieves a good agreement of sound exposure levels with direct measurements data with an accuracy of up to 1 dB. Additionally, the software achieved agreement of energy distribution values in decidecade frequency bands at various distances from the noise source.}
+                }
+                \item \fefuchooselanguage{
+                    russian={При моделировании распространения звука в клиновидном прибрежном волноводе мелкого моря для акустических трасс, ориентированных вдоль изобат, допустимо пренебрежение межмодовым взаимодействием, а полный учёт горизонтальной рефракции за счёт широкоугольного модового параболического уравнения позволяет получить решение с высокой точностью.},
+                    english={Within the problem of sound propagation modelling in a wedge shallow water waveguide across the slope the correct solution can be obtain with sufficiently good horizonatal refraction approximation, while mode interaction can be neglected.}
+                }
+            \end{enumerate}
+        \end{block}
+    \end{frame}
 }
-\else
-\newcommand{\forpoi}[1]{#1}
-\fi
+
+
+\ExplSyntaxOn
+
+\int_const:Nn \l_level_def_int {0}
+\int_const:Nn \l_level_sml_int {1}
+\int_const:Nn \l_level_all_int {2}
+
+%\int_new:N \l_level_param_int
+\int_new:N \l_level_current_int
+\int_set_eq:NN \l_level_current_int \l_level_def_int
+
+\NewDocumentCommand{\AtLeastLevel}{+m+m}{
+    \int_set_eq:Nc \l_tmpa_int {l_level_#1_int}
+    \int_compare:nNnTF {\l_tmpa_int} > {\l_level_current_int}
+    {
+        \AtEndDocument{#2}
+    }
+    {
+        #2
+    }
+}
+
+\NewDocumentCommand{\ExactlyLevel}{+m+m}{
+    \int_set_eq:Nc \l_tmpa_int {l_level_#1_int}
+    \int_compare:nNnTF {\l_tmpa_int} = {\l_level_current_int}
+    {
+        #2
+    }
+    {
+        \AtEndDocument{#2}
+    }
+}
+
+\cs_new_protected:Nn \phd_translated_section:n
+{
+    \keys_set:nn { fefu/languages } { #1 }
+    \section{\tl_use:c { l_fefu_language_\languagename _tl }}
+}
+
+\NewDocumentCommand{\TranslatedSection}{m}{ \phd_translated_section:n { #1 } }
+
+\ExplSyntaxOff
 
 \begin{document}
 	\presentationtitlepage
 
 	\nocite{*}
 
-	\section{\fefuchooselanguage{russian=Введение,english=Introduction}}
+	\TranslatedSection{russian={Введение},english={Introduction}}
 
-	\begin{frame}[fragile]{\fefuchooselanguage{russian={Области применения моделирования звука},english={Applications of sound modelling}}}
-		\begin{block}{}
-			\vspace{-0.5cm}
-			\begin{itemize}
-				\item \fefuchooselanguage{
-                    russian={Оценка уровня антропогенных акустических шумов при выполнении сейсморазведочных работ на восточном шельфе о. Сахалин с целью защиты морских млекопитающих (в т. ч. краснокнижных серых китов)},
-                    english={Assessment of anthropogenic acoustic noise levels during seismic survey on the east shelf of Sakhalin island to protect marine mammals (including endangered gray whales)}
+    \AtLeastLevel{def}{
+        \begin{frame}{\fefuchooselanguage{russian={Области применения моделирования звука},english={Applications of sound modelling}}}
+       		\begin{block}{}
+       			\vspace{-0.5cm}
+       			\begin{itemize}
+       				\item \fefuchooselanguage{
+                        russian={Оценка уровней звукового воздействия при выполнении сейсморазведочных работ на восточном шельфе о. Сахалин с целью защиты морских млекопитающих (в т. ч. краснокнижных серых китов)},
+                        english={Assessment of anthropogenic acoustic noise levels during seismic survey on the east shelf of Sakhalin island to protect marine mammals (including endangered gray whales)}
+                    }
+       				\item \fefuchooselanguage{
+                        russian={Моделирование работы источников навигационных сигналов при разработке систем дальней акустической навигации},
+                        english={Determining acoustic shadow zones when selecting locations for navigation signal sources}
+                    }
+       			\end{itemize}
+       		\end{block}
+       		\begin{block}{\fefuchooselanguage{russian={Трассировка лучей и гауссовых пучков},english={Ray and Gaussian Beam Tracing}}}
+       			\begin{enumerate}
+       				\item BELLHOP3D, Porter M.
+       				\item TRACEO3D, Calazan R., Rodr\'iguez O.
+       			\end{enumerate}
+       		\end{block}
+       		\begin{block}{\fefuchooselanguage{russian={Модовое разложение},english={Modal decomposition}}}
+       			\begin{enumerate}
+       				\item KRAKEN3D, Porter M.
+       			\end{enumerate}
+       		\end{block}
+       		\begin{block}{\fefuchooselanguage{russian={Трёхмерное ПУ},english={3D parabolic equation}}}
+       			\begin{enumerate}
+       				\item CAPRE3D, Duda T.
+       			\end{enumerate}
+       		\end{block}
+            \begin{tikzpicture}[remember picture,overlay]
+                \node[anchor=east,yshift=-3cm,xshift=-3.5cm] at (current page.east) { \includegraphics[scale=0.225]{ship.jpg} };
+            \end{tikzpicture}
+            \begin{tikzpicture}[remember picture,overlay]
+                \node[anchor=east,yshift=-1.75cm,xshift=-0.25cm] at (current page.east) { \includegraphics[scale=0.15]{device.jpg} };
+            \end{tikzpicture}
+       	\end{frame}
+    }
+
+	\AtLeastLevel{def}{
+        \small
+        \begin{frame}{\fefuchooselanguage{russian={Цель работы},english={Goal}}}
+    		\begin{block}{}
+                \fefuchooselanguage{
+                    russian={Разработка эффективного метода моделирования распространения широкополосных акустических сигналов в трёхмерном волноводе мелкого моря и комплекса программ на основе этого метода, позволяющего решать широкий класс задач за разумное время},
+                    english={Development of an efficient method for modeling the propagation of broadband acoustic signals in a three-dimensional shallow water waveguide and software based on this method, allowing for the solution a wide range of problems to be found in a reasonable time}
                 }
-				\item \fefuchooselanguage{
-                    russian={Определение зон акустической тени при выборе мест расположения источников навигационных сигналов},
-                    english={Determining acoustic shadow zones when selecting locations for navigation signal sources}
-                }
-			\end{itemize}
-		\end{block}
-		\begin{block}{\fefuchooselanguage{russian={Трассировка лучей и гауссовых пучков},english={Ray and Gaussian Beam Tracing}}}
-			\begin{enumerate}
-				\item BELLHOP3D, Porter M.
-				\item TRACEO3D, Calazan R., Rodr\'iguez O.
-			\end{enumerate}
-		\end{block}
-		\begin{block}{\fefuchooselanguage{russian={Модовое разложение},english={Modal decomposition}}}
-			\begin{enumerate}
-				\item KRAKEN3D, Porter M.
-			\end{enumerate}
-		\end{block}
-		\begin{block}{\fefuchooselanguage{russian={Трёхмерное ПУ},english={3D parabolic equation}}}
-			\begin{enumerate}
-				\item CAPRE3D, Duda T.
-			\end{enumerate}
-		\end{block}
-	\end{frame}
+    		\end{block}
+            \begin{block}{Задачи}
+                \begin{itemize}
+                    \item \fefuchooselanguage{
+                        russian={Разработать эффективный метод численного решения широкоугольных параболических уравнений для моделирования поля точечного источника звука с возможностью искусственного ограничения расчётной области.},
+                        english={Develop an efficient method for numerically solving wide angle mode parabolic equations for point source modeling with artificail boundary conditions.},
+                    }
+                    \item \fefuchooselanguage{
+                        russian={Разработать комплекс программ на языке программирования C++, позволяющий выполнять моделирование распространения звука в волноводах, имеющих произвольную структуру, путём задания батиметрии, гидрологии и параметров слоёв дна.},
+                        english={Develop a program in the C++ programming language, that supports modeling of sound propagation in waveguides with arbitrary structure by specifying bathymetry, hydrology and bottom layers parameters.},
+                    }
 
-	\begin{frame}[fragile]{\fefuchooselanguage{russian={Звуковое поле},english={Acoustic field}}}
-		\begin{block}{\fefuchooselanguage{russian={Уравнение Гельмгольца},english={Helmholtz equation}}}
-			\smallskip
-			\begin{equation}
-				\pa{\Delta + K^2\pa{x,y,z}}p\pa{x,y,z}=-\delta\pa{x}\delta\pa{y}\delta\pa{z-z_s}
-			\end{equation}
-			\begin{equation*}
-				K\pa{x,y,z}=\frac{\omega}{c\pa{x,y,z}}\pa{1+i\eta\beta\pa{x,y,z}}
-			\end{equation*}
-			\vskip -1cm
-			\begin{align*}
-				p\bigr|_{z=0}&=0 &p\bigr|_{z=h^{-}}&=p\bigr|_{z=h^{+}}\\
-				p\bigr|_{z=H}&=0 &\frac{1}{\rho}\frac{\partial p}{\partial\mathbf{n}}\biggr|_{z=h^{-}}&=\frac{1}{\rho}\frac{\partial p}{\partial\mathbf{n}}\biggr|_{z=h^{+}}\\
-			\end{align*}
-			\vskip -0.5cm
-			\centering
-			\begin{tabular}{lc}
-				$\rho\pa{z}$ --- \fefuchooselanguage{russian={плотность среды},english={media density}} & \multirow{5}{*}{
-					\begin{tikzpicture}
-						\coordinate (ORIGIN) at (-2, 0, 1.5);
+                    \item \fefuchooselanguage{
+                        russian={Выполнить всестороннюю валидацию комплекса программ путём решения серии модельных задач и его апробацию в ходе выполнения расчётов уровней антропогенных акустических сигналов в океане.},
+                        english={Thoroughly validate the progam on model problems and test it by computing antropogenic sound levels in the ocean.}
+                    }
+                \end{itemize}
+            \end{block}
+    	\end{frame}
+    }
 
-						\coordinate (B100) at (-2, 0, 0);
-						\coordinate (B200) at (2, 0, 0);
-						\coordinate (B202) at (2, 0, 3);
-						\coordinate (B102) at (-2, 0, 3);
+    \AtLeastLevel{def}{\claims}
 
-						\coordinate (B120) at (-2, -2, 0);
-						\coordinate (B220) at (2, -2, 0);
-						\coordinate (B222) at (2, -2, 3);
-						\coordinate (B122) at (-2, -2, 3);
+	\TranslatedSection{russian={Математические методы},english={Mathematical methods}}
 
-						\draw[-] (B120) -- (B220) -- (B222) -- (B122) -- cycle;
+    \AtLeastLevel{def}{
+        \begin{frame}{\fefuchooselanguage{russian={Звуковое поле},english={Acoustic field}}}
+            \begin{block}{\fefuchooselanguage{russian={Уравнение Гельмгольца},english={Helmholtz equation}}}
+                \smallskip
+                \begin{equation}
+                    \pa{\Delta + K^2\pa{x,y,z}}p\pa{x,y,z}=-\delta\pa{x}\delta\pa{y}\delta\pa{z-z_s}
+                \end{equation}
+                \begin{equation*}
+                    K\pa{x,y,z}=\frac{\omega}{c\pa{x,y,z}}\pa{1+i\eta\beta\pa{x,y,z}}
+                \end{equation*}
+                \vskip -1cm
+                \begin{align*}
+                    p\bigr|_{z=0}&=0 &p\bigr|_{z=h^{-}}&=p\bigr|_{z=h^{+}}\\
+                    p\bigr|_{z=H}&=0 &\frac{1}{\rho}\frac{\partial p}{\partial\mathbf{n}}\biggr|_{z=h^{-}}&=\frac{1}{\rho}\frac{\partial p}{\partial\mathbf{n}}\biggr|_{z=h^{+}}\\
+                \end{align*}
+                \vskip -0.5cm
+                \centering
+                \begin{tabular}{lc}
+                    $\rho\pa{z}$ --- \fefuchooselanguage{russian={плотность среды},english={media density}} & \multirow{5}{*}{
+                        \begin{tikzpicture}
+                            \coordinate (ORIGIN) at (-2, 0, 1.5);
 
-						\draw[-] (B100) -- (B120);
-						\draw[-] (B200) -- (B220);
-						\draw[-] (B102) -- (B122);
+                            \coordinate (B100) at (-2, 0, 0);
+                            \coordinate (B200) at (2, 0, 0);
+                            \coordinate (B202) at (2, 0, 3);
+                            \coordinate (B102) at (-2, 0, 3);
 
-						\fill[draw,preaction={fill=gray!40},pattern={Lines[angle=45,distance=5]}] (-2, -0.5, 3) -- (-0.5, -0.5, 3) -- (0.5, -1, 3) -- (2, -1, 3) -- (2, -1.5, 3) -- (0.5, -1.5, 3) -- (-0.5, -1, 3) -- (-2, -1, 3) -- cycle;
+                            \coordinate (B120) at (-2, -2, 0);
+                            \coordinate (B220) at (2, -2, 0);
+                            \coordinate (B222) at (2, -2, 3);
+                            \coordinate (B122) at (-2, -2, 3);
 
-						\fill[draw,preaction={fill=gray!40},pattern={Lines[angle=60,distance=2.5]}] (2, -1, 3) -- (2, -1, 1.5) -- (2, -0.25, 0) -- (2, -0.75, 0) -- (2, -1.5, 1.5) -- (2, -1.5, 3) -- cycle;
+                            \draw[-] (B120) -- (B220) -- (B222) -- (B122) -- cycle;
 
-						\fill[draw,fill=gray!40] (-2, -0.5, 3) -- (-2, -0.5, 0) -- (-0.5, -0.5, 0) -- (-0.5, -0.5, 3) -- cycle;
-						\fill[draw,fill=gray!40] (-0.5, -0.5, 0) -- (2, -0.25, 0) -- (2, -1, 1.5) -- cycle;
-						\fill[draw,fill=gray!40] (-0.5, -0.5, 3) -- (0.5, -1, 3) -- (0.5, -1, 1.5) -- (-0.5, -0.5, 0) -- cycle;
-						\fill[draw,fill=gray!40] (0.5, -1, 3) -- (0.5, -1, 1.5) -- (2, -1, 1.5) --  (2, -1, 3) -- cycle;
-						\fill[draw,fill=gray!40] (-0.5, -0.5, 0) --  (2, -1, 1.5) -- (0.5, -1, 1.5) -- cycle;
+                            \draw[-] (B100) -- (B120);
+                            \draw[-] (B200) -- (B220);
+                            \draw[-] (B102) -- (B122);
 
-						\draw[-{Latex}, very thick] (ORIGIN) -- ++(1,0,0) node[below right=-1mm] {$x$};
-						\draw[-{Latex}, very thick] (ORIGIN) -- ++(0,-1,0) node[above right] {$z$};
-						\draw[-{Latex}, very thick] (ORIGIN) -- ++(0,0,1) node[above] {$y$};
+                            \fill[draw,preaction={fill=gray!40},pattern={Lines[angle=45,distance=5]}] (-2, -0.5, 3) -- (-0.5, -0.5, 3) -- (0.5, -1, 3) -- (2, -1, 3) -- (2, -1.5, 3) -- (0.5, -1.5, 3) -- (-0.5, -1, 3) -- (-2, -1, 3) -- cycle;
 
-						\draw[-] (B100) -- (B200) -- (B202) -- (B102) -- cycle;
-						\draw[-] (B202) -- (B222);
+                            \fill[draw,preaction={fill=gray!40},pattern={Lines[angle=60,distance=2.5]}] (2, -1, 3) -- (2, -1, 1.5) -- (2, -0.25, 0) -- (2, -0.75, 0) -- (2, -1.5, 1.5) -- (2, -1.5, 3) -- cycle;
 
-						\fill[draw,preaction={fill=gray!60},pattern={Lines[angle=45,distance=3]}] (-2, -1, 3) -- (-0.5, -1, 3) -- (0.5, -1.5, 3) --  (2, -1.5, 3) -- (B222) -- (B122) -- cycle;
+                            \fill[draw,fill=gray!40] (-2, -0.5, 3) -- (-2, -0.5, 0) -- (-0.5, -0.5, 0) -- (-0.5, -0.5, 3) -- cycle;
+                            \fill[draw,fill=gray!40] (-0.5, -0.5, 0) -- (2, -0.25, 0) -- (2, -1, 1.5) -- cycle;
+                            \fill[draw,fill=gray!40] (-0.5, -0.5, 3) -- (0.5, -1, 3) -- (0.5, -1, 1.5) -- (-0.5, -0.5, 0) -- cycle;
+                            \fill[draw,fill=gray!40] (0.5, -1, 3) -- (0.5, -1, 1.5) -- (2, -1, 1.5) --  (2, -1, 3) -- cycle;
+                            \fill[draw,fill=gray!40] (-0.5, -0.5, 0) --  (2, -1, 1.5) -- (0.5, -1, 1.5) -- cycle;
 
-						\fill[draw,preaction={fill=gray!60},pattern={Lines[angle=60,distance=1.5]}] (2, -1.5, 3) -- (2, -1.5, 1.5) -- (2, -0.75, 0) -- (B220) -- (B222) -- cycle;
+                            \draw[-{Latex}, very thick] (ORIGIN) -- ++(1,0,0) node[below right=-1mm] {$x$};
+                            \draw[-{Latex}, very thick] (ORIGIN) -- ++(0,-1,0) node[above right] {$z$};
+                            \draw[-{Latex}, very thick] (ORIGIN) -- ++(0,0,1) node[above] {$y$};
 
-						\node at (-2.2, -0.5, 3) {$h_0$};
-						\node at (-2.2, -1, 3) {$h_1$};
-						\node at (-2.2, -2, 3) {$H$};
+                            \draw[-] (B100) -- (B200) -- (B202) -- (B102) -- cycle;
+                            \draw[-] (B202) -- (B222);
 
-						\draw[fill=black] (ORIGIN) circle[radius=1mm];
-					\end{tikzpicture}
-				}\\
-				$c\pa{x,y,z}$ --- \fefuchooselanguage{russian={скорость звука},english={sound speed}} & \\
-				$\omega=2\pi f$ --- \fefuchooselanguage{russian={циклическая частота},english={angular frequency}} & \\
-				$\beta$ --- \fefuchooselanguage{russian={коэффициент затухания},english={attenuation coefficient}} & \\
-				$\eta=\nicefrac{1}{40\pi\log_{10}e}$
-			\end{tabular}
-		\end{block}
-	\end{frame}
+                            \fill[draw,preaction={fill=gray!60},pattern={Lines[angle=45,distance=3]}] (-2, -1, 3) -- (-0.5, -1, 3) -- (0.5, -1.5, 3) --  (2, -1.5, 3) -- (B222) -- (B122) -- cycle;
 
-	\begin{frame}[fragile]{\fefuchooselanguage{russian={Цель работы},english={Goal}}}
-		\begin{block}{}
-            \fefuchooselanguage{
-                russian={Разработка эффективного метода моделирования распространения широкополосных акустических сигналов в трёхмерном волноводе мелкого моря и комплекса программ на основе этого метода, позволяющего решать широкий класс задач за разумное время},
-                english={Development of an efficient method for modeling the propagation of broadband acoustic signals in a three-dimensional shallow water waveguide and software based on this method, allowing for the solution a wide range of problems to be found in a reasonable time}
-            }
-			\begin{itemize}
-				\item \fefuchooselanguage{
-                    russian={Моделирование трёхмерного звукового поля с использованием модового разложения звука},
-                    english={Modeling of a three-dimensional sound field using modal decomposition of the acoustic pressure},
-                }
-				\item \fefuchooselanguage{
-                    russian={Трассировка лучей, соответствующих вертикальным модам},
-                    english={Ray tracing corresponding to vertical modes},
-                }
+                            \fill[draw,preaction={fill=gray!60},pattern={Lines[angle=60,distance=1.5]}] (2, -1.5, 3) -- (2, -1.5, 1.5) -- (2, -0.75, 0) -- (B220) -- (B222) -- cycle;
 
-				\item \fefuchooselanguage{
-                    russian={Вычисление временного ряда импульса звукового сигнала в произвольных точках волновода с указанием опорного сигнала в одной из них или функции источника},
-                    english={Computation of the time series of an acoustic signal pulse at arbitrary points in a waveguide, with a reference signal specified at one of these points or as a source function.}
-                }
-				\item \fefuchooselanguage{
-                    russian={Расчёт интегральных характеристик (SEL)},
-                    english={Computation of integral characteristics (SEL)},
-                }
-			\end{itemize}
-		\end{block}
-	\end{frame}
+                            \node at (-2.2, -0.5, 3) {$h_0$};
+                            \node at (-2.2, -1, 3) {$h_1$};
+                            \node at (-2.2, -2, 3) {$H$};
 
-	\section{\fefuchooselanguage{russian={Математические методы},english={Mathematical methods}}}
+                            \draw[fill=black] (ORIGIN) circle[radius=1mm];
+                        \end{tikzpicture}
+                    }\\
+                    $c\pa{x,y,z}$ --- \fefuchooselanguage{russian={скорость звука},english={sound speed}} & \\
+                    $\omega=2\pi f$ --- \fefuchooselanguage{russian={циклическая частота},english={angular frequency}} & \\
+                    $\beta$ --- \fefuchooselanguage{russian={коэффициент затухания},english={attenuation coefficient}} & \\
+                    $\eta=\nicefrac{1}{40\pi\log_{10}e}$
+                \end{tabular}
+            \end{block}
+        \end{frame}
+    }
 
-	\begin{frame}[fragile]{\fefuchooselanguage{russian={Модовое разложение поля},english={Modal decomposition of the acoustic field}}}
-		\begin{block}{\fefuchooselanguage{russian={Модовое разложение},english={Modal decomposition}}}
-			\smallskip
-			\begin{equation}
-				p\pa{x,y,z}=\sum\limits_{j=1}^JA_j\pa{x,y}\varphi_j\pa{z,x,y}
-			\end{equation}
-		\end{block}
-		\vskip -0.5cm
-        \begin{block}{\fefuchooselanguage{russian={Уравнение горизонтальной рефракции},english={Horizontal refraction equation}}}
-            \smallskip
-            \begin{equation}
-                \frac{\partial^2 A_j}{\partial x^2} + \frac{\partial^2 A_j}{\partial y^2}+k_j^2 (x,y)A_j=-\varphi_j(z_s)\delta(x)\delta(y)
-            \end{equation}
-        \end{block}
-		\begin{block}{\fefuchooselanguage{russian={Спектральная задача},english={Spectral problem}}}
-			\smallskip
-			\begin{equation}
-				\begin{dcases}
-					\frac{\dd^2\varphi\pa{z}}{\dd z^2}+K^2\pa{z}\varphi\pa{z}=k^2\varphi\pa{z}\,,\\
-					\varphi\bigr|_{z=0}=0\,,\qquad \varphi\bigr|_{z=h^{-}}=\varphi\bigr|_{z=h^{+}}\,,\\
-					\varphi\bigr|_{z=H}=0\,,\qquad \frac{1}{\rho}\frac{\dd \varphi}{\dd z}\bigr|_{z=h^{-}}=\frac{1}{\rho}\frac{\dd \varphi}{\dd z}\bigr|_{z=h^{+}}
-				\end{dcases}
-			\end{equation}
-		\end{block}
-	\end{frame}
+    \AtLeastLevel{def}{
+    	\begin{frame}{\fefuchooselanguage{russian={Модовое разложение поля},english={Modal decomposition of the acoustic field}}}
+    		\begin{block}{\fefuchooselanguage{russian={Модовое разложение},english={Modal decomposition}}}
+    			\begin{equation}
+    				p\pa{x,y,z}=\sum\limits_{j=1}^JA_j\pa{x,y}\varphi_j\pa{z,x,y}
+    			\end{equation}
+    		\end{block}
+            \begin{block}{\fefuchooselanguage{russian={Уравнение горизонтальной рефракции},english={Horizontal refraction equation}}}
+                \smallskip
+                \begin{equation}
+                    \frac{\partial^2 A_j}{\partial x^2} + \frac{\partial^2 A_j}{\partial y^2}+k_j^2 (x,y)A_j=-\varphi_j(z_s)\delta(x)\delta(y)
+                \end{equation}
+            \end{block}
+    		\begin{block}{\fefuchooselanguage{russian={Спектральная задача},english={Spectral problem}}}
+    			\smallskip
+    			\begin{equation}
+    				\begin{dcases}
+    					\frac{\dd^2\varphi\pa{z}}{\dd z^2}+K^2\pa{z}\varphi\pa{z}=k^2\varphi\pa{z}\,,\\
+    					\varphi\bigr|_{z=0}=0\,,\qquad \varphi\bigr|_{z=h^{-}}=\varphi\bigr|_{z=h^{+}}\,,\\
+    					\varphi\bigr|_{z=H}=0\,,\qquad \frac{1}{\rho}\frac{\dd \varphi}{\dd z}\bigr|_{z=h^{-}}=\frac{1}{\rho}\frac{\dd \varphi}{\dd z}\bigr|_{z=h^{+}}
+    				\end{dcases}
+    			\end{equation}
+    		\end{block}
+    	\end{frame}
+    }
 
-	\begin{frame}[fragile]{\fefuchooselanguage{russian={Псевдодифференциальное МПУ},english={Pseudodifferential MPE}}}
-		\begin{block}{}
-			\begin{equation}
-				\pa{\frac{\partial}{\partial x}+i\sqrt{k_j^2\pa{x,y}+\frac{\partial^2}{\partial y^2}}}\underbrace{\pa{\frac{\partial}{\partial x}-i\sqrt{k_j^2\pa{x,y}+\frac{\partial^2}{\partial y^2}}}A_j\pa{x,y}}_{=0}=0\,,
-			\end{equation}
-		\end{block}
-		\begin{block}{}
-			\begin{equation}
-				A_j\pa{x,y}=e^{k_{j,0}x}\mathcal{A}_j\pa{x,y}
-			\end{equation}
-			\begin{equation}
-				\begin{dcases}
-					\frac{\partial\mathcal{A}_j\pa{x,y}}{\partial x}=ik_{j,0}\pa{\sqrt{1+L_j}-1}\mathcal{A}_j\pa{x,y}\,,\\
-					\mathcal{A}_j\pa{0,y}=\mathcal{A}_{j,0}\pa{y}
-				\end{dcases}
-			\end{equation}
-			\begin{equation}
-				k_{j,0}^2L_j=\frac{\partial^2}{\partial y^2}+k_j^2\pa{x,y}-k_{j,0}^2\nonumber
-			\end{equation}
-		\end{block}
-	\end{frame}
+	\AtLeastLevel{def}{
+        \begin{frame}{\fefuchooselanguage{russian={Псевдодифференциальное МПУ},english={Pseudodifferential MPE}}}
+            \vskip 0.5cm
+    		\begin{block}{Факторизация уравнения горизонтальной рефракции}
+                \smallskip
+    			\begin{equation}
+    				\pa{\frac{\partial}{\partial x}+i\sqrt{k_j^2\pa{x,y}+\frac{\partial^2}{\partial y^2}}}\underbrace{\pa{\frac{\partial}{\partial x}-i\sqrt{k_j^2\pa{x,y}+\frac{\partial^2}{\partial y^2}}}A_j\pa{x,y}}_{=0}=0\,,
+    			\end{equation}
+    		\end{block}
+            \begin{block}{Извлечение главной осцилляции}
+                \smallskip
+                \begin{equation}
+                    A_j\pa{x,y}=e^{k_{j,0}x}\mathcal{A}_j\pa{x,y}
+                \end{equation}
+            \end{block}
+    		\begin{block}{Задача Коши}
+                \smallskip
+    			\begin{equation}
+    				\begin{dcases}
+    					\frac{\partial\mathcal{A}_j\pa{x,y}}{\partial x}=ik_{j,0}\pa{\sqrt{1+L_j}-1}\mathcal{A}_j\pa{x,y}\,,\\
+    					\mathcal{A}_j\pa{0,y}=\mathcal{A}_{j,0}\pa{y}
+    				\end{dcases}
+    			\end{equation}
+    			\begin{equation}
+    				k_{j,0}^2L_j=\frac{\partial^2}{\partial y^2}+k_j^2\pa{x,y}-k_{j,0}^2\nonumber
+    			\end{equation}
+    		\end{block}
+    	\end{frame}
+    }
 
-    \forpoi{%
+    \AtLeastLevel{all}{%
     	\begin{frame}{\fefuchooselanguage{russian={Аппроксимация оператора квадратного корня},english={Approximation of the square root operator}}}
     		\begin{block}{\fefuchooselanguage{russian={Аппроксимация Паде для функции},english={Pad\'e approximation for a function}} $F\pa{\lambda}$}
     			\smallskip
@@ -356,8 +443,8 @@
     	\end{frame}
     }
 
-	\forpoi{%
-		\begin{frame}{\fefuchooselanguage{russian={Дискретизация по},english={Discretization wrt.} $x$}}
+	\AtLeastLevel{all}{%
+		\begin{frame}{\fefuchooselanguage{russian={Дискретизация по},english={Discretization wrt.}} $x$}
 			\begin{block}{\fefuchooselanguage{russian={Дискретизация Крэнка-Николсон},english={Crank-Nicolson discretization}}}
 				\smallskip
 				\begin{equation}
@@ -386,51 +473,93 @@
 		\end{frame}
 	}
 
-	\begin{frame}[fragile]{Split-step Pad\'e}
-		\begin{block}{\fefuchooselanguage{russian={Пропагатор по $x$},english={Propagator in the $x$ direction}}}
-			\smallskip
-			\begin{equation}
-				\mathcal{A}_j^{n+1}=e^{ik_{j,0}h\pa{\sqrt{1+L_j}-1}}\mathcal{A}_j^{n}
-			\end{equation}
-		\end{block}
-		\begin{block}{\fefuchooselanguage{russian={Аппроксимация экспоненты квадратного корня},english={Approximation of the square root exponential operator}}}
-			\smallskip
-			\begin{equation}
-				e^{ik_{j,0}h\pa{\sqrt{1+L_j}-1}}\approx\frac{\tilde{P}_{l,m}\pa{L_j}}{\tilde{Q}_{l,m}\pa{L_j}}=\tilde{a}_{l,m}^0+\sum\limits_{i=1}^m\frac{\tilde{a}_{l,m}^i}{1+\tilde{b}_{l,m}^iL_j}
-			\end{equation}
-		\end{block}
-		\begin{block}{\fefuchooselanguage{russian={Дискретизированное МПУ},english={Discrete MPE}}}
-			\smallskip
-			\begin{equation}
-				\begin{gathered}
-					\mathcal{A}_j^{n+1}=\pa{\tilde{a}_{l,m}^0+\sum\limits_{i=1}^p\frac{\tilde{a}_{l,m}^i}{1+\tilde{b}_{l,m}^iL_j}}\mathcal{A}_j^n\\
-					1\leqslant l\leqslant m
-				\end{gathered}
-			\end{equation}
-		\end{block}
-	\end{frame}
+	\AtLeastLevel{sml}{
+        \begin{frame}{Split-step Pad\'e}
+            \begin{block}{}
+                \begin{equation}
+                    \frac{\partial\mathcal{A}_j\pa{x,y}}{\partial x}=ik_{j,0}\pa{\sqrt{1+L_j}-1}\mathcal{A}_j\pa{x,y}\nonumber
+                \end{equation}
+            \end{block}
+    		\begin{block}{\fefuchooselanguage{russian={Пропагатор по $x$},english={Propagator in the $x$ direction}}}
+    			\smallskip
+    			\begin{equation}
+    				\mathcal{A}_j^{n+1}=e^{ik_{j,0}h\pa{\sqrt{1+L_j}-1}}\mathcal{A}_j^{n}
+    			\end{equation}
+    		\end{block}
+    		\begin{block}{\fefuchooselanguage{russian={Аппроксимация экспоненты квадратного корня},english={Approximation of the square root exponential operator}}}
+    			\smallskip
+    			\begin{equation}
+    			     e^{ik_{j,0}h\pa{\sqrt{1+L_j}-1}}\approx\frac{\tilde{P}_{l,m}\pa{L_j}}{\tilde{Q}_{l,m}\pa{L_j}}=\tilde{a}_{l,m}^0+\sum\limits_{i=1}^m\frac{\tilde{a}_{l,m}^i}{1+\tilde{b}_{l,m}^iL_j}
+    			\end{equation}
+    		\end{block}
+    		\begin{block}{\fefuchooselanguage{russian={Дискретизированное МПУ},english={Discrete MPE}}}
+    			\smallskip
+    			\begin{equation}
+    				\begin{gathered}
+    					\mathcal{A}_j^{n+1}=\pa{\tilde{a}_{l,m}^0+\sum\limits_{i=1}^p\frac{\tilde{a}_{l,m}^i}{1+\tilde{b}_{l,m}^iL_j}}\mathcal{A}_j^n\\
+    					1\leqslant l\leqslant m
+    				\end{gathered}
+    			\end{equation}
+    		\end{block}
+    	\end{frame}
+    }
 
-	\begin{frame}{\fefuchooselanguage{russian={Дискретизация оператора},english={Discretization of the operator}} $L_j$}
-		\begin{block}{\fefuchooselanguage{russian={Центральная разница на равномерной сетке},english={Finite central difference on a uniform grid}}}
-			\smallskip
-			\begin{equation}
-				D_\delta^2\mathcal{A}_j^{n+1}=\frac{\mathcal{A}_j^{n+1,q+1}-2\mathcal{A}_j^{n+1,q}+\mathcal{A}_j^{n+1,q-1}}{\delta^2}\,,\quad q\in\mathbb{N}
-			\end{equation}
-			\begin{equation*}
-				y_q=y_0+q\delta\,,\qquad\Delta y=\delta\,,\qquad\mathcal{A}_j^{n,q}\sim\mathcal{A}_j\pa{x_n,y_q}
-			\end{equation*}
-		\end{block}
-		\begin{block}{\fefuchooselanguage{russian={Полностью дискретизированное МПУ},english={Fully-discrete MPE}}}
-			\smallskip
-			\begin{equation}
-				\begin{gathered}
-					\mathcal{A}_j^{b+1,q}=\pa{a_{l,m}^0+\sum\limits_{i=1}^p\frac{a^i_{l,m}}{1+b^i_{l,m}L_j^\delta}}\mathcal{A}_j^{n,q}\\
-					k_{j,0}^2L_j^\delta=D_\delta^2+k_j^2-k_{j,0}^2\\
-					1\leqslant l\leqslant m
-				\end{gathered}
-			\end{equation}
-		\end{block}
-	\end{frame}
+    \ExactlyLevel{def}{
+        \vskip -0.5cm
+        \begin{frame}{Split-step Pad\'e}
+            \begin{block}{}
+                \begin{equation}
+                    \frac{\partial\mathcal{A}_j\pa{x,y}}{\partial x}=ik_{j,0}\pa{\sqrt{1+L_j}-1}\mathcal{A}_j\pa{x,y}\nonumber
+                \end{equation}
+            \end{block}
+            \begin{block}{Пропагатор по $x$}
+                \smallskip
+                \begin{equation}
+                    \mathcal{A}_j^{n+1}=e^{ik_{j,0}h\pa{\sqrt{1+L_j}-1}}\mathcal{A}_j^{n}
+                \end{equation}
+            \end{block}
+            \begin{block}{\fefuchooselanguage{russian={Аппроксимация Падэ экспоненты квадратного корня},english={Approximation of the square root exponential operator}}}
+                \smallskip
+                \begin{equation}
+                    e^{ik_{j,0}h\pa{\sqrt{1+L_j}-1}}\approx\frac{\tilde{P}_{l,m}\pa{L_j}}{\tilde{Q}_{l,m}\pa{L_j}}=\tilde{a}_{l,m}^0+\sum\limits_{i=1}^m\frac{\tilde{a}_{l,m}^i}{1+\tilde{b}_{l,m}^iL_j}
+                \end{equation}
+            \end{block}
+            \begin{block}{\fefuchooselanguage{russian={Дискретизированное МПУ},english={Discrete MPE}}}
+                \smallskip
+                \begin{equation}
+                    \begin{gathered}
+                        \mathcal{A}_j^{b+1,q}=\pa{a_{l,m}^0+\sum\limits_{i=1}^p\frac{a^i_{l,m}}{1+b^i_{l,m}L_j^\delta}}\mathcal{A}_j^{n,q}\\
+                        k_{j,0}^2L_j^\delta=D_\delta^2+k_j^2-k_{j,0}^2\\
+                        1\leqslant l\leqslant m
+                    \end{gathered}
+                \end{equation}
+            \end{block}
+        \end{frame}
+    }
+
+	\AtLeastLevel{sml}{
+        \begin{frame}{\fefuchooselanguage{russian={Дискретизация оператора},english={Discretization of the operator}} $L_j$}
+    		\begin{block}{\fefuchooselanguage{russian={Центральная разница на равномерной сетке},english={Finite central difference on a uniform grid}}}
+    			\smallskip
+    			\begin{equation}
+    				D_\delta^2\mathcal{A}_j^{n+1}=\frac{\mathcal{A}_j^{n+1,q+1}-2\mathcal{A}_j^{n+1,q}+\mathcal{A}_j^{n+1,q-1}}{\delta^2}\,,\quad q\in\mathbb{N}
+    			\end{equation}
+    			\begin{equation*}
+    				y_q=y_0+q\delta\,,\qquad\Delta y=\delta\,,\qquad\mathcal{A}_j^{n,q}\sim\mathcal{A}_j\pa{x_n,y_q}
+    			\end{equation*}
+    		\end{block}
+    		\begin{block}{\fefuchooselanguage{russian={Полностью дискретизированное МПУ},english={Fully-discrete MPE}}}
+    			\smallskip
+    			\begin{equation}
+    				\begin{gathered}
+    					\mathcal{A}_j^{b+1,q}=\pa{a_{l,m}^0+\sum\limits_{i=1}^p\frac{a^i_{l,m}}{1+b^i_{l,m}L_j^\delta}}\mathcal{A}_j^{n,q}\\
+    					k_{j,0}^2L_j^\delta=D_\delta^2+k_j^2-k_{j,0}^2\\
+    					1\leqslant l\leqslant m
+    				\end{gathered}
+    			\end{equation}
+    		\end{block}
+    	\end{frame}
+    }
 
 	\begin{frame}{\fefuchooselanguage{russian={Численная схема},english={Numerical scheme}}}
 		\begin{block}{\fefuchooselanguage{russian={Форма решения},english={Form of the solution}}}
@@ -452,63 +581,245 @@
 		\end{block}
 	\end{frame}
 
-	\begin{frame}[fragile]{\fefuchooselanguage{russian={Ограничение области},english={Domain truncation}}. Perfectly matching layers}
-		\begin{figure}[t]
-			\begin{tikzpicture}
-				\coordinate(C11);
-				\foreach \i in {2,...,7} {
-					\pgfmathtruncatemacro\index{\i-1}
-					\coordinate[right of=C1\index](C1\i);
-				}
-				\foreach \i in {2,...,4} {
-					\pgfmathtruncatemacro\index{\i-1}
-					\coordinate[below of=C\index1](C\i1);
-					\foreach \j in {2,...,7} {
-						\pgfmathtruncatemacro\index{\j-1}
-						\coordinate[right of=C\i\index](C\i\j);
-					}
-				}
-				\draw (C11) -- (C17);
-				\draw (C11) -- (C41);
-				\draw (C17) -- (C47);
-				\draw[dashed] (C12) -- (C42);
-				\draw[dashed] (C16) -- (C46);
-				\draw[decorate, decoration={complete sines}] (C41) -- (C47);
+    \AtLeastLevel{sml}{
+        \begin{frame}{\fefuchooselanguage{russian={Ограничение области. Граничные условия прозрачности},english={Domain truncation. Transparent boundary conditions}}}
+            \begin{block}{\fefuchooselanguage{russian={Уравнение для},english={Equation for}} $\mathcal{B}_{j,i}$}
+                \smallskip
+                \begin{equation}
+                    k_{j,0}^2\mathcal{B}_{j,i}^{n+1,q}+b_{l,m}^iD_\delta^2\mathcal{B}_{j,i}^{n+1,q}+b_{l,m}^i\pa{k_j^2-k_{j,0}^2}\mathcal{B}_{j,i}^{n+1,q}=k_{j,0}^2\mathcal{A}_j^{n,q}
+                \end{equation}
+            \end{block}
+            \begin{block}{$\mathcal{Z}$-\fefuchooselanguage{russian={преобразование},english={transform}}}
+                \smallskip
+                \begin{equation}
+                    \mathcal{Z}\left\{\mathcal{A}_j^{n,q}\right\}=\hat{\mathcal{A}}_j^q\pa{\zeta}\coloneq\sum\limits_{n=0}^\infty\zeta^{-n}\mathcal{A}_j^{n,q}\,,\quad\zeta\in\mathbb{C}\,,\quad\left|\zeta\right|>R_{\hat{\mathcal{A}}_j^q}
+                \end{equation}
+            \end{block}
+            \begin{block}{\fefuchooselanguage{russian={Тогда при условии},english={Then if}} $\mathcal{A}_j^{n,q}=\mathcal{B}_j^{n,q}=0,\forall n<0$}
+                \smallskip
+                \begin{equation}
+                    -\zeta b_{l,m}^iD_\delta^2\hat{\mathcal{B}}_{j,i}^q=\zeta k_{j,0}^2\hat{\mathcal{B}}_{j,i}^q+\zeta b_{l,m}^i\pa{k_j^2-k_{j,0}^2}\hat{\mathcal{B}}_{j,i}^q-k_{j,0}^2\hat{\mathcal{A}}_j^q,\quad l=\overline{1,p}
+                \end{equation}
+            \end{block}
+            \begin{block}{\fefuchooselanguage{russian={Дополнительное уравнение},english={Additional equation}}}
+                \smallskip
+                \begin{equation}
+                    \zeta\hat{\mathcal{A}}_j^q=a_{l,m}^0\hat{\mathcal{A}}_j^q+\zeta\sum\limits_{i=1}^pa_{l,m}^i\hat{\mathcal{B}}_{j,i}^q
+                \end{equation}
+            \end{block}
+        \end{frame}
+    }
 
-				\node[above=0 of C12](Y0){$y_0$};
-				\node[above=0 of C16](Y1){$y_1$};
+    \AtLeastLevel{sml}{
+        \begin{frame}{\fefuchooselanguage{russian={Ограничение области. Граничные условия прозрачности},english={Domain truncation. Transparent boundary conditions}}}
+            \begin{block}{\fefuchooselanguage{russian={Обозначим},english={Let}}  $\hat{\bm{\Psi}}_j^q=\pa{\hat{\mathcal{A}}_j^q,\hat{\mathcal{B}}_{j,1}^q,\dots,\hat{\mathcal{B}}_{j,p}^q}^T\in\mathbb{C}^{p+1}$}
+                \smallskip
+                \begin{equation}
+                    \mathbf{X}_jD_\delta^2\hat{\bm{\Psi}}_j^q=\mathbf{Y}_j\hat{\bm{\Psi}}_j^q
+                \end{equation}
+            \end{block}
+            \vskip -1cm
+            \begin{block}{}
+                \begin{gather}
+                    \mathbf{X}_j\coloneq\begin{pmatrix}
+                        0 & -\zeta b_{l,m}^1&&\\
+                        \vdots& & \ddots&&\\
+                        0&&&-\zeta b_{l,m}^p\\
+                        \zeta&0&\dots&0
+                    \end{pmatrix}\\
+                    \mathbf{Y}_j\coloneq\begin{pmatrix}
+                        -k_{j,0}^2&\zeta k_{j,0}^2+\zeta b_{l,m}^1\pa{k_j^2-k_{j,0}^2}&&\\
+                        \vdots&&\ddots&\\
+                        -k_{j,0}^2&&&\zeta k_{j,0}^2+\zeta b_{l,m}^p\pa{k_j^2-k_{j,0}^2}\\
+                        a_{l,m}^0&\zeta a_{l,m}^1&\dots&\zeta a_{l,m}^p
+                    \end{pmatrix}
+                \end{gather}
+                \begin{equation*}
+                    \mathbf{X}_j,\mathbf{Y}_j\in\mathbb{C}^{\pa{p+1}\times\pa{p+1}}
+                \end{equation*}
+            \end{block}
+        \end{frame}
+    }
 
-				\node[above=0 of C11]{$-\varepsilon$};
-				\node[above=0 of C17]{$+\varepsilon$};
+    \AtLeastLevel{sml}{
+        \begin{frame}{\fefuchooselanguage{russian={Ограничение области. Граничные условия прозрачности},english={Domain truncation. Transparent boundary conditions}}}
+            \begin{block}{\fefuchooselanguage{russian={Введём переменную},english={Introducing}} $\hat{\bm{\xi}}_j^q\coloneq D_q^-\hat{\bm{\Psi}}_j^q$}
+                \begin{gather}
+                    \underbrace{\begin{pmatrix}
+                            \mathbf{0} & \mathbf{X}_j\\
+                            \mathbf{I} & -\mathbf{I}\delta
+                    \end{pmatrix}}_{\mathbf{A}_j} D_\delta^+
+                    \begin{pmatrix}
+                        \hat{\bm{\Psi}}_j^q\\
+                        \hat{\bm{\xi}}_j^q
+                    \end{pmatrix}=
+                    \underbrace{\begin{pmatrix}
+                            \mathbf{Y}_j & \mathbf{0}\\
+                            \mathbf{0} & \mathbf{I}
+                    \end{pmatrix}}_{\mathbf{B}_j}
+                    \begin{pmatrix}
+                        \hat{\bm{\Psi}}_j^q\\
+                        \hat{\bm{\xi}}_j^q
+                    \end{pmatrix}\\
+                    D_q^-\hat{\bm{\Psi}}_j^q=\frac{\hat{\bm{\Psi}}_j^q-\hat{\bm{\Psi}}_j^{q-1}}{\delta}\qquad D_q^+\hat{\bm{\Psi}}=\frac{\hat{\bm{\Psi}}_j^{q+1}-\hat{\bm{\Psi}}_j^q}{\delta}\nonumber
+                \end{gather}
+            \end{block}
+            \vskip -0.5cm
+            \begin{block}{\fefuchooselanguage{russian={Решение системы},english={System solution}}}
+                \begin{equation}
+                    \begin{pmatrix}
+                        \hat{\bm{\Psi}}_j^{q+1}\\
+                        \hat{\bm{\xi}}_j^{q+1}
+                    \end{pmatrix}=
+                    \pa{\mathbf{A}_j^{-1}\mathbf{B}_j+\mathbf{I}}
+                    \begin{pmatrix}
+                        \hat{\bm{\Psi}}_j^q\\
+                        \hat{\bm{\xi}}_j^q
+                    \end{pmatrix}\,.
+                \end{equation}
+            \end{block}
+            \vskip -0.5cm
+            \begin{block}{\fefuchooselanguage{russian={Жорданова форма},english={Jordan matrix form}}}
+                \begin{equation}
+                    \begin{gathered}
+                        \mathbf{J}_j=\begin{pmatrix}
+                            \mathbf{J}_j^1 & \mathbf{0}\\
+                            \mathbf{0} & \mathbf{J}_j^2
+                        \end{pmatrix}=
+                        \mathbf{P}_j\pa{\mathbf{A}_j^{-1}\mathbf{B}_j+\mathbf{I}}\mathbf{P}_j^{-1}\\
+                        \mathbf{J}_j^1,\mathbf{J}_j^2,\mathbf{P}_j\in\mathbb{C}^{\pa{p+1}\times\pa{p+1}}
+                    \end{gathered}
+                \end{equation}
+            \end{block}
+        \end{frame}
+    }
 
-				\node[between base=C24 and C34]{\Large $\Omega$};
-				\node[between base=C21 and C32]{PML};
-				\node[between base=C26 and C37]{PML};
+    \AtLeastLevel{sml}{
+        \begin{frame}{\fefuchooselanguage{russian={Ограничение области. Граничные условия прозрачности},english={Domain truncation. Transparent boundary conditions}}}
+            \begin{block}{\small \fefuchooselanguage{russian={Разложение решения по базису},english={Expansion of the solution in the basis}} $\mathbf{P}_j^{-1}$}
+                \begin{equation}
+                    \mathbf{P}_j^{-1}\begin{pmatrix}
+                        \hat{\bm{\Psi}}_j^{q+1}\\
+                        \hat{\bm{\xi}}_j^{q+1}
+                    \end{pmatrix}=
+                    \mathbf{P}_j^{-1}\pa{\mathbf{A}_j^{-1}\mathbf{B}_j+\mathbf{I}}\begin{pmatrix}
+                        \hat{\bm{\Psi}}_j^q\\
+                        \hat{\bm{\xi}}_j^q
+                    \end{pmatrix}=
+                    \begin{pmatrix}
+                        \mathbf{J}_j^1 & \mathbf{0}\\
+                        \mathbf{0} & \mathbf{J}_j^2
+                    \end{pmatrix}
+                    \begin{pmatrix}
+                        \mathbf{P}_j^1\hat{\bm{\Psi}}_j^q+\mathbf{P}_j^2\hat{\bm{\xi}}_j^q\\
+                        \mathbf{P}_j^3\hat{\bm{\Psi}}_j^q+\mathbf{P}_j^4\hat{\bm{\xi}}_j^q
+                    \end{pmatrix}
+                \end{equation}
+            \end{block}
+            \vskip -0.5cm
+            \begin{block}{\small \fefuchooselanguage{russian={Потребуем равенству нулю решений возрастающих при $q\to\infty$},english={Let the solutions increasing as $q\to\infty$ equal zero}}}
+                \vskip -0.5cm
+                \begin{gather}
+                    \mathbf{P}_j^3\hat{\bm{\Psi}}_j^Q+\mathbf{P}_j^4\hat{\bm{\xi}}_j^Q=0\\
+                    D_\delta^-\hat{\bm{\Psi}}_j^Q=-\pa{\mathbf{P}_j^4}^{-1}\mathbf{P}_j^3\hat{\bm{\Psi}}_j^Q=\hat{\mathbf{D}}_j\hat{\bm{\Psi}}_j^Q
+                \end{gather}
+            \end{block}
+            \vskip -0.5cm
+            \begin{block}{\small \fefuchooselanguage{russian={Применив обратное преобразование получим полностью дискретные условия на границе},english={Applying the reverse transform we obtain the fully-discrete TBC}}}
+                \begin{equation}
+                    \begin{gathered}
+                        \bm{\Psi}_j^{n+1,Q}-\bm{\Psi}_j^{n+1,Q-1}=\sum\limits_{l=1}^{n}\mathbf{D}_j^{n+1-l}\bm{\Psi}_j^{l,Q}\\
+                        \bm{\Psi}_j^{n,q}=\pa{\mathcal{A}_j^{n,q},\mathcal{B}_{j,1}^{n,q},\dots,\mathcal{B}_{j,1}^{n,q}}^T\in\mathbb{C}^{p+1}\\
+                        \mathbf{D}_j^n=\mathcal{Z}^{-1}\left\{\hat{\mathbf{D}}_j\pa{\zeta}\right\}=\frac{\tau^n}{2\pi}\int\limits_0^{2\pi}\hat{\mathbf{D}}_j\pa{\tau e^{i\phi}}e^{in\phi}\dd\phi\,,\quad n\in\mathbb{Z}_0\,,\quad\tau > 0
+                    \end{gathered}
+                \end{equation}
+            \end{block}
+        \end{frame}
+    }
 
-				\coordinate[at=($(Y0.base)!0.4!(Y1.base)$)](YA1);
-				\coordinate[at=($(Y0.base)!0.6!(Y1.base)$)](YA2);
-				\draw[->] (YA1) -- (YA2) node[midway,yshift=2mm]{$y$};
+    \ExactlyLevel{def}{
+        \begin{frame}{\fefuchooselanguage{russian={Ограничение области. Граничные условия прозрачности},english={Domain truncation. Transparent boundary conditions}}}
+            \begin{block}{\small $\mathcal{Z}$-\fefuchooselanguage{russian={преобразование системы уравнений},english={transform of the equations}}}
+                \smallskip
+                \begin{equation}
+                    \begin{gathered}
+                        -\zeta b_{l,m}^iD_\delta^2\hat{\mathcal{B}}_{j,i}^q=\zeta k_{j,0}^2\hat{\mathcal{B}}_{j,i}^q+\zeta b_{l,m}^i\pa{k_j^2-k_{j,0}^2}\hat{\mathcal{B}}_{j,i}^q-k_{j,0}^2\hat{\mathcal{A}}_j^q,\quad l=\overline{1,p}\\
+                        \zeta\hat{\mathcal{A}}_j^q=a_{l,m}^0\hat{\mathcal{A}}_j^q+\zeta\sum\limits_{i=1}^pa_{l,m}^i\hat{\mathcal{B}}_{j,i}^q
+                    \end{gathered}
+                \end{equation}
+            \end{block}
+            \begin{block}{\small \fefuchooselanguage{russian={Потребовав равенству нулю решений возрастающих при $q\to\infty$ и применив обратное $\mathcal{Z}$-преобразование, получим условия на правой границе},english={Letting the solutions increasing as $q\to\infty$ equal zero, applying reverse $\mathcal{Z}$-transform, obtain the right boundary conditions}}}
+                \smallskip
+                \begin{equation}
+                    \begin{gathered}
+                        \bm{\Psi}_j^{n+1,Q}-\bm{\Psi}_j^{n+1,Q-1}=\sum\limits_{l=1}^{n}\mathbf{D}_j^{n+1-l}\bm{\Psi}_j^{l,Q}\\
+                        \bm{\Psi}_j^{n,q}=\pa{\mathcal{A}_j^{n,q},\mathcal{B}_{j,1}^{n,q},\dots,\mathcal{B}_{j,1}^{n,q}}^T\in\mathbb{C}^{p+1}\\
+                        \mathbf{D}_j^n=\mathcal{Z}^{-1}\left\{\hat{\mathbf{D}}_j\pa{\zeta}\right\}=\frac{\tau^n}{2\pi}\int\limits_0^{2\pi}\hat{\mathbf{D}}_j\pa{\tau e^{i\phi}}e^{in\phi}\dd\phi\,,\quad n\in\mathbb{Z}_0\,,\quad\tau > 0
+                    \end{gathered}
+                \end{equation}
+            \end{block}
+        \end{frame}
+    }
 
-				\coordinate[left=2mm of C11](X0);
-				\coordinate[left=2mm of C41](X1);
+	\AtLeastLevel{def}{
+        \begin{frame}{\fefuchooselanguage{russian={Ограничение области},english={Domain truncation}}. Perfectly matching layers}
+    		\begin{figure}[t]
+    			\begin{tikzpicture}
+    				\coordinate(C11);
+    				\foreach \i in {2,...,7} {
+    					\pgfmathtruncatemacro\index{\i-1}
+    					\coordinate[right of=C1\index](C1\i);
+    				}
+    				\foreach \i in {2,...,4} {
+    					\pgfmathtruncatemacro\index{\i-1}
+    					\coordinate[below of=C\index1](C\i1);
+    					\foreach \j in {2,...,7} {
+    						\pgfmathtruncatemacro\index{\j-1}
+    						\coordinate[right of=C\i\index](C\i\j);
+    					}
+    				}
+    				\draw (C11) -- (C17);
+    				\draw (C11) -- (C41);
+    				\draw (C17) -- (C47);
+    				\draw[dashed] (C12) -- (C42);
+    				\draw[dashed] (C16) -- (C46);
+    				\draw[decorate, decoration={complete sines}] (C41) -- (C47);
 
-				\coordinate[at=($(X0.base)!0.4!(X1.base)$)](XA1);
-				\coordinate[at=($(X0.base)!0.6!(X1.base)$)](XA2);
-				\draw[->] (XA1) -- (XA2) node[midway,xshift=-2mm]{$x$};
-			\end{tikzpicture}
-		\end{figure}
-		\begin{block}{\fefuchooselanguage{russian={Оператор в PML области},english={Operator in the PML}}}
-			\smallskip
-			\begin{equation}
-				k_{j,0}^2L_j^{PML}=\frac{1}{1+i\sigma\pa{y}}\frac{\partial}{\partial y}\frac{1}{1+i\sigma\pa{y}}\frac{\partial}{\partial y}+k_j^2+k_{j,0}^2
-			\end{equation}
-			\begin{equation}
-				\sigma\pa{y}=\sigma_0\pa{\frac{\left|y-y_b\right|}{\varepsilon}}^3=\sigma_0\zeta^3\equiv\sigma\pa{\zeta}\,,\quad\zeta\in\left[0, 1\right]
-			\end{equation}
-		\end{block}
-	\end{frame}
+    				\node[above=0 of C12](Y0){$y_0$};
+    				\node[above=0 of C16](Y1){$y_1$};
 
-	\forpoi{%
+    				\node[above=0 of C11]{$-\varepsilon$};
+    				\node[above=0 of C17]{$+\varepsilon$};
+
+    				\node[between base=C24 and C34]{\Large $\Omega$};
+    				\node[between base=C21 and C32]{PML};
+    				\node[between base=C26 and C37]{PML};
+
+    				\coordinate[at=($(Y0.base)!0.4!(Y1.base)$)](YA1);
+    				\coordinate[at=($(Y0.base)!0.6!(Y1.base)$)](YA2);
+    				\draw[->] (YA1) -- (YA2) node[midway,yshift=2mm]{$y$};
+
+    				\coordinate[left=2mm of C11](X0);
+    				\coordinate[left=2mm of C41](X1);
+
+    				\coordinate[at=($(X0.base)!0.4!(X1.base)$)](XA1);
+    				\coordinate[at=($(X0.base)!0.6!(X1.base)$)](XA2);
+    				\draw[->] (XA1) -- (XA2) node[midway,xshift=-2mm]{$x$};
+    			\end{tikzpicture}
+    		\end{figure}
+    		\begin{block}{\fefuchooselanguage{russian={Оператор в PML области},english={Operator in the PML}}}
+    			\smallskip
+    			\begin{equation}
+    				k_{j,0}^2L_j^{PML}=\frac{1}{1+i\sigma\pa{y}}\frac{\partial}{\partial y}\frac{1}{1+i\sigma\pa{y}}\frac{\partial}{\partial y}+k_j^2+k_{j,0}^2
+    			\end{equation}
+    			\begin{equation}
+    				\sigma\pa{y}=\sigma_0\pa{\frac{\left|y-y_b\right|}{\varepsilon}}^3=\sigma_0\zeta^3\equiv\sigma\pa{\zeta}\,,\quad\zeta\in\left[0, 1\right]
+    			\end{equation}
+    		\end{block}
+    	\end{frame}
+    }
+
+	\AtLeastLevel{all}{
 		\begin{frame}{\fefuchooselanguage{russian={Дискретизация оператора},english={Discretization of the operator}} $L_j^{PML}$}
 			\begin{block}{\fefuchooselanguage{russian={Уравнение для $\mathcal{B}_{j,i}$ в PML области},english={Equation for $\mathcal{B}_{j,i}$ in the PML}}}
 				\smallskip
@@ -528,155 +839,7 @@
 		\end{frame}
 	}
 
-	\begin{frame}{\fefuchooselanguage{russian={Ограничение области. Граничные условия прозрачности},english={Domain truncation. Transparent boundary conditions}}}
-		\begin{block}{\fefuchooselanguage{russian={Уравнение для},english={Equation for}} $\mathcal{B}_{j,i}$}
-			\smallskip
-			\begin{equation}
-				k_{j,0}^2\mathcal{B}_{j,i}^{n+1,q}+b_{l,m}^iD_\delta^2\mathcal{B}_{j,i}^{n+1,q}+b_{l,m}^i\pa{k_j^2-k_{j,0}^2}\mathcal{B}_{j,i}^{n+1,q}=k_{j,0}^2\mathcal{A}_j^{n,q}
-			\end{equation}
-		\end{block}
-		\begin{block}{$\mathcal{Z}$-\fefuchooselanguage{russian={преобразование},english={transform}}}
-			\smallskip
-			\begin{equation}
-				\mathcal{Z}\left\{\mathcal{A}_j^{n,q}\right\}=\hat{\mathcal{A}}_j^q\pa{\zeta}\coloneq\sum\limits_{n=0}^\infty\zeta^{-n}\mathcal{A}_j^{n,q}\,,\quad\zeta\in\mathbb{C}\,,\quad\left|\zeta\right|>R_{\hat{\mathcal{A}}_j^q}
-			\end{equation}
-		\end{block}
-		\begin{block}{\fefuchooselanguage{russian={Тогда при условии},english={Then if}} $\mathcal{A}_j^{n,q}=\mathcal{B}_j^{n,q}=0,\forall n<0$}
-			\smallskip
-			\begin{equation}
-				-\zeta b_{l,m}^iD_\delta^2\hat{\mathcal{B}}_{j,i}^q=\zeta k_{j,0}^2\hat{\mathcal{B}}_{j,i}^q+\zeta b_{l,m}^i\pa{k_j^2-k_{j,0}^2}\hat{\mathcal{B}}_{j,i}^q-k_{j,0}^2\hat{\mathcal{A}}_j^q,\quad l=\overline{1,p}
-			\end{equation}
-		\end{block}
-		\begin{block}{\fefuchooselanguage{russian={Дополнительное уравнение},english={Additional equation}}}
-			\smallskip
-			\begin{equation}
-				\zeta\hat{\mathcal{A}}_j^q=a_{l,m}^0\hat{\mathcal{A}}_j^q+\zeta\sum\limits_{i=1}^pa_{l,m}^i\hat{\mathcal{B}}_{j,i}^q
-			\end{equation}
-		\end{block}
-	\end{frame}
-
-   	\begin{frame}{\fefuchooselanguage{russian={Ограничение области. Граничные условия прозрачности},english={Domain truncation. Transparent boundary conditions}}}
-   		\begin{block}{\fefuchooselanguage{russian={Обозначим},english={Let}}  $\hat{\bm{\Psi}}_j^q=\pa{\hat{\mathcal{A}}_j^q,\hat{\mathcal{B}}_{j,1}^q,\dots,\hat{\mathcal{B}}_{j,p}^q}^T\in\mathbb{C}^{p+1}$}
-   			\smallskip
-   			\begin{equation}
-   				\mathbf{X}_jD_\delta^2\hat{\bm{\Psi}}_j^q=\mathbf{Y}_j\hat{\bm{\Psi}}_j^q
-   			\end{equation}
-   		\end{block}
-   		\vskip -1cm
-   		\begin{block}{}
-   			\begin{gather}
-   				\mathbf{X}_j\coloneq\begin{pmatrix}
-   					0 & -\zeta b_{l,m}^1&&\\
-   					\vdots& & \ddots&&\\
-   					0&&&-\zeta b_{l,m}^p\\
-   					\zeta&0&\dots&0
-   				\end{pmatrix}\\
-   				\mathbf{Y}_j\coloneq\begin{pmatrix}
-   					-k_{j,0}^2&\zeta k_{j,0}^2+\zeta b_{l,m}^1\pa{k_j^2-k_{j,0}^2}&&\\
-   					\vdots&&\ddots&\\
-   					-k_{j,0}^2&&&\zeta k_{j,0}^2+\zeta b_{l,m}^p\pa{k_j^2-k_{j,0}^2}\\
-   					a_{l,m}^0&\zeta a_{l,m}^1&\dots&\zeta a_{l,m}^p
-   				\end{pmatrix}
-   			\end{gather}
-   			\begin{equation*}
-   				\mathbf{X}_j,\mathbf{Y}_j\in\mathbb{C}^{\pa{p+1}\times\pa{p+1}}
-   			\end{equation*}
-   		\end{block}
-   	\end{frame}
-
-   	\begin{frame}{\fefuchooselanguage{russian={Ограничение области. Граничные условия прозрачности},english={Domain truncation. Transparent boundary conditions}}}
-   		\begin{block}{\fefuchooselanguage{russian={Введём переменную},english={Introducing}} $\hat{\bm{\xi}}_j^q\coloneq D_q^-\hat{\bm{\Psi}}_j^q$}
-   			\begin{gather}
-   				\underbrace{\begin{pmatrix}
-   						\mathbf{0} & \mathbf{X}_j\\
-   						\mathbf{I} & -\mathbf{I}\delta
-   				\end{pmatrix}}_{\mathbf{A}_j} D_\delta^+
-   				\begin{pmatrix}
-   					\hat{\bm{\Psi}}_j^q\\
-   					\hat{\bm{\xi}}_j^q
-   				\end{pmatrix}=
-   				\underbrace{\begin{pmatrix}
-   						\mathbf{Y}_j & \mathbf{0}\\
-   						\mathbf{0} & \mathbf{I}
-   				\end{pmatrix}}_{\mathbf{B}_j}
-   				\begin{pmatrix}
-   					\hat{\bm{\Psi}}_j^q\\
-   					\hat{\bm{\xi}}_j^q
-   				\end{pmatrix}\\
-   				D_q^-\hat{\bm{\Psi}}_j^q=\frac{\hat{\bm{\Psi}}_j^q-\hat{\bm{\Psi}}_j^{q-1}}{\delta}\qquad D_q^+\hat{\bm{\Psi}}=\frac{\hat{\bm{\Psi}}_j^{q+1}-\hat{\bm{\Psi}}_j^q}{\delta}\nonumber
-   			\end{gather}
-   		\end{block}
-   		\vskip -0.5cm
-   		\begin{block}{\fefuchooselanguage{russian={Решение системы},english={System solution}}}
-   			\begin{equation}
-   				\begin{pmatrix}
-   					\hat{\bm{\Psi}}_j^{q+1}\\
-   					\hat{\bm{\xi}}_j^{q+1}
-   				\end{pmatrix}=
-   				\pa{\mathbf{A}_j^{-1}\mathbf{B}_j+\mathbf{I}}
-   				\begin{pmatrix}
-   					\hat{\bm{\Psi}}_j^q\\
-   					\hat{\bm{\xi}}_j^q
-   				\end{pmatrix}\,.
-   			\end{equation}
-   		\end{block}
-   		\vskip -0.5cm
-   		\begin{block}{\fefuchooselanguage{russian={Жорданова форма},english={Jordan matrix form}}}
-   			\begin{equation}
-   				\begin{gathered}
-   					\mathbf{J}_j=\begin{pmatrix}
-   						\mathbf{J}_j^1 & \mathbf{0}\\
-   						\mathbf{0} & \mathbf{J}_j^2
-   					\end{pmatrix}=
-   					\mathbf{P}_j\pa{\mathbf{A}_j^{-1}\mathbf{B}_j+\mathbf{I}}\mathbf{P}_j^{-1}\\
-   					\mathbf{J}_j^1,\mathbf{J}_j^2,\mathbf{P}_j\in\mathbb{C}^{\pa{p+1}\times\pa{p+1}}
-   				\end{gathered}
-   			\end{equation}
-   		\end{block}
-   	\end{frame}
-
-    \begin{frame}{\fefuchooselanguage{russian={Ограничение области. Граничные условия прозрачности},english={Domain truncation. Transparent boundary conditions}}}
-        \begin{block}{\small \fefuchooselanguage{russian={Разложение решения по базису},english={Expansion of the solution in the basis}} $\mathbf{P}_j^{-1}$}
-            \begin{equation}
-                \mathbf{P}_j^{-1}\begin{pmatrix}
-                    \hat{\bm{\Psi}}_j^{q+1}\\
-                    \hat{\bm{\xi}}_j^{q+1}
-                \end{pmatrix}=
-                \mathbf{P}_j^{-1}\pa{\mathbf{A}_j^{-1}\mathbf{B}_j+\mathbf{I}}\begin{pmatrix}
-                    \hat{\bm{\Psi}}_j^q\\
-                    \hat{\bm{\xi}}_j^q
-                \end{pmatrix}=
-                \begin{pmatrix}
-                    \mathbf{J}_j^1 & \mathbf{0}\\
-                    \mathbf{0} & \mathbf{J}_j^2
-                \end{pmatrix}
-                \begin{pmatrix}
-                    \mathbf{P}_j^1\hat{\bm{\Psi}}_j^q+\mathbf{P}_j^2\hat{\bm{\xi}}_j^q\\
-                    \mathbf{P}_j^3\hat{\bm{\Psi}}_j^q+\mathbf{P}_j^4\hat{\bm{\xi}}_j^q
-                \end{pmatrix}
-            \end{equation}
-        \end{block}
-        \vskip -0.5cm
-        \begin{block}{\small \fefuchooselanguage{russian={Потребуем равенству нулю решений возрастающих при $q\to\infty$},english={Let the solutions increasing as $q\to\infty$ equal zero}}}
-            \vskip -0.5cm
-            \begin{gather}
-                \mathbf{P}_j^3\hat{\bm{\Psi}}_j^Q+\mathbf{P}_j^4\hat{\bm{\xi}}_j^Q=0\\
-                D_\delta^-\hat{\bm{\Psi}}_j^Q=-\pa{\mathbf{P}_j^4}^{-1}\mathbf{P}_j^3\hat{\bm{\Psi}}_j^Q=\hat{\mathbf{D}}_j\hat{\bm{\Psi}}_j^Q
-            \end{gather}
-        \end{block}
-        \vskip -0.5cm
-        \begin{block}{\small \fefuchooselanguage{russian={Применив обратное преобразование получим полностью дискретные условия на границе},english={Applying the reverse transform we obtain the fully-discrete TBC}}}
-            \begin{equation}
-                \begin{gathered}
-                    \bm{\Psi}_j^{n+1,Q}-\bm{\Psi}_j^{n+1,Q-1}=\sum\limits_{l=1}^{n}\mathbf{D}_j^{n+1-l}\bm{\Psi}_j^{l,Q}\\
-                    \bm{\Psi}_j^{n,q}=\pa{\mathcal{A}_j^{n,q},\mathcal{B}_{j,1}^{n,q},\dots,\mathcal{B}_{j,1}^{n,q}}^T\in\mathbb{C}^{p+1}\\
-                    \mathbf{D}_j^n=\mathcal{Z}^{-1}\left\{\hat{\mathbf{D}}_j\pa{\zeta}\right\}=\frac{\tau^n}{2\pi}\int\limits_0^{2\pi}\hat{\mathbf{D}}_j\pa{\tau e^{i\phi}}e^{in\phi}\dd\phi\,,\quad n\in\mathbb{Z}_0\,,\quad\tau > 0
-                \end{gathered}
-            \end{equation}
-        \end{block}
-    \end{frame}
-
-	\forpoi{%
+	\AtLeastLevel{all}{
 		\begin{frame}{\fefuchooselanguage{russian={Лучевая теория распространения звука},english={Sound propagation ray theory}}}
 			\begin{block}{}
 				\begin{equation}
@@ -700,7 +863,7 @@
 		\end{frame}
 	}
 
-	\forpoi{%
+	\AtLeastLevel{all}{
 		\begin{frame}{\fefuchooselanguage{russian={Лучевая теория распространения звука},english={Sound propagation ray theory}}}
 			\begin{block}{\fefuchooselanguage{russian={Гамильтонова система},english={Hamilton system}}}
 				\smallskip
@@ -729,64 +892,76 @@
 		\end{frame}
 	}
 
-	\begin{frame}{\fefuchooselanguage{russian={Лучевые начальные условия},english={Ray-based initial conditions}}}
-		\begin{block}{\fefuchooselanguage{russian={Начальное условие},english={Initial condition}}}
-			\smallskip
-			\begin{gather}
-				\mathcal{A}_j\pa{x_0,y}=M_j\pa{x_0,y}e^{ik_{j,0}S_j\pa{x_0,y}}\,,\qquad y_0\leqslant y\leqslant y_1\\
-				S_j\pa{l}=\int\limits_0^ln_j\pa{l}dl\\
-				M_j\pa{l}=\frac{M_{j,0}}{n_j\pa{l}}\sqrt{\frac{\cos\alpha}{\nicefrac{\partial y\pa{l,\alpha}}{\partial\alpha}}}\\
-				M_{j,0}=\frac{e^\frac{i\pi}{4}}{\sqrt{8\pi k_{j,0}}}\nonumber
-			\end{gather}
-		\end{block}
-		\vspace{-0.5cm}
-		\begin{block}{\fefuchooselanguage{russian={Простые начальные условия},english={Simplified initial conditions}}}
-			\smallskip
-			\begin{equation}
-				l=\sqrt{x_0^2+y^2}\,,\quad S\pa{l}=l\,,\quad M_j\pa{l}=\frac{M_{j,0}}{\sqrt{l}}
-			\end{equation}
-		\end{block}
-	\end{frame}
+	\AtLeastLevel{def}{
+        \begin{frame}{\fefuchooselanguage{russian={Лучевые начальные условия},english={Ray-based initial conditions}}}
+            \begin{block}{"Широкоугольное" начальное условие Грина}
+                \smallskip
+                \begin{equation}
+                    \mathcal{A}_j\pa{0,y}=\frac{\varphi_j\pa{z_s}}{2\sqrt{\pi}}\pa{1.4467-0.8402k_{j,0}^2\pa{y-y_s}^2}e^{-\frac{k_{j,0}^2\pa{y-y_s}^2}{1.5256}}
+                \end{equation}
+            \end{block}
+    		\begin{block}{\fefuchooselanguage{russian={Начальное условие},english={Initial condition}}}
+                \vspace{-0.5cm}
+    			\begin{gather}
+    				\mathcal{A}_j\pa{x_0,y}=M_j\pa{x_0,y}e^{ik_{j,0}S_j\pa{x_0,y}}\,,\qquad y_0\leqslant y\leqslant y_1\\
+    				S_j\pa{l}=\int\limits_0^ln_j\pa{l}dl\\
+    				M_j\pa{l}=\frac{M_{j,0}}{n_j\pa{l}}\sqrt{\frac{\cos\alpha}{\nicefrac{\partial y\pa{l,\alpha}}{\partial\alpha}}}\\
+    				M_{j,0}=\frac{e^\frac{i\pi}{4}}{\sqrt{8\pi k_{j,0}}}\nonumber
+    			\end{gather}
+    		\end{block}
+    		\vspace{-0.5cm}
+    		\begin{block}{\fefuchooselanguage{russian={Простые начальные условия},english={Simplified initial conditions}}}
+    			\smallskip
+    			\begin{equation}
+    				l=\sqrt{x_0^2+y^2}\,,\quad S\pa{l}=l\,,\quad M_j\pa{l}=\frac{M_{j,0}}{\sqrt{l}}
+    			\end{equation}
+    		\end{block}
+    	\end{frame}
+    }
 
-	\begin{frame}{\fefuchooselanguage{russian={Временной ряд импульсного акустического сигнала},english={Time series of an acoustic signal pulse}}}
-		\begin{block}{\fefuchooselanguage{russian={Спектр импульса},english={Pulse spectra}}}
-			\smallskip
-			\begin{equation}
-				\hat{I}_r\pa{\xi}=\overline{\hat{P}\pa{x_r,y_r,z_r,\xi}\cdot e^{-i\tau\omega\pa{\xi}}}
-			\end{equation}
-			\begin{equation}
-				\hat{P}\pa{x,y,z,\xi}=p\pa{x,y,z,f\pa{\xi}}\cdot\overline{\hat{g}}\pa{\xi}
-			\end{equation}
-		\end{block}
-		\begin{block}{Sound Exposure Level}
-			\begin{equation}
-				SEL\pa{x,y,z,f_1,f_2}=10\log_{10}\pa{\int\limits_{f_1}^{f_2}\left|\hat{P}\pa{x,y,z,\xi\pa{f}}\right|^2df}
-			\end{equation}
-		\end{block}
-		\vspace{-0.5cm}
-		\begin{figure}[h]
-			\centering
-			\includegraphics[width=0.7\textwidth]{impulse.pdf}
-			\caption{\fefuchooselanguage{russian={Сигнал во временной области},english={Signal in the time domain}}}
-		\end{figure}
-	\end{frame}
+	\AtLeastLevel{sml}{
+        \begin{frame}{\fefuchooselanguage{russian={Временной ряд импульсного акустического сигнала},english={Time series of an acoustic signal pulse}}}
+    		\begin{block}{\fefuchooselanguage{russian={Спектр импульса},english={Pulse spectra}}}
+    			\smallskip
+    			\begin{equation}
+    				\hat{I}_r\pa{\xi}=\overline{\hat{P}\pa{x_r,y_r,z_r,\xi}\cdot e^{-i\tau\omega\pa{\xi}}}
+    			\end{equation}
+    			\begin{equation}
+    				\hat{P}\pa{x,y,z,\xi}=p\pa{x,y,z,f\pa{\xi}}\cdot\overline{\hat{g}}\pa{\xi}
+    			\end{equation}
+    		\end{block}
+    		\begin{block}{Sound Exposure Level}
+    			\begin{equation}
+    				SEL\pa{x,y,z,f_1,f_2}=10\log_{10}\pa{\int\limits_{f_1}^{f_2}\left|\hat{P}\pa{x,y,z,\xi\pa{f}}\right|^2df}
+    			\end{equation}
+    		\end{block}
+    		\vspace{-0.5cm}
+    		\begin{figure}[h]
+    			\centering
+    			\includegraphics[width=0.7\textwidth]{impulse.pdf}
+    			\caption{\fefuchooselanguage{russian={Сигнал во временной области},english={Signal in the time domain}}}
+    		\end{figure}
+    	\end{frame}
+    }
 
-	\begin{frame}{\fefuchooselanguage{russian={Колебательное ускорение},english={Particle acceleration}}}
-		\begin{block}{}
-	       \begin{equation}
-				\overline{a}=\left\{a_x,a_y,a_z\right\}=\left\{-\frac{1}{\rho}\frac{\partial p}{\partial x}, -\frac{1}{\rho}\frac{\partial p}{\partial y},-\frac{1}{\rho}\frac{\partial p}{\partial z}\right\}=-\frac{1}{\rho}\nabla p
-	        \end{equation}
-		\end{block}
-	\begin{block}{}
-		\begin{gather}
-			\frac{\partial p}{\partial x}=\sum\limits_{j=1}^J\frac{\partial}{\partial x}\pa{e^{ik_{j,0}x}\mathcal{A}_j\varphi_j}=\sum\limits_{j=1}^Je^{ik_{j,0}x}\pa{ik_{j,0}\mathcal{A}_j\varphi_j+\frac{\partial}{\partial x}\pa{\mathcal{A}_j\varphi_j}}\\
-			\frac{\partial p}{\partial y}=\sum\limits_{j=1}^Je^{ik_{j,0}x}\frac{\partial}{\partial y}\pa{\mathcal{A}_j\varphi_j}\\
-			\frac{\partial p}{\partial z}=\sum\limits_{j=1}^Je^{ik_{j,0}x}\frac{\partial}{\partial z}\pa{\mathcal{A}_j\varphi_j}
-	        \end{gather}
-	   \end{block}
-	\end{frame}
+	\AtLeastLevel{sml}{
+        \begin{frame}{\fefuchooselanguage{russian={Колебательное ускорение},english={Particle acceleration}}}
+    		\begin{block}{}
+    	       \begin{equation}
+    				\overline{a}=\left\{a_x,a_y,a_z\right\}=\left\{-\frac{1}{\rho}\frac{\partial p}{\partial x}, -\frac{1}{\rho}\frac{\partial p}{\partial y},-\frac{1}{\rho}\frac{\partial p}{\partial z}\right\}=-\frac{1}{\rho}\nabla p
+    	        \end{equation}
+    		\end{block}
+        	\begin{block}{}
+        		\begin{gather}
+        			\frac{\partial p}{\partial x}=\sum\limits_{j=1}^J\frac{\partial}{\partial x}\pa{e^{ik_{j,0}x}\mathcal{A}_j\varphi_j}=\sum\limits_{j=1}^Je^{ik_{j,0}x}\pa{ik_{j,0}\mathcal{A}_j\varphi_j+\frac{\partial}{\partial x}\pa{\mathcal{A}_j\varphi_j}}\\
+        			\frac{\partial p}{\partial y}=\sum\limits_{j=1}^Je^{ik_{j,0}x}\frac{\partial}{\partial y}\pa{\mathcal{A}_j\varphi_j}\\
+        			\frac{\partial p}{\partial z}=\sum\limits_{j=1}^Je^{ik_{j,0}x}\frac{\partial}{\partial z}\pa{\mathcal{A}_j\varphi_j}
+        	        \end{gather}
+        	   \end{block}
+       	\end{frame}
+    }
 
-	\forpoi{%
+	\AtLeastLevel{all}{%
 		\begin{frame}{\fefuchooselanguage{russian={Численное дифференцирование},english={Numerical differentiation}}}
 			\begin{block}{}
 				\begin{equation}
@@ -816,131 +991,139 @@
 		\end{frame}
 	}
 
-	\begin{frame}{\fefuchooselanguage{russian={Выводы},english={Summary}}}
-        \small
-		\begin{block}{}
-			\fefuchooselanguage{
-                russian={Было рассмотрено вычисление решения уравнения Гельмгольца с использованием широкоугольных модовых параболических уравнений в адиабатическом приближении и предложена численная схема их решения, основанная на применении аппроксимации Паде к пропагатору. Введены согласованные поглощающие слои и граничные условия прозрачности. Рассмотрено вычисление верменного ряда импульсного акустического сигнала, SEL и колебательных ускорений.},
-                english={The computation of the solution to the Helmholtz equation using wide-angle mode parabolic equations in the adiabatic approximation was considered, and a numerical scheme for their solution was proposed, based on the application of the Pad\'e approximation to the propagator. Perfectly matching layers and fully discrete transparent boundary conditions were introduced. The computation of the time series of the acoustic signal pulse, SEL, and particle acceleration were also considered.}
-            }
-		\end{block}
-        \begin{block}{\fefuchooselanguage{russian={Личный вклад автора},english={Author contribution}}}
-            \begin{itemize}
-                \item \fefuchooselanguage{russian={Вывод прозрачных граничных условий},english={Derivation of transparent boundary conditions}}
-                \item \fefuchooselanguage{russian={Тестирование и реализация лучевых начальных условий},english={Testing and implementation of ray starter}}
-            \end{itemize}
-        \end{block}
-        \begin{block}{\fefuchooselanguage{russian={Статьи},english={Papers}}}
-            \begin{refsection}
-                \nocite{jsv}
-                \AtNextBibliography{\changefontsizes{7.5pt}}
-                \printbibliography[heading=none,env=betterlabel]
-            \end{refsection}
-        \end{block}
-	\end{frame}
+	\AtLeastLevel{def}{
+        \begin{frame}{\fefuchooselanguage{russian={Выводы},english={Summary}}}
+            \small
+    		\begin{block}{}
+    			\fefuchooselanguage{
+                    russian={Разработан метод вычисления решения уравнения Гельмгольца с использованием широкоугольных модовых параболических уравнений в адиабатическом приближении и предложена численная схема их решения, основанная на применении аппроксимации Паде к пропагатору. Введены согласованные поглощающие слои и граничные условия прозрачности.},
+                    english={The computation of the solution to the Helmholtz equation using wide-angle mode parabolic equations in the adiabatic approximation was considered, and a numerical scheme for their solution was proposed, based on the application of the Pad\'e approximation to the propagator. Perfectly matching layers and fully discrete transparent boundary conditions were introduced.}
+                }
+    		\end{block}
+            \begin{block}{\small \fefuchooselanguage{russian={Личный вклад автора},english={Author contribution}}}
+                \begin{itemize}
+                    \item \fefuchooselanguage{russian={Вывод прозрачных граничных условий},english={Derivation of transparent boundary conditions}}
+                    \item \fefuchooselanguage{russian={Вывод, тестирование и реализация лучевых начальных условий},english={Derviation, testing and implementation of ray starter}}
+                \end{itemize}
+            \end{block}
+            \begin{block}{\small \fefuchooselanguage{russian={Статьи},english={Papers}}}
+                \begin{refsection}
+                    \nocite{jsv}
+                    \AtNextBibliography{\changefontsizes{7.5pt}}
+                    \printbibliography[heading=none,env=betterlabel]
+                \end{refsection}
+            \end{block}
+    	\end{frame}
+    }
 
-	\section{\fefuchooselanguage{russian={Программная реализация},english={Implementation}}}
+	\TranslatedSection{russian={Программная реализация},english={Implementation}}
 
-	\begin{frame}{\fefuchooselanguage{russian={Комплекс программ},english={Software}}}
-		\begin{block}{}
-			\begin{itemize}
-				\item \fefuchooselanguage{russian={Язык},english={Language}} C++20
-				\item \fefuchooselanguage{russian={Репозиторий},english={Repository}}: {\footnotesize \url{https://github.com/GoldFeniks/AMPLE}}
-				\item 163 \fefuchooselanguage{russian={коммита},english={commits}}, \textcolor{greenish}{++}18028, \textcolor{redish}{\textminus\textminus}8505
-				\item \fefuchooselanguage{russian={Зависимости},english={Dependencies}}
-				\begin{itemize}
-					\item Boost C++
-					\item ALGLIB
-					\item fftw3
-					\item nlohmann::json
-					\item Eigen
-				\end{itemize}
-				\item \fefuchooselanguage{russian={Модули},english={Modules}}
-				\begin{itemize}
-					\item CAMBALA\qquad {\footnotesize \url{https://github.com/Nauchnik/Acoustics-at-home/}}
-					\item DORK\qquad {\footnotesize \url{https://github.com/GoldFeniks/DORK}}
-					\item delaunay\qquad {\footnotesize \url{https://github.com/GoldFeniks/delaunay}}
-					\item zip\qquad {\footnotesize \url{https://github.com/GoldFeniks/zip}}
-				\end{itemize}
-			\end{itemize}
-		\end{block}
-		\begin{tikzpicture}[remember picture,overlay]
-			\node[xshift=-1.75cm,yshift=-2.75cm] at (current page.north east){\qrcode[height=2.5cm]{https://github.com/GoldFeniks/AMPLE}};
-		\end{tikzpicture}
-	\end{frame}
+	\AtLeastLevel{def}{
+        \begin{frame}{\fefuchooselanguage{russian={Комплекс программ},english={Software}}}
+    		\begin{block}{}
+    			\begin{itemize}
+    				\item \fefuchooselanguage{russian={Язык},english={Language}} C++20
+    				\item \fefuchooselanguage{russian={Репозиторий},english={Repository}}: {\footnotesize \url{https://github.com/GoldFeniks/AMPLE}}
+    				\item 163 \fefuchooselanguage{russian={коммита},english={commits}}, \textcolor{greenish}{++}18028, \textcolor{redish}{\textminus\textminus}8505
+    				\item \fefuchooselanguage{russian={Зависимости},english={Dependencies}}
+    				\begin{itemize}
+    					\item Boost C++
+    					\item ALGLIB
+    					\item fftw3
+    					\item nlohmann::json
+    					\item Eigen
+    				\end{itemize}
+    				\item \fefuchooselanguage{russian={Модули},english={Modules}}
+    				\begin{itemize}
+    					\item CAMBALA\qquad {\footnotesize \url{https://github.com/Nauchnik/Acoustics-at-home/}}
+    					\item DORK\qquad {\footnotesize \url{https://github.com/GoldFeniks/DORK}}
+    					\item delaunay\qquad {\footnotesize \url{https://github.com/GoldFeniks/delaunay}}
+    					\item zip\qquad {\footnotesize \url{https://github.com/GoldFeniks/zip}}
+    				\end{itemize}
+    			\end{itemize}
+    		\end{block}
+    		\begin{tikzpicture}[remember picture,overlay]
+    			\node[xshift=-1.75cm,yshift=-2.75cm] at (current page.north east){\qrcode[height=2.5cm]{https://github.com/GoldFeniks/AMPLE}};
+    		\end{tikzpicture}
+    	\end{frame}
+    }
 
-	\begin{frame}{\fefuchooselanguage{russian={Возможности разработанного комплекса программ},english={Software functionality}}}
-		\vskip -0.75cm
-		\begin{block}{}
-			\begin{itemize}
-				\item \fefuchooselanguage{
-                    russian={Вычисление трёхмерного поля звукового давления на основе решения широкоугольных модовых параболических уравнений},
-                    english={Computation of the three-dimensional acoustic pressure field based on the solution of wide-angle mode parabolic equations}
-                }
-				\item \fefuchooselanguage{
-                    russian={Вычисление вертикальных мод на основе заданных параметров среды (гидрология, батиметрия, параметры слоёв) или использование предрасчитанных значений},
-                    english={Calculation of vertical modes based on specified media parameters (hydrology, bathymetry, layer parameters) or using precomputed values},
-                }
-				\item \fefuchooselanguage{
-                    russian={Проведение трассировки горизонтальных лучей, соответствующих вертикальным модам},
-                    english={Performing horizontal ray tracing corresponding to vertical modes}
-                }
-				\item \fefuchooselanguage{
-                    russian={Вычисление временного ряда импульса звукового сигнала в произвольных точках среды и SEL},
-                    english={Computation of the time series of an acoustic signal pulse at arbitrary points in the media and SEL}
-                }
-				\item \fefuchooselanguage{
-                    russian={Вычисление поля колебательных ускорений},
-                    english={Computation of the particle acceleration field}
-                }
-				\item \fefuchooselanguage{
-                    russian={Реализация лучевых начальных условий и PML},
-                    english={Implementation of ray-based initial conditions and PML}
-                }
-				\item \fefuchooselanguage{
-                    russian={Высокая скорость работы за счёт использования параллельных вычислений},
-                    english={High modeling speed by the use of parallel computing}
-                }
-				\item \fefuchooselanguage{
-                    russian={Конфигурация вычислений с использованием текстового файла в формате JSON},
-                    english={Configuration of computations using a JSON text file}
-                }
-			\end{itemize}
-		\end{block}
-	\end{frame}
+	\AtLeastLevel{def}{
+        \begin{frame}{\fefuchooselanguage{russian={Возможности разработанного комплекса программ},english={Software functionality}}}
+    		\vskip -0.5cm
+    		\begin{block}{}
+    			\begin{itemize}
+    				\item \fefuchooselanguage{
+                        russian={Вычисление трёхмерного поля звукового давления на основе решения широкоугольных модовых параболических уравнений},
+                        english={Computation of the three-dimensional acoustic pressure field based on the solution of wide-angle mode parabolic equations}
+                    }
+    				\item \fefuchooselanguage{
+                        russian={Вычисление вертикальных мод на основе заданных параметров среды (гидрология, батиметрия, параметры слоёв) или использование предрасчитанных значений},
+                        english={Calculation of vertical modes based on specified media parameters (hydrology, bathymetry, layer parameters) or using precomputed values},
+                    }
+    				\item \fefuchooselanguage{
+                        russian={Проведение трассировки горизонтальных лучей, соответствующих вертикальным модам},
+                        english={Performing horizontal ray tracing corresponding to vertical modes}
+                    }
+    				\item \fefuchooselanguage{
+                        russian={Вычисление временного ряда импульса звукового сигнала в произвольных точках среды и SEL},
+                        english={Computation of the time series of an acoustic signal pulse at arbitrary points in the media and SEL}
+                    }
+    				\item \fefuchooselanguage{
+                        russian={Вычисление поля колебательных ускорений},
+                        english={Computation of the particle acceleration field}
+                    }
+    				\item \fefuchooselanguage{
+                        russian={Реализация лучевых начальных условий и искусственным ограничением расчётной области},
+                        english={Implementation of ray-based initial conditions and artificial boundary conditions}
+                    }
+    				\item \fefuchooselanguage{
+                        russian={Высокая скорость работы за счёт использования параллельных вычислений},
+                        english={High modeling speed by the use of parallel computing}
+                    }
+    				\item \fefuchooselanguage{
+                        russian={Конфигурация вычислений с использованием текстового файла в формате JSON},
+                        english={Configuration of computations using a JSON text file}
+                    }
+    			\end{itemize}
+    		\end{block}
+    	\end{frame}
+    }
 
-	\begin{frame}{\fefuchooselanguage{russian={Входные и выходные данные},english={Input and output data}}}
-		\begin{block}{\fefuchooselanguage{russian={Входные данные},english={Input data}}}
-			\begin{itemize}
-				\item config.json
-				\item \fefuchooselanguage{russian={Дополнительные текстовые или бинарные файлы},english={Additional text or binary files}}
-				\vspace{-0.25cm}
-				\begin{multicols}{2}
-					\begin{itemize}
-						\item \fefuchooselanguage{russian={Модовые функции и собственные значения},english={Modal functions and wavenumbers}}
-						\item \fefuchooselanguage{russian={Частоты},english={Frequencies}}
-						\item \fefuchooselanguage{russian={Батиметрия},english={Bathymetry}}
-					\end{itemize}
-					\columnbreak
-					\begin{itemize}
-						\item \fefuchooselanguage{russian={Гидрология},english={Hydrology}}
-						\item \fefuchooselanguage{russian={Координаты приёмников},english={Receiver coordinates}}
-						\item \fefuchooselanguage{russian={Функция и спектр источника},english={Function and spectra of the source}}
-					\end{itemize}
-				\end{multicols}
-			\end{itemize}
-		\end{block}
-		\begin{block}{\fefuchooselanguage{russian={Выходные данные},english={Output data}}}
-			\begin{itemize}
-				\item meta.json
-				\item config.json
-				\item \fefuchooselanguage{russian={Файлы вывода},english={Output files}}
-				\item \fefuchooselanguage{russian={Папки вывода нескольких фалов},english={Folder for multiple files output}} {\small\ttfamilylatin <job\_type>/meta.json}
-			\end{itemize}
-		\end{block}
-	\end{frame}
+	\AtLeastLevel{def}{
+        \begin{frame}{\fefuchooselanguage{russian={Входные и выходные данные},english={Input and output data}}}
+    		\begin{block}{\fefuchooselanguage{russian={Входные данные},english={Input data}}}
+    			\begin{itemize}
+    				\item config.json
+    				\item \fefuchooselanguage{russian={Дополнительные текстовые или бинарные файлы},english={Additional text or binary files}}
+    				\vspace{-0.25cm}
+    				\begin{multicols}{2}
+    					\begin{itemize}
+    						\item \fefuchooselanguage{russian={Модовые функции и собственные значения},english={Modal functions and wavenumbers}}
+    						\item \fefuchooselanguage{russian={Частоты},english={Frequencies}}
+    						\item \fefuchooselanguage{russian={Батиметрия},english={Bathymetry}}
+    					\end{itemize}
+    					\columnbreak
+    					\begin{itemize}
+    						\item \fefuchooselanguage{russian={Гидрология},english={Hydrology}}
+    						\item \fefuchooselanguage{russian={Координаты приёмников},english={Receiver coordinates}}
+    						\item \fefuchooselanguage{russian={Функция и спектр источника},english={Function and spectra of the source}}
+    					\end{itemize}
+    				\end{multicols}
+    			\end{itemize}
+    		\end{block}
+    		\begin{block}{\fefuchooselanguage{russian={Выходные данные},english={Output data}}}
+    			\begin{itemize}
+    				\item meta.json
+    				\item config.json
+    				\item \fefuchooselanguage{russian={Файлы вывода},english={Output files}}
+    				\item \fefuchooselanguage{russian={Папки вывода нескольких фалов},english={Folder for multiple files output}} {\small\ttfamilylatin <job\_type>/meta.json}
+    			\end{itemize}
+    		\end{block}
+    	\end{frame}
+    }
 
-    \forpoi{%
+    \AtLeastLevel{all}{%
     	\begin{frame}{\fefuchooselanguage{russian={Волновод Пекериса},english={Pekeris waveguide}}}
     		\begin{figure}[h]
     			\centering
@@ -971,7 +1154,7 @@
     	\end{frame}
     }
 
-    \forpoi{%
+    \AtLeastLevel{all}{%
     	\begin{frame}{\fefuchooselanguage{russian={Принцип работы PML граничных условий},english={PML boundary conditions example}}}
     		\begin{figure}[h]
     			\centering
@@ -986,116 +1169,147 @@
     	\end{frame}
     }
 
-	\begin{frame}[fragile]{\fefuchooselanguage{russian={Подводный каньон},english={Underwater canyon}}}
-		\vspace{-0.25cm}
-		\begin{figure}[h]
-			\centering
-			\includegraphics[width=0.3\textwidth]{canyon_transparent.png}
-			\caption{\fefuchooselanguage{russian={Схематичное изображение волновода},english={Representation of the waveguide}}}
-		\end{figure}
-		\vspace{-0.75cm}
-		\begin{figure}[h]
-			\centering
-			\includegraphics[width=0.75\textwidth]{canyon_n11.pdf}
-			\caption{\fefuchooselanguage{russian={Акустическое поле в волноводе с подводным каньоном},english={Acoustical field in the underwater canyon waveguide}}}
-		\end{figure}
-	\end{frame}
+	\AtLeastLevel{sml}{
+        \begin{frame}{\fefuchooselanguage{russian={Подводный каньон},english={Underwater canyon}}}
+    		\vspace{-0.25cm}
+    		\begin{figure}[h]
+    			\centering
+    			\includegraphics[width=0.3\textwidth]{canyon_transparent.png}
+    			\caption{\fefuchooselanguage{russian={Схематичное изображение волновода},english={Representation of the waveguide}}}
+    		\end{figure}
+    		\vspace{-0.75cm}
+    		\begin{figure}[h]
+    			\centering
+    			\includegraphics[width=0.75\textwidth]{canyon_n11.pdf}
+    			\caption{\fefuchooselanguage{russian={Акустическое поле в волноводе с подводным каньоном},english={Acoustical field in the underwater canyon waveguide}}}
+    		\end{figure}
+    	\end{frame}
+    }
 
-	\begin{frame}[fragile]{\fefuchooselanguage{russian={Подводный каньон. Сравнительный анализ},english={Underwater canyon. Comparison}}}
-		\begin{figure}[h]
-			\centering
-			\includegraphics[width=0.9\textwidth]{canyon_compare.pdf}
-			\caption{
-                \fefuchooselanguage{
-                    russian={Сравнение результатов вычисления акустического поля в мелком море с подводным каньоном при $y=0\ \text{км.}$ на глубине $z=10\ \text{м.}$},
-                    english={Comparison of the acoustical field in a shallow water underwater canyon wavefuide at $y=0\ \text{km.}$ and $z=10\ \text{m.}$}
+	\AtLeastLevel{sml}{
+        \begin{frame}{\fefuchooselanguage{russian={Подводный каньон. Сравнительный анализ},english={Underwater canyon. Comparison}}}
+    		\begin{figure}[h]
+    			\centering
+    			\includegraphics[width=0.9\textwidth]{canyon_compare.pdf}
+    			\caption{
+                    \fefuchooselanguage{
+                        russian={Сравнение результатов вычисления акустического поля в мелком море с подводным каньоном при $y=0\ \text{км.}$ на глубине $z=10\ \text{м.}$},
+                        english={Comparison of the acoustical field in a shallow water underwater canyon wavefuide at $y=0\ \text{km.}$ and $z=10\ \text{m.}$}
+                    }
                 }
-            }
-		\end{figure}
-	\end{frame}
+    		\end{figure}
+    	\end{frame}
+    }
 
-	\begin{frame}[fragile]{\fefuchooselanguage{russian={Клиновидный волновод},english={Underwater wedge}}}
-		\vspace{-0.25cm}
-		\begin{figure}[h]
-			\centering
-			\includegraphics[width=0.3\textwidth]{wedge_transparent.png}
-			\caption{\fefuchooselanguage{russian={Схематичное изображение волновода},english={Representation of the waveguide}}}
-		\end{figure}
-		\vspace{-0.75cm}
-		\begin{figure}[h]
-			\centering
-			\begin{subfigure}[t]{0.35\textwidth}
-				\centering
-				\includegraphics[width=\textwidth]{wedge_wampe.pdf}
-				\caption{\fefuchooselanguage{russian={Решение ШМПУ},english={Wide MPE solution}}}
-			\end{subfigure}
-			\begin{subfigure}[t]{0.35\textwidth}
-				\centering
-				\includegraphics[width=\textwidth]{wedge_n13.pdf}
-				\caption{SSP}
-			\end{subfigure}
-			\caption{\fefuchooselanguage{russian={Акустическое поле в клиновидном волноводе},english={Acoustical field in the underwater wedge}}}
-		\end{figure}
-	\end{frame}
+	\AtLeastLevel{def}{
+        \begin{frame}{\fefuchooselanguage{russian={Клиновидный волновод},english={Underwater wedge}}}
+    		\vspace{-0.25cm}
+    		\begin{figure}[h]
+    			\centering
+    			\includegraphics[width=0.3\textwidth]{wedge_transparent.png}
+    			\caption{\fefuchooselanguage{russian={Схематичное изображение волновода},english={Representation of the waveguide}}}
+    		\end{figure}
+    		\vspace{-0.75cm}
+    		\begin{figure}[h]
+    			\centering
+    			\begin{subfigure}[t]{0.35\textwidth}
+    				\centering
+    				\includegraphics[width=\textwidth]{wedge_wampe.pdf}
+    				\caption{\fefuchooselanguage{russian={Решение ШМПУ},english={Wide MPE solution}}}
+    			\end{subfigure}
+    			\begin{subfigure}[t]{0.35\textwidth}
+    				\centering
+    				\includegraphics[width=\textwidth]{wedge_n13.pdf}
+    				\caption{SSP}
+    			\end{subfigure}
+    			\caption{\fefuchooselanguage{russian={Акустическое поле в клиновидном волноводе},english={Acoustical field in the underwater wedge}}}
+    		\end{figure}
+    	\end{frame}
+    }
 
-	\begin{frame}[fragile]{\fefuchooselanguage{russian={Клиновидный волновод. Сравнительный анализ},english={Underwater wedge. Comparison}}}
-		\begin{figure}[h]
-			\centering
-			\vspace{-0.25cm}
-			\begin{tikzpicture}
-				\node (IMG) at (0,0) {\includegraphics[width=0.6\textwidth]{wedge_comp_1.pdf}};
-				\node[left=.5cm of IMG]{\textbf{(a)} $x=\ 1\ \text{\fefuchooselanguage{russian={км},english={km}}.}$};
-			\end{tikzpicture}
-			\begin{tikzpicture}
-				\node (IMG) at (0,0) {\includegraphics[width=0.6\textwidth]{wedge_comp_9.pdf}};
-				\node[left=.5cm of IMG]{\textbf{(b)} $x=\ 9\ \text{\fefuchooselanguage{russian={км},english={km}}.}$};
-			\end{tikzpicture}
-			\begin{tikzpicture}
-				\node (IMG) at (0,0) {\includegraphics[width=0.6\textwidth]{wedge_comp_17.pdf}};
-				\node[left=.45cm of IMG]{\textbf{(c)} $x=25\ \text{\fefuchooselanguage{russian={км},english={km}}.}$};
-			\end{tikzpicture}
-			\caption{\fefuchooselanguage{russian={Сравнение результатов вычисления акустического поля вдоль},english={Comparison of acoustical fields over}} $y$}
-		\end{figure}
-	\end{frame}
+	\AtLeastLevel{sml}{
+        \begin{frame}{\fefuchooselanguage{russian={Клиновидный волновод. Сравнительный анализ},english={Underwater wedge. Comparison}}}
+    		\begin{figure}[h]
+    			\centering
+    			\vspace{-0.25cm}
+    			\begin{tikzpicture}
+    				\node (IMG) at (0,0) {\includegraphics[width=0.6\textwidth]{wedge_comp_1.pdf}};
+    				\node[left=.5cm of IMG]{\textbf{(a)} $x=\ 1\ \text{\fefuchooselanguage{russian={км},english={km}}.}$};
+    			\end{tikzpicture}
+    			\begin{tikzpicture}
+    				\node (IMG) at (0,0) {\includegraphics[width=0.6\textwidth]{wedge_comp_9.pdf}};
+    				\node[left=.5cm of IMG]{\textbf{(b)} $x=\ 9\ \text{\fefuchooselanguage{russian={км},english={km}}.}$};
+    			\end{tikzpicture}
+    			\begin{tikzpicture}
+    				\node (IMG) at (0,0) {\includegraphics[width=0.6\textwidth]{wedge_comp_17.pdf}};
+    				\node[left=.45cm of IMG]{\textbf{(c)} $x=25\ \text{\fefuchooselanguage{russian={км},english={km}}.}$};
+    			\end{tikzpicture}
+    			\caption{\fefuchooselanguage{russian={Сравнение результатов вычисления акустического поля вдоль},english={Comparison of acoustical fields over}} $y$}
+    		\end{figure}
+    	\end{frame}
+    }
 
-	\begin{frame}[fragile]{\fefuchooselanguage{russian={Клиновидный волновод. Сравнительный анализ},english={Underwater wedge. Comparison}}}
-		\begin{figure}[h]
-			\centering
-			\begin{subfigure}[t]{0.55\textwidth}
-				\centering
-				\includegraphics[width=\textwidth]{wedge_comp.pdf}
-			\end{subfigure}
-			\hfill
-			\begin{subfigure}[t]{0.55\textwidth}
-				\centering
-				\includegraphics[width=\textwidth]{wedge_comp_close.pdf}
-			\end{subfigure}
-			\caption{\fefuchooselanguage{russian={Сравнение результатов вычисления акустического поля вдоль},english={Comparison of acoustical fields over}} $x$}
-		\end{figure}
-	\end{frame}
+    \ExactlyLevel{def}{
+        \begin{frame}{\fefuchooselanguage{russian={Клиновидный волновод. Сравнительный анализ},english={Underwater wedge. Comparison}}}
+            \begin{figure}[h]
+                \centering
+                \begin{tikzpicture}
+                    \node (IMG) at (0,0) {\includegraphics[width=0.6\textwidth]{wedge_comp_images_10.pdf}};
+                    \node[left=.5cm of IMG]{\textbf{(a)} $x=10\ \text{\fefuchooselanguage{russian={км},english={km}}.}$};
+                \end{tikzpicture}
+                \begin{tikzpicture}
+                    \node (IMG) at (0,0) {\includegraphics[width=0.6\textwidth]{wedge_comp_images_25.pdf}};
+                    \node[left=.45cm of IMG]{\textbf{(b)} $x=25\ \text{\fefuchooselanguage{russian={км},english={km}}.}$};
+                \end{tikzpicture}
+                \caption{\fefuchooselanguage{russian={Сравнение результатов вычисления акустического поля вдоль},english={Comparison of acoustical fields over}} $y$}
+            \end{figure}
+        \end{frame}
+    }
 
-    \begin{frame}{\fefuchooselanguage{russian={Клиновидный волновод. Трассировка горизонт. лучей},english={Underwater wedge. Horizontal ray tracing}}}
-        \begin{block}{}
+	\AtLeastLevel{def}{
+        \begin{frame}{\fefuchooselanguage{russian={Клиновидный волновод. Сравнительный анализ},english={Underwater wedge. Comparison}}}
+    		\begin{figure}[h]
+    			\centering
+    			\includegraphics[width=0.85\textwidth]{wedge_comp.pdf}
+    			\caption{\fefuchooselanguage{russian={Сравнение результатов вычисления акустического поля вдоль},english={Comparison of the acoustic field over}} $x$}
+    		\end{figure}
+    	\end{frame}
+    }
+
+    \AtLeastLevel{def}{
+        \begin{frame}{\fefuchooselanguage{russian={Клиновидный волновод. Сравнительный анализ},english={Underwater wedge. Comparison}}}
+            \begin{figure}[h]
+                \centering
+                \includegraphics[width=0.85\textwidth]{wedge_comp_close.pdf}
+                \caption{\fefuchooselanguage{russian={Сравнение результатов вычисления акустического поля в конце трассы вдоль},english={Comparison of acoustic field at the end of the track over}} $x$}
+            \end{figure}
+        \end{frame}
+    }
+
+    \AtLeastLevel{sml}{
+        \begin{frame}{\fefuchooselanguage{russian={Клиновидный волновод. Трассировка горизонт. лучей},english={Underwater wedge. Horizontal ray tracing}}}
+            \begin{block}{}
+                \vspace{-0.5cm}
+                \begin{equation}
+                    x\pa{S,\psi}=\int\limits_{l_S}\frac{\dd y\pa{s,\psi}}{\sqrt{\frac{k_j^2\pa{y\pa{s,\psi}}}{k_j^2\pa{0}\cos^2\pa{\psi}}-1}}=\int\limits_0^S\frac{y^\prime_t\pa{s,\psi}\dd s}{\sqrt{\frac{k_j^2\pa{y\pa{s,\psi}}}{k_j^2\pa{0}\cos^2\pa{\psi}}-1}}
+                \end{equation}
+            \end{block}
             \vspace{-0.5cm}
-            \begin{equation}
-                x\pa{S}=\int\limits_0^S\frac{y^\prime_t\pa{s}\dd s}{\sqrt{\frac{k_j^2\pa{y\pa{s}}}{k_j^2\pa{0}\cos^2\pa{\psi}}-1}}
-            \end{equation}
-        \end{block}
-        \vspace{-0.5cm}
 
-        \begin{figure}[h]
-            \centering
-            \includegraphics[width=0.7\textwidth]{rays1.pdf}
-            \caption{\small
-                \fefuchooselanguage{
-                    russian={Сравнение трассировки лучей с использованием программы AMPLE (сплошная кривая) и численного интегрирования (пунктирная кривая) для первой распространяющейся моды},
-                    english={Comparison of ray tracing results obtained with the AMPLE software (solid line) and numerical integration (dashed line) for the first propagating mode}
+            \begin{figure}[h]
+                \centering
+                \includegraphics[width=0.7\textwidth]{rays1.pdf}
+                \caption{\small
+                    \fefuchooselanguage{
+                        russian={Сравнение трассировки лучей с использованием программы AMPLE (сплошная кривая) и численного интегрирования (пунктирная кривая) для первой распространяющейся моды},
+                        english={Comparison of ray tracing results obtained with the AMPLE software (solid line) and numerical integration (dashed line) for the first propagating mode}
+                    }
                 }
-            }
-        \end{figure}
-    \end{frame}
+            \end{figure}
+        \end{frame}
+    }
 
-    \forpoi{%
+    \AtLeastLevel{all}{%
         \begin{frame}{\fefuchooselanguage{russian={Клиновидный волновод. Трассировка горизонт. лучей},english={Underwater wedge. Horizontal ray tracing}}}
             \begin{figure}[h]
                 \centering
@@ -1110,7 +1324,7 @@
         \end{frame}
     }
 
-    \forpoi{%
+    \AtLeastLevel{all}{%
         \begin{frame}{\fefuchooselanguage{russian={Клиновидный волновод. Трассировка горизонт. лучей},english={Underwater wedge. Horizontal ray tracing}}}
             \begin{figure}[h]
                 \centering
@@ -1125,84 +1339,93 @@
         \end{frame}
     }
 
-    \begin{frame}{\fefuchooselanguage{russian={Клиновидный волновод. Импульсный сигнал},english={Underwater wedge. Pulse signal}}}
-        \begin{block}{\fefuchooselanguage{russian={Функция источника},english={Source function}}}
-            \begin{equation}
-                f\pa{t} = A\beta_nH_n^{\pa{1}}\pa{\frac{t-t_0}{\sigma}}e^{-\pa{\frac{t-t_0}{\sigma}}^2}
-            \end{equation}
-            \begin{equation}
-                \beta_n=\begin{dcases}
-                    \frac{k!}{n!}\,,&n=2k\,,\\
-                    \frac{k!\sqrt{4k+3}}{\pa{2k}!\pa{4k+2}}\,,&n=2k+1
-                \end{dcases}
-            \end{equation}
-            \centering
-            \begin{tabular}{p{4cm}p{4cm}}
-                $A\in\mathbb{R}$ -- \fefuchooselanguage{russian={параметр масштаба},english={scale parameter}} & $t_0$ -- \fefuchooselanguage{russian={цетнральное время},english={central time}}\\
-                $\sigma$ -- \fefuchooselanguage{russian={параметр ширины},english={width parameter}} & $H_n^{\pa{1}}$ -- \fefuchooselanguage{russian={функция Ханкеля первого рода порядка},english={Hankel function of the first kind and order}} $n$
-            \end{tabular}
-        \end{block}
-        \begin{block}{\fefuchooselanguage{russian={Центральная частота},english={Central frequency}}}
-            \begin{equation}
-                f_c=\frac{1}{2\pi\sigma}\sqrt{2n+1}
-            \end{equation}
-        \end{block}
-        \begin{block}{\fefuchooselanguage{russian={Значения параметров},english={Parameter values}}}
-            \centering
-            \vspace{0cm}
-            \begin{tabular}{ccccc}
-                $A=2000$, & $t_0=0.3$ \fefuchooselanguage{russian={с},english={s}}, & $\sigma=0.021$, & $n=21$, & $f_c=50$ \fefuchooselanguage{russian={Гц},english={Hz}}
-            \end{tabular}
-        \end{block}
-    \end{frame}
+    \AtLeastLevel{def}{
+        \begin{frame}{\fefuchooselanguage{russian={Клиновидный волновод. Импульсный сигнал},english={Underwater wedge. Pulse signal}}}
+            \begin{block}{\fefuchooselanguage{russian={Функция источника},english={Source function}}}
+                \begin{equation}
+                    f\pa{t} = A\beta_nH_n^{\pa{1}}\pa{\frac{t-t_0}{\sigma}}e^{-\pa{\frac{t-t_0}{\sigma}}^2}
+                \end{equation}
+                \begin{equation}
+                    \beta_n=\begin{dcases}
+                        \frac{k!}{n!}\,,&n=2k\,,\\
+                        \frac{k!\sqrt{4k+3}}{\pa{2k}!\pa{4k+2}}\,,&n=2k+1
+                    \end{dcases}
+                \end{equation}
+                \centering
+                \begin{tabular}{p{5cm}p{5cm}}
+                    $A\in\mathbb{R}$ -- \fefuchooselanguage{russian={параметр масштаба},english={scale parameter}} & $t_0$ -- \fefuchooselanguage{russian={цетнральное время},english={central time}}\\
+                    $\sigma$ -- \fefuchooselanguage{russian={параметр ширины},english={width parameter}} & $H_n^{\pa{1}}$ -- \fefuchooselanguage{russian={функция Ханкеля первого рода порядка},english={Hankel function of the first kind and order}} $n$
+                \end{tabular}
+            \end{block}
+            \begin{block}{\fefuchooselanguage{russian={Центральная частота},english={Central frequency}}}
+                \begin{equation}
+                    f_c=\frac{1}{2\pi\sigma}\sqrt{2n+1}
+                \end{equation}
+            \end{block}
+            \vskip -0.5cm
+            \begin{block}{\fefuchooselanguage{russian={Значения параметров},english={Parameter values}}}
+                \centering
+                \vspace{0cm}
+                \begin{tabular}{ccccc}
+                    $A=2000$, & $t_0=0.3$ \fefuchooselanguage{russian={с},english={s}}, & $\sigma=0.021$, & $n=21$, & $f_c=50$ \fefuchooselanguage{russian={Гц},english={Hz}}
+                \end{tabular}
+            \end{block}
+        \end{frame}
+    }
 
-    \begin{frame}{\fefuchooselanguage{russian={Клиновидный волновод. Импульсный сигнал},english={Underwater wedge. Pulse signal}}}
-        \begin{figure}[h]
-            \centering
-            \begin{subfigure}{0.65\textwidth}
-                \includegraphics[width=\textwidth]{wedge_source_function.pdf}
-            \end{subfigure}
-            \begin{subfigure}{0.65\textwidth}
-                \includegraphics[width=\textwidth]{wedge_source_spectre.pdf}
-            \end{subfigure}
-            \caption{\small
-                \fefuchooselanguage{
-                    russian={Функция и спектр источника при моделировании распространения импульсных сигналов в клиновидном волноводе мелкого моря. Красной пунктирной линией отмечены границы рассматриваемых частот},
-                    english={Source function and spectra used for pulse signal modeling in the underwater wedge. Red dashed lines show the frequencies interval used for computations}
+    \AtLeastLevel{def}{
+        \begin{frame}{\fefuchooselanguage{russian={Клиновидный волновод. Импульсный сигнал},english={Underwater wedge. Pulse signal}}}
+            \begin{figure}[h]
+                \centering
+                \begin{subfigure}{0.65\textwidth}
+                    \includegraphics[width=\textwidth]{wedge_source_function.pdf}
+                \end{subfigure}
+                \begin{subfigure}{0.65\textwidth}
+                    \includegraphics[width=\textwidth]{wedge_source_spectre.pdf}
+                \end{subfigure}
+                \caption{\small
+                    \fefuchooselanguage{
+                        russian={Функция и спектр источника при моделировании распространения импульсных сигналов в клиновидном волноводе мелкого моря. Красной пунктирной линией отмечены границы рассматриваемых частот},
+                        english={Source function and spectra used for pulse signal modeling in the underwater wedge. Red dashed lines show the frequencies interval used for computations}
+                    }
                 }
-            }
-        \end{figure}
-    \end{frame}
+            \end{figure}
+        \end{frame}
+    }
 
-    \begin{frame}{\fefuchooselanguage{russian={Клиновидный волновод. Импульсный сигнал},english={Underwater wedge. Pulse signal}}}
-        \centering
-        \begin{figure}[h]
+    \AtLeastLevel{def}{
+        \begin{frame}{\fefuchooselanguage{russian={Клиновидный волновод. Импульсный сигнал},english={Underwater wedge. Pulse signal}}}
             \centering
-            \includegraphics[width=0.9\textwidth]{wedge_impulse.pdf}
-            \caption{\small
-                \fefuchooselanguage{
-                    russian={Сравнение результатов вычисления временного ряда сигнала в приёмнике при распространении импульсного акустического сигнала в клиновидном волноводе мелкого моря},
-                    english={Comparison of the acoustic pulse time series computed at the receiver in the underwater wedge}
+            \begin{figure}[h]
+                \centering
+                \includegraphics[width=0.9\textwidth]{wedge_impulse.pdf}
+                \caption{\small
+                    \fefuchooselanguage{
+                        russian={Сравнение результатов вычисления временного ряда сигнала в приёмнике при распространении импульсного акустического сигнала в клиновидном волноводе мелкого моря},
+                        english={Comparison of the acoustic pulse time series computed at the receiver in the underwater wedge}
+                    }
                 }
-            }
-        \end{figure}
-    \end{frame}
+            \end{figure}
+        \end{frame}
+    }
 
-    \begin{frame}{\fefuchooselanguage{russian={Клиновидный волновод. Импульсный сигнал},english={Underwater wedge. Pulse signal}}}
-        \centering
-        \begin{figure}[h]
+    \AtLeastLevel{sml}{
+        \begin{frame}{\fefuchooselanguage{russian={Клиновидный волновод. Импульсный сигнал},english={Underwater wedge. Pulse signal}}}
             \centering
-            \includegraphics[width=0.9\textwidth]{wedge_impulse_spectre.pdf}
-            \caption{\small
-                \fefuchooselanguage{
-                    russian={Сравнение результатов вычисления спектра сигнала в приёмнике при распространении импульсного акустического сигнала в клиновидном волноводе мелкого моря},
-                    english={Comparison of the acoustic pulse spectra computed at the receiver in the underwater wedge}
+            \begin{figure}[h]
+                \centering
+                \includegraphics[width=0.9\textwidth]{wedge_impulse_spectre.pdf}
+                \caption{\small
+                    \fefuchooselanguage{
+                        russian={Сравнение результатов вычисления спектра сигнала в приёмнике при распространении импульсного акустического сигнала в клиновидном волноводе мелкого моря},
+                        english={Comparison of the acoustic pulse spectra computed at the receiver in the underwater wedge}
+                    }
                 }
-            }
-        \end{figure}
-    \end{frame}
+            \end{figure}
+        \end{frame}
+    }
 
-	\forpoi{%
+	\AtLeastLevel{all}{%
 		\begin{frame}{\fefuchooselanguage{russian={Волновод с реальной батиметрией},english={Real bathymetry waveguide}}}
 			\vspace{-0.25cm}
 			\begin{multicols}{2}
@@ -1227,7 +1450,7 @@
 		\end{frame}
 	}
 
-	\forpoi{%
+	\AtLeastLevel{all}{%
 		\begin{frame}{\normalsize \fefuchooselanguage{russian={Волновод с реальной батиметрией. Акустическое поле источника},english={Real bathymetry waveguide. Acoustical field}}}
 			\begin{figure}[h]
 				\centering
@@ -1245,362 +1468,460 @@
 		\end{frame}
 	}
 
-	\begin{frame}{\fefuchooselanguage{russian={Выводы},english={Summary}}}
-        \small
-        \vspace{-0.25cm}
-        \begin{block}{}
-            \fefuchooselanguage{
-                russian={Выполнена программная реализация описанных математических методов. Большое внимание было уделено простоте конфигурации расчётов и скорости вычислений. Исходный код программы расмещён в открытом доступе. Проведена валидачия разработанной программы на модельных примерах.},
-                english={A software implementation of the previously described mathematical methods has been completed. Great emphasis was placed on the simplicity of the software configuration and computational speed. The program's source code is available online. Validation of the developed program was performed using reference solutions.}
-            }
-        \end{block}
-        \begin{block}{\fefuchooselanguage{russian={Личный вклад автора},english={Author contribution}}}
-            \begin{itemize}
-                \item \fefuchooselanguage{russian={Реализация описанных методов в виде комплекса программ},english={Software implementation of the previously discussed methods}}
-                \item \fefuchooselanguage{russian={Валидация разработанного комплекса программ на различных модельных задачах},english={Validation of the developed software against reference solutions}}
-            \end{itemize}
-        \end{block}
-        \vspace{-0.25cm}
-        \begin{block}{\fefuchooselanguage{russian={Статьи},english={Papers}}}
-            \begin{refsection}
-                \vspace{-0.25cm}
-                \nocite{acoustic_journal2021,acoustic_journal2023,jasa2024}
-                \AtNextBibliography{\changefontsizes{7.5pt}}
-                \printbibliography[heading=none,env=betterlabel,keyword={myarticles}]
-            \end{refsection}
-        \end{block}
-	\end{frame}
-
-	\section{%
-        \fefuchooselanguage{
-            russian={Моделирование акустических полей в задачах оценки уровней антропогенных шумов в океане},
-            english={Modeling of acoustic fields for assessment of anthropogenic noise levels of in the ocean}
-        }
+	\AtLeastLevel{sml}{
+        \begin{frame}{\fefuchooselanguage{russian={Выводы},english={Summary}}}
+            \footnotesize
+            \vspace{-0.25cm}
+            \begin{block}{}
+                \fefuchooselanguage{
+                    russian={Выполнена программная реализация описанных математических методов. Большое внимание было уделено простоте конфигурации расчётов и скорости вычислений. Исходный код программы расмещён в открытом доступе. Проведена валидация разработанной программы на модельных примерах.},
+                    english={A software implementation of the previously described mathematical methods has been completed. Great emphasis was placed on the simplicity of the software configuration and computational speed. The program's source code is available online. Validation of the developed program was performed using reference solutions.}
+                }
+            \end{block}
+            \begin{block}{\fefuchooselanguage{russian={Личный вклад автора},english={Author contribution}}}
+                \begin{itemize}
+                    \item \fefuchooselanguage{russian={Реализация описанных методов в виде комплекса программ},english={Software implementation of the previously discussed methods}}
+                    \item \fefuchooselanguage{russian={Валидация разработанного комплекса программ на различных модельных задачах},english={Validation of the developed software against reference solutions}}
+                    \item \fefuchooselanguage{russian={Анализ применимости адиабатического приближения в задаче распространения звука в клиновидном волноводе},english={Analysis of adiabatic approximation usage for sound propagation in underwater canyon}}
+                \end{itemize}
+            \end{block}
+            \vspace{-0.25cm}
+            \begin{block}{\fefuchooselanguage{russian={Статьи},english={Papers}}}
+                \begin{refsection}
+                    \vspace{-0.25cm}
+                    \nocite{acoustic_journal2021,acoustic_journal2023,jasa2024}
+                    \AtNextBibliography{\changefontsizes{7.5pt}}
+                    \printbibliography[heading=none,env=betterlabel,keyword={myarticles}]
+                \end{refsection}
+            \end{block}
+    	\end{frame}
     }
 
-	\begin{frame}{\fefuchooselanguage{russian={Моделирование шума одиночного судна},english={Modeling of a bulk carrier vessel noise}}}
-		\begin{block}{\fefuchooselanguage{russian={Вычисляемые величины},english={Computed values}}}
-			\vskip -0.5cm
-			\begin{gather}
-				E_{p,ddec}\pa{f_c,d} = 2\int_{f_1}^{f_2} |\hat{P}\pa{f,d}|^2 df\\
-				\bar{p^2}_{ddec}\pa{f} = \nicefrac{E_{p,ddec}\pa{f_c,d_{CPA}}}{T}
-			\end{gather}
-			\centering
-			\small
-			\begin{tabular}{ll}
-				$f_c$ -- \fefuchooselanguage{russian={центральная частота полосы},english={central band frequency}} $\left[f_1,f_2\right]$ & $d$ -- \fefuchooselanguage{russian={растояние до источника},english={distance to the source}}\\
-				$d_{CPA}$ -- \fefuchooselanguage{russian={расстояние до ближ. точки прохода},english={distance to the closest point of approach}} & $T=1 \text{с}$ -- \fefuchooselanguage{russian={размер временного окна},english={time window size}}
-			\end{tabular}
-		\end{block}
-		\vskip -0.5cm
-		\begin{figure}[h]
-			\centering
-			\includegraphics[width=0.95\textwidth]{d1/bath.pdf}
-			\vskip -0.25cm
-			\caption{
+    \ExactlyLevel{def}{
+        \begin{frame}{\fefuchooselanguage{russian={Выводы},english={Summary}}}
+            \scriptsize
+            \vspace{-0.25cm}
+            \begin{block}{}
                 \fefuchooselanguage{
-                    russian={Карта глубин акватории вблизи станции мониторинга и траектория прохода судна},
-                    english={Bathymetry plot of the area near the monitoring station and the vessel's trajectory}
+                    russian={Выполнена программная реализация описанных математических методов. Большое внимание было уделено простоте конфигурации расчётов и скорости вычислений. Исходный код программы расмещён в открытом доступе. Проведена валидация разработанной программы на модельных примерах.},
+                    english={A software implementation of the previously described mathematical methods has been completed. Great emphasis was placed on the simplicity of the software configuration and computational speed. The program's source code is available online. Validation of the developed program was performed using reference solutions.}
                 }
-            }
-		\end{figure}
-	\end{frame}
+            \end{block}
+            \begin{block}{\scriptsize \fefuchooselanguage{russian={Проведённые эксперименты},english={Performed experiments}}}
+                \vspace{-0.4cm}
+                \begin{multicols}{2}
+                    \begin{itemize}
+                        \setlength\itemsep{-1mm}
+                        \item \fefuchooselanguage{russian={Регулярный волновод},english={Regular waveguide}}
+                        \item \fefuchooselanguage{russian={Волновод с подводным каньоном},english={Underwater canyon}}
+                    \end{itemize}
+                    \columnbreak
+                    \begin{itemize}
+                        \setlength\itemsep{-1mm}
+                        \item \fefuchooselanguage{russian={Клиновидный волновод},english={Underwater wedge}}
+                        \item \fefuchooselanguage{russian={Волновод с реал. параметрами среды},english={Realistic waveguide}}
+                    \end{itemize}
+                \end{multicols}
+            \end{block}
+            \vskip -0.5cm
+            \begin{block}{\scriptsize \fefuchooselanguage{russian={Личный вклад автора},english={Author contribution}}}
+                \vspace{-0.1cm}
+                \begin{itemize}
+                    \setlength\itemsep{-1mm}
+                    \item \fefuchooselanguage{russian={Реализация описанных методов в виде комплекса программ},english={Software implementation of the previously discussed methods}}
+                    \item \fefuchooselanguage{russian={Валидация разработанного комплекса программ на различных модельных задачах},english={Validation of the developed software against reference solutions}}
+                    \item \fefuchooselanguage{russian={Анализ применимости адиабатического приближения в задаче распространения звука в клиновидном волноводе},english={Analysis of adiabatic approximation usage for sound propagation in underwater canyon}}
+                \end{itemize}
+            \end{block}
+            \vspace{-0.25cm}
+            \begin{block}{\scriptsize \fefuchooselanguage{russian={Статьи},english={Papers}}}
+                \begin{refsection}
+                    \vspace{-0.25cm}
+                    \nocite{acoustic_journal2021,acoustic_journal2023,petrov2024_3}
+                    \AtNextBibliography{\changefontsizes{7pt}}
+                    \printbibliography[heading=none,env=betterlabel,keyword={myarticles}]
+                \end{refsection}
+            \end{block}
+        \end{frame}
+    }
 
-	\begin{frame}{\fefuchooselanguage{russian={Первые результаты моделирования},english={Initial modeling results}}}
-		\begin{figure}[h]
-			\centering
-			\begin{subfigure}[t]{0.7\textwidth}
-				\centering
-				\includegraphics[width=\textwidth]{d1/target.pdf}
-				\caption{\fefuchooselanguage{russian={Данные},english={Data}}}
-			\end{subfigure}
-			\vskip -0.5cm
-			\begin{subfigure}[t]{0.7\textwidth}
-				\centering
-				\includegraphics[width=\textwidth]{d1/ample_non_optimized.pdf}
-				\caption{\fefuchooselanguage{russian={Моделирование},english={Model}}}
-			\end{subfigure}
-			\vskip -0.5cm
-			\caption{\fefuchooselanguage{russian={Уровни шума (в дБ) для прохождения судна},english={Noise levels (in dB) for vessel transfer}}}
-		\end{figure}
-	\end{frame}
+	\TranslatedSection{%
+        russian={Моделирование акустических полей в задачах оценки уровней антропогенных сигналов в океане},
+        english={Modeling of acoustic fields for assessment of anthropogenic noise levels of in the ocean}
+    }
 
-	\begin{frame}{\fefuchooselanguage{russian={Исследование источника ошибки},english={Investigating the source of the error}}}
-		\begin{figure}[h]
-			\centering
-			\includegraphics[width=\textwidth]{d1/cross_non_optimized_400.pdf}
-			\caption{
-                \fefuchooselanguage{
-                    russian={Вертикальный срез акустического поля для частоты $f=400\text{ Гц}$ (в Дб. отн. 1 м. от источника)},
-                    english={Vertical cross-section of the acoustic field for the frequency $f=400\text{ Hz}$ (in dB re $1$ m)}
-                }
-            }
-		\end{figure}
-	\end{frame}
-
-	\begin{frame}{\fefuchooselanguage{russian={Оптимизация параметров среды},english={Optimization of the media parameters}}}
-		\begin{block}{\fefuchooselanguage{russian={Байесовская оптимизация},english={Bayesian optimization}}}
-			\begin{enumerate}
-				\item \fefuchooselanguage{
-                    russian={Для целевой функции $f: \Theta\mapsto\mathbb{R}$ получить априорное распределение $p\pa{f|\theta\in\Theta}$},
-                    english={Obtain the prior distribution $p\pa{f|\theta\in\Theta}$ for the target function $f: \Theta\mapsto\mathbb{R}$}
-                }
-				\item \fefuchooselanguage{
-                    russian={Вычислить $n\in\mathbb{N}$ значений целевой функции $y_i=f\pa{\theta_i}$ в случайно выбранных точках $\left\{\theta_i\right\}_{i=1}^n$},
-                    english={Compute $n\in\mathbb{N}$ values of the target function $y_i=f\pa{\theta_i}$ at randomly selected points $\left\{\theta_i\right\}_{i=1}^n$}
-                }
-				\item \fefuchooselanguage{
-                    russian={Получить апостериорное распределение $p\pa{f|\theta_1,\dots,\theta_n,y_1,\dots,y_n}$},
-                    english={Obtain a posterior distribution $p\pa{f|\theta_1,\dots,\theta_n,y_1,\dots,y_n}$}
-                }
-				\item \fefuchooselanguage{
-                    russian={Для каждого $j=\overline{1,m}\,,m\in\mathbb{N}$ выполнить},
-                    english={Repeat for each $j=\overline{1,m}\,,m\in\mathbb{N}$}
-                }
-				\begin{enumerate}
-					\item \fefuchooselanguage{
-                        russian={Получить следующую лучшую точку $\theta_{n+j}$ путём максимизации некоторой функции оценки $q: \Theta\mapsto\mathbb{R}$},
-                        english={Obtain the next point $\theta_{n+j}$ by maximizing some acquisition function $q: \Theta\mapsto\mathbb{R}$}
+	\AtLeastLevel{def}{
+        \begin{frame}{\fefuchooselanguage{russian={Моделирование акустического поля одиночного судна},english={Modeling of a bulk carrier vessel noise}}}
+    		\begin{block}{\fefuchooselanguage{russian={Вычисляемые величины},english={Computed values}}}
+    			\vskip -0.5cm
+    			\begin{gather}
+    				E_{p,ddec}\pa{f_c,d} = 2\int_{f_1}^{f_2} |\hat{P}\pa{f,d}|^2 df\\
+    				\bar{p^2}_{ddec}\pa{f} = \nicefrac{E_{p,ddec}\pa{f_c,d_{CPA}}}{T}
+    			\end{gather}
+    			\centering
+    			\small
+    			\begin{tabular}{ll}
+    				$f_c$ -- \fefuchooselanguage{russian={центральная частота полосы},english={central band frequency}} $\left[f_1,f_2\right]$ & $d$ -- \fefuchooselanguage{russian={растояние до источника},english={distance to the source}}\\
+    				$d_{CPA}$ -- \fefuchooselanguage{russian={расстояние до ближ. точки прохода},english={distance to the closest point of approach}} & $T=1 \text{с}$ -- \fefuchooselanguage{russian={размер временного окна},english={time window size}}
+    			\end{tabular}
+    		\end{block}
+    		\vskip -0.5cm
+    		\begin{figure}[h]
+    			\centering
+    			\includegraphics[width=0.95\textwidth]{d1/bath.pdf}
+    			\vskip -0.25cm
+    			\caption{
+                    \fefuchooselanguage{
+                        russian={Карта глубин акватории вблизи станции мониторинга и траектория прохода судна},
+                        english={Bathymetry plot of the area near the monitoring station and the vessel's trajectory}
                     }
-					\item \fefuchooselanguage{
-                        russian={Вычислить значение целевой функции в новой найденной точке $y_{n+j}=f\pa{\theta_{n+j}}$},
-                        english={Obtain the value of the target function at the new point $y_{n+j}=f\pa{\theta_{n+j}}$}
+                }
+    		\end{figure}
+    	\end{frame}
+    }
+
+	\AtLeastLevel{def}{
+        \begin{frame}{\fefuchooselanguage{russian={Первые результаты моделирования},english={Initial modeling results}}}
+    		\begin{figure}[h]
+    			\centering
+    			\begin{subfigure}[t]{0.7\textwidth}
+    				\centering
+    				\includegraphics[width=\textwidth]{d1/target.pdf}
+    				\caption{\fefuchooselanguage{russian={Данные},english={Data}}}
+    			\end{subfigure}
+    			\vskip -0.5cm
+    			\begin{subfigure}[t]{0.7\textwidth}
+    				\centering
+    				\includegraphics[width=\textwidth]{d1/ample_non_optimized.pdf}
+    				\caption{\fefuchooselanguage{russian={Моделирование},english={Model}}}
+    			\end{subfigure}
+    			\vskip -0.25cm
+    			\caption{\fefuchooselanguage{russian={Уровни звукового давления (в дБ) для прохождения судна},english={Noise levels (in dB) for vessel transfer}}}
+    		\end{figure}
+    	\end{frame}
+    }
+
+	\AtLeastLevel{def}{
+        \begin{frame}{\fefuchooselanguage{russian={Исследование источника ошибки},english={Investigating the source of the error}}}
+    		\begin{figure}[h]
+    			\centering
+    			\includegraphics[width=\textwidth]{d1/cross_non_optimized_400.pdf}
+    			\caption{
+                    \fefuchooselanguage{
+                        russian={Вертикальный срез акустического поля для частоты $f=400\text{ Гц}$ (в Дб. отн. 1 м. от источника)},
+                        english={Vertical cross-section of the acoustic field for the frequency $f=400\text{ Hz}$ (in dB re $1$ m)}
                     }
-					\item \fefuchooselanguage{
-                        russian={Обновить апостериорное распределение $p\pa{f|\theta_1,\dots,\theta_{n+j},y_1,\dots,y_{n+j}}$},
-                        english={Update the posterior distribution $p\pa{f|\theta_1,\dots,\theta_{n+j},y_1,\dots,y_{n+j}}$}
+                }
+    		\end{figure}
+    	\end{frame}
+    }
+
+	\AtLeastLevel{def}{
+        \begin{frame}{\fefuchooselanguage{russian={Оптимизация параметров среды},english={Optimization of the media parameters}}}
+    		\begin{block}{\fefuchooselanguage{russian={Байесовская оптимизация},english={Bayesian optimization}}}
+    			\begin{enumerate}
+    				\item \fefuchooselanguage{
+                        russian={Для целевой функции $f: \Theta\mapsto\mathbb{R}$ получить априорное распределение $p\pa{f|\theta\in\Theta}$},
+                        english={Obtain the prior distribution $p\pa{f|\theta\in\Theta}$ for the target function $f: \Theta\mapsto\mathbb{R}$}
                     }
-				\end{enumerate}
-				\item \fefuchooselanguage{
-                    russian={Выдать максимальное значение $y_{max}=\max\limits_{i=\overline{1,n+m}}y_i$ и соответствующую ему точку $\theta_{max}=\argmax\limits_{\theta_i,i=\overline{1,n+m}}y_i$},
-                    english={Output the maximal value $y_{max}=\max\limits_{i=\overline{1,n+m}}y_i$ and the respective point $\theta_{max}=\argmax\limits_{\theta_i,i=\overline{1,n+m}}y_i$}
-                }
-			\end{enumerate}
-		\end{block}
-	\end{frame}
+    				\item \fefuchooselanguage{
+                        russian={Вычислить $n\in\mathbb{N}$ значений целевой функции $y_i=f\pa{\theta_i}$ в случайно выбранных точках $\left\{\theta_i\right\}_{i=1}^n$},
+                        english={Compute $n\in\mathbb{N}$ values of the target function $y_i=f\pa{\theta_i}$ at randomly selected points $\left\{\theta_i\right\}_{i=1}^n$}
+                    }
+    				\item \fefuchooselanguage{
+                        russian={Получить апостериорное распределение $p\pa{f|\theta_1,\dots,\theta_n,y_1,\dots,y_n}$},
+                        english={Obtain a posterior distribution $p\pa{f|\theta_1,\dots,\theta_n,y_1,\dots,y_n}$}
+                    }
+    				\item \fefuchooselanguage{
+                        russian={Для каждого $j=\overline{1,m}\,,m\in\mathbb{N}$ выполнить},
+                        english={Repeat for each $j=\overline{1,m}\,,m\in\mathbb{N}$}
+                    }
+    				\begin{enumerate}
+    					\item \fefuchooselanguage{
+                            russian={Получить следующую лучшую точку $\theta_{n+j}$ путём максимизации некоторой функции оценки $q: \Theta\mapsto\mathbb{R}$},
+                            english={Obtain the next point $\theta_{n+j}$ by maximizing some acquisition function $q: \Theta\mapsto\mathbb{R}$}
+                        }
+    					\item \fefuchooselanguage{
+                            russian={Вычислить значение целевой функции в новой найденной точке $y_{n+j}=f\pa{\theta_{n+j}}$},
+                            english={Obtain the value of the target function at the new point $y_{n+j}=f\pa{\theta_{n+j}}$}
+                        }
+    					\item \fefuchooselanguage{
+                            russian={Обновить апостериорное распределение $p\pa{f|\theta_1,\dots,\theta_{n+j},y_1,\dots,y_{n+j}}$},
+                            english={Update the posterior distribution $p\pa{f|\theta_1,\dots,\theta_{n+j},y_1,\dots,y_{n+j}}$}
+                        }
+    				\end{enumerate}
+    				\item \fefuchooselanguage{
+                        russian={Выдать максимальное значение $y_{max}=\max\limits_{i=\overline{1,n+m}}y_i$ и соответствующую ему точку $\theta_{max}=\argmax\limits_{\theta_i,i=\overline{1,n+m}}y_i$},
+                        english={Output the maximal value $y_{max}=\max\limits_{i=\overline{1,n+m}}y_i$ and the respective point $\theta_{max}=\argmax\limits_{\theta_i,i=\overline{1,n+m}}y_i$}
+                    }
+    			\end{enumerate}
+    		\end{block}
+    	\end{frame}
+    }
 
-	\begin{frame}{\fefuchooselanguage{russian={Оптимизируемые параметры},english={Optimized parameters}}}
-		\small
-		\begin{table}[h]
-			\centering
-			\begin{subtable}[h]{\textwidth}
-				\centering
-				\begin{tabular}{|c|c|c|c|c|c|}
-					\hline
-					\multirow{3}{*}{} & \multicolumn{5}{c|}{\fefuchooselanguage{russian={Слой осадков},english={Sediment layer}}}\\
-					\cline{2-6}
-					& \multirow{2}{*}{\begin{tabular}{@{}c@{}}\fefuchooselanguage{russian={Толщина \\ $\Delta z, \text{м}$},english={Height \\ $\Delta z, \text{m}$}}\end{tabular}} &
-					\multicolumn{2}{c|}{\begin{tabular}{@{}c@{}}\fefuchooselanguage{russian={Скорость звука \\ $\text{м}/\text{с}$},english={Sound speed \\ $\text{m}/\text{s}$}}\end{tabular}} &
-					\multirow{2}{*}{\begin{tabular}{@{}c@{}}\fefuchooselanguage{russian={Плотность \\ $\text{г}/\text{см}^3$},english={Density \\ $\text{g}/\text{cm}^3$}}\end{tabular}} &
-					\multirow{2}{*}{\begin{tabular}{@{}c@{}}\fefuchooselanguage{russian={Коэфф. погл. \\$\text{дБ}/\lambda$},english={Atten. coeff. \\$\text{dB}/\lambda$}}\end{tabular}}\\
-					\cline{3-4}
-					& & $c$ & $\Delta c$ & & \\
-					\hline
-					\fefuchooselanguage{russian={исходные},english={initial}} & $50$ & $1541$ & $50$ & $1.8$ & $0.61$\\
-					\hline
-					\fefuchooselanguage{russian={оптим.},english={optim.}} & $61.4$ & $1519.2$ & $50$ & $2$ & $2.01$\\
-					\hline
-					\fefuchooselanguage{russian={диапазон},english={range}} & $\left[20,200\right]$ & $\left[1500,1600\right]$ & $\left[0,100\right]$ & $\left[1,2\right]$ & $\left[0.1,2.5\right]$\\
-					\hline
-				\end{tabular}
-			\end{subtable}
-			\vskip -0.5cm
-			\begin{subtable}[h]{\textwidth}
-				\centering
-				\vspace{1cm}
-				\begin{tabular}{|c|c|c|c|c|}
-					\hline
-					\multirow{2}{*}{} & \multicolumn{3}{c|}{\fefuchooselanguage{russian={Слой основания},english={Bedrock layer}}} & \multirow{2}{*}{\begin{tabular}{@{}c@{}} \fefuchooselanguage{russian={Профиль\\ скорости звука\\ в воде},english={Water\\ sound speed\\ profile}} \end{tabular}}\\
-					\cline{2-4}
-					& \begin{tabular}{@{}c@{}}\fefuchooselanguage{russian={Скорость звука \\ $\text{м}/\text{с}$},english={Sound speed \\ $\text{m}/\text{s}$}}\end{tabular} &
-					\begin{tabular}{@{}c@{}}\fefuchooselanguage{russian={Плотность \\ $\text{г}/\text{см}^3$},english={Density \\ $\text{g}/\text{cm}^3$}}\end{tabular} &
-					\begin{tabular}{@{}c@{}}\fefuchooselanguage{russian={Коэфф. погл. \\$\text{дБ}/\lambda$},english={Atten. coeff. \\$\text{dB}/\lambda$}}\end{tabular}&\\
-					\hline
-					\fefuchooselanguage{russian={исходные},english={initial}}. & $2160$ & $2$ & $0.25$ & 0\\
-					\hline
-					\fefuchooselanguage{russian={оптим.},english={optim.}} & $1931.5$ & $2$ & $0.25$& -1\\
-					\hline
-					\fefuchooselanguage{russian={диапазон},english={range}} & $\left[1800,3000\right]$ & & & $\left[-1,1\right]$\\
-					\hline
-				\end{tabular}
-			\end{subtable}
-			\caption{\fefuchooselanguage{russian={Оптимизируемые параметры},english={Optimized parameters}}}
-		\end{table}
-	\end{frame}
+	\AtLeastLevel{sml}{
+        \begin{frame}{\fefuchooselanguage{russian={Оптимизируемые параметры},english={Optimized parameters}}}
+    		\small
+    		\begin{table}[h]
+    			\centering
+    			\begin{subtable}[h]{\textwidth}
+    				\centering
+    				\begin{tabular}{|c|c|c|c|c|c|}
+    					\hline
+    					\multirow{3}{*}{} & \multicolumn{5}{c|}{\fefuchooselanguage{russian={Слой осадков},english={Sediment layer}}}\\
+    					\cline{2-6}
+    					& \multirow{2}{*}{\begin{tabular}{@{}c@{}}\fefuchooselanguage{russian={Толщина \\ $\Delta z, \text{м}$},english={Height \\ $\Delta z, \text{m}$}}\end{tabular}} &
+    					\multicolumn{2}{c|}{\begin{tabular}{@{}c@{}}\fefuchooselanguage{russian={Скорость звука \\ $\text{м}/\text{с}$},english={Sound speed \\ $\text{m}/\text{s}$}}\end{tabular}} &
+    					\multirow{2}{*}{\begin{tabular}{@{}c@{}}\fefuchooselanguage{russian={Плотность \\ $\text{г}/\text{см}^3$},english={Density \\ $\text{g}/\text{cm}^3$}}\end{tabular}} &
+    					\multirow{2}{*}{\begin{tabular}{@{}c@{}}\fefuchooselanguage{russian={Коэфф. погл. \\$\text{дБ}/\lambda$},english={Atten. coeff. \\$\text{dB}/\lambda$}}\end{tabular}}\\
+    					\cline{3-4}
+    					& & $c$ & $\Delta c$ & & \\
+    					\hline
+    					\fefuchooselanguage{russian={исходные},english={initial}} & $50$ & $1541$ & $50$ & $1.8$ & $0.61$\\
+    					\hline
+    					\fefuchooselanguage{russian={оптим.},english={optim.}} & $61.4$ & $1519.2$ & $50$ & $2$ & $2.01$\\
+    					\hline
+    					\fefuchooselanguage{russian={диапазон},english={range}} & $\left[20,200\right]$ & $\left[1500,1600\right]$ & $\left[0,100\right]$ & $\left[1,2\right]$ & $\left[0.1,2.5\right]$\\
+    					\hline
+    				\end{tabular}
+    			\end{subtable}
+    			\vskip -0.5cm
+    			\begin{subtable}[h]{\textwidth}
+    				\centering
+    				\vspace{1cm}
+    				\begin{tabular}{|c|c|c|c|c|}
+    					\hline
+    					\multirow{2}{*}{} & \multicolumn{3}{c|}{\fefuchooselanguage{russian={Слой основания},english={Bedrock layer}}} & \multirow{2}{*}{\begin{tabular}{@{}c@{}} \fefuchooselanguage{russian={Профиль\\ скорости звука\\ в воде},english={Water\\ sound speed\\ profile}} \end{tabular}}\\
+    					\cline{2-4}
+    					& \begin{tabular}{@{}c@{}}\fefuchooselanguage{russian={Скорость звука \\ $\text{м}/\text{с}$},english={Sound speed \\ $\text{m}/\text{s}$}}\end{tabular} &
+    					\begin{tabular}{@{}c@{}}\fefuchooselanguage{russian={Плотность \\ $\text{г}/\text{см}^3$},english={Density \\ $\text{g}/\text{cm}^3$}}\end{tabular} &
+    					\begin{tabular}{@{}c@{}}\fefuchooselanguage{russian={Коэфф. погл. \\$\text{дБ}/\lambda$},english={Atten. coeff. \\$\text{dB}/\lambda$}}\end{tabular}&\\
+    					\hline
+    					\fefuchooselanguage{russian={исходные},english={initial}}. & $2160$ & $2$ & $0.25$ & 0\\
+    					\hline
+    					\fefuchooselanguage{russian={оптим.},english={optim.}} & $1931.5$ & $2$ & $0.25$& -1\\
+    					\hline
+    					\fefuchooselanguage{russian={диапазон},english={range}} & $\left[1800,3000\right]$ & & & $\left[-1,1\right]$\\
+    					\hline
+    				\end{tabular}
+    			\end{subtable}
+    			\caption{\fefuchooselanguage{russian={Оптимизируемые параметры},english={Optimized parameters}}}
+    		\end{table}
+    	\end{frame}
+    }
 
-	\begin{frame}{\fefuchooselanguage{russian={Результаты оптимизации},english={Optimization results}}}
-		\begin{figure}[h]
-			\centering
-			\includegraphics[width=0.6\textwidth]{d1/compare.pdf}
-			\caption{
-                \fefuchooselanguage{
-                    russian={График зависимости распределения шума от частоты в точке ближайшего прохода судна},
-                    english={Plot of the noise distribution as a function of frequency at the closest point of approach of the vessel}
+	\AtLeastLevel{def}{
+        \begin{frame}{\fefuchooselanguage{russian={Результаты оптимизации},english={Optimization results}}}
+    		\begin{figure}[h]
+    			\centering
+    			\includegraphics[width=0.6\textwidth]{d1/compare.pdf}
+    			\caption{
+                    \fefuchooselanguage{
+                        russian={График зависимости распределения уровней звукового давления от частоты в точке ближайшего прохода судна},
+                        english={Plot of the noise distribution as a function of frequency at the closest point of approach of the vessel}
+                    }
                 }
-            }
-		\end{figure}
-	\end{frame}
+    		\end{figure}
+    	\end{frame}
+    }
 
-	\begin{frame}{\fefuchooselanguage{russian={Результаты моделирования},english={Modeling results}}}
-		\vskip -0.25cm
-		\begin{figure}[h]
-			\centering
-			\begin{subfigure}[h]{0.7\textwidth}
-				\centering
-				\includegraphics[width=\textwidth]{d1/cross_non_optimized_400.pdf}
-				\caption{\fefuchooselanguage{russian={Исходные параметры},english={Initial parameters}}}
-			\end{subfigure}
-			\vskip -0.25cm
-			\begin{subfigure}[h]{0.7\textwidth}
-				\centering
-				\includegraphics[width=\textwidth]{d1/cross_optimized_400.pdf}
-				\caption{\fefuchooselanguage{russian={Оптимизированные параметры},english={Optimized parameters}}}
-			\end{subfigure}
-			\vskip -0.25cm
-			\caption{
-                \fefuchooselanguage{
-                    russian={Вертикальный срез акустического поля для частоты $f=400\text{ Гц}$ (в Дб. отн. 1 м. от источника)},
-                    english={Vertical cross-section of the acoustic field for the frequency $f=400\text{ Hz}$ (in dB re $1$ m)}
+	\AtLeastLevel{def}{
+        \begin{frame}{\fefuchooselanguage{russian={Результаты моделирования},english={Modeling results}}}
+    		\vskip -0.25cm
+    		\begin{figure}[h]
+    			\centering
+    			\begin{subfigure}[h]{0.7\textwidth}
+    				\centering
+    				\includegraphics[width=\textwidth]{d1/cross_non_optimized_400.pdf}
+    				\caption{\fefuchooselanguage{russian={Исходные параметры},english={Initial parameters}}}
+    			\end{subfigure}
+    			\vskip -0.25cm
+    			\begin{subfigure}[h]{0.7\textwidth}
+    				\centering
+    				\includegraphics[width=\textwidth]{d1/cross_optimized_400.pdf}
+    				\caption{\fefuchooselanguage{russian={Оптимизированные параметры},english={Optimized parameters}}}
+    			\end{subfigure}
+    			\vskip -0.25cm
+    			\caption{
+                    \fefuchooselanguage{
+                        russian={Вертикальный срез акустического поля для частоты $f=400\text{ Гц}$ (в Дб. отн. 1 м. от источника)},
+                        english={Vertical cross-section of the acoustic field for the frequency $f=400\text{ Hz}$ (in dB re $1$ m)}
+                    }
                 }
-            }
-		\end{figure}
-	\end{frame}
+    		\end{figure}
+    	\end{frame}
+    }
 
-	\begin{frame}{\fefuchooselanguage{russian={Результаты моделирования},english={Modeling results}}}
-		\vskip -0.25cm
-		\begin{figure}[h]
-			\centering
-			\begin{subfigure}[h]{0.7\textwidth}
-				\centering
-				\includegraphics[width=\textwidth]{d1/ample_non_optimized.pdf}
-				\caption{\fefuchooselanguage{russian={Исходные параметры},english={Initial parameters}}}
-			\end{subfigure}
-			\vskip -0.5cm
-			\begin{subfigure}[h]{0.7\textwidth}
-				\centering
-				\includegraphics[width=\textwidth]{d1/ample_epddec.pdf}
-				\caption{\fefuchooselanguage{russian={Оптимизированные параметры},english={Optimized parameters}}}
-			\end{subfigure}
-			\vskip -0.25cm
-			\caption{
-                \fefuchooselanguage{
-                    russian={Уровни шума (в дБ) для прохождения судна},
-                    english={Noise level (in dB) for the vessel transfer}
+	\AtLeastLevel{sml}{
+        \begin{frame}{\fefuchooselanguage{russian={Результаты моделирования},english={Modeling results}}}
+    		\vskip -0.25cm
+    		\begin{figure}[h]
+    			\centering
+    			\begin{subfigure}[h]{0.7\textwidth}
+    				\centering
+    				\includegraphics[width=\textwidth]{d1/ample_non_optimized.pdf}
+    				\caption{\fefuchooselanguage{russian={Исходные параметры},english={Initial parameters}}}
+    			\end{subfigure}
+    			\vskip -0.5cm
+    			\begin{subfigure}[h]{0.7\textwidth}
+    				\centering
+    				\includegraphics[width=\textwidth]{d1/ample_epddec.pdf}
+    				\caption{\fefuchooselanguage{russian={Оптимизированные параметры},english={Optimized parameters}}}
+    			\end{subfigure}
+    			\vskip -0.25cm
+    			\caption{
+                    \fefuchooselanguage{
+                        russian={Уровни звукового давления (в дБ) для прохождения судна},
+                        english={Noise level (in dB) for the vessel transfer}
+                    }
                 }
-            }
-		\end{figure}
-	\end{frame}
+    		\end{figure}
+    	\end{frame}
+    }
 
-	\begin{frame}{\fefuchooselanguage{russian={Результаты моделирования},english={Modeling results}}}
-		\vskip -0.25cm
-		\begin{figure}[h]
-			\centering
-			\begin{subfigure}[t]{0.7\textwidth}
-				\centering
-				\includegraphics[width=\textwidth]{d1/flat_epddec.pdf}
-				\caption{2D}
-				\label{fig::noise_ddec_opt_2d}
-			\end{subfigure}
-			\vskip -0.5cm
-			\begin{subfigure}[t]{0.7\textwidth}
-				\centering
-				\includegraphics[width=\textwidth]{d1/ample_epddec.pdf}
-				\caption{3D}
-			\end{subfigure}
-			\vskip -0.25cm
-			\caption{
-                \fefuchooselanguage{
-                    russian={Уровни шума (в дБ) для прохождения судна},
-                    english={Noise level (in dB) for the vessel transfer}
+	\AtLeastLevel{sml}{
+        \begin{frame}{\fefuchooselanguage{russian={Результаты моделирования},english={Modeling results}}}
+    		\vskip -0.25cm
+    		\begin{figure}[h]
+    			\centering
+    			\begin{subfigure}[t]{0.7\textwidth}
+    				\centering
+    				\includegraphics[width=\textwidth]{d1/flat_epddec.pdf}
+    				\caption{2D}
+    				\label{fig::noise_ddec_opt_2d}
+    			\end{subfigure}
+    			\vskip -0.5cm
+    			\begin{subfigure}[t]{0.7\textwidth}
+    				\centering
+    				\includegraphics[width=\textwidth]{d1/ample_epddec.pdf}
+    				\caption{3D}
+    			\end{subfigure}
+    			\vskip -0.25cm
+    			\caption{
+                    \fefuchooselanguage{
+                        russian={Уровни звукового давления (в дБ) для прохождения судна},
+                        english={Noise level (in dB) for the vessel transfer}
+                    }
                 }
-            }
-		\end{figure}
-	\end{frame}
+    		\end{figure}
+    	\end{frame}
+    }
 
-	\begin{frame}{\fefuchooselanguage{russian={Точность моделирования},english={Modeling accuracy}}}
-		\vskip -0.25cm
-		\begin{figure}[h]
-			\centering
-			\begin{subfigure}[t]{0.7\textwidth}
-				\centering
-				\includegraphics[width=\textwidth]{d1/non_optimzied_20.pdf}
-				\caption{\fefuchooselanguage{russian={Исходные параметры},english={Initial parameters}}}
-			\end{subfigure}
-			\vskip -0.25cm
-			\begin{subfigure}[t]{0.7\textwidth}
-				\centering
-				\includegraphics[width=\textwidth]{d1/optimzied_20.pdf}
-				\caption{\fefuchooselanguage{russian={Оптимизированные параметры},english={Optimized parameters}}}
-			\end{subfigure}
-			\vskip -0.25cm
-			\caption{
-                \fefuchooselanguage{
-                    russian={График точности моделирования уровней шумов},
-                    english={Accuracy plot of the noise level modeling}
-                }
-            }
-		\end{figure}
-	\end{frame}
+    \ExactlyLevel{def}{
+        \begin{frame}{\fefuchooselanguage{russian={Результаты моделирования},english={Modeling results}}}
+            \begin{figure}[h]
+                \centering
+                \begin{subfigure}[t]{0.7\textwidth}
+                    \centering
+                    \includegraphics[width=\textwidth]{d1/target.pdf}
+                    \caption{\fefuchooselanguage{russian={Данные},english={Data}}}
+                \end{subfigure}
+                \vskip -0.5cm
+                \begin{subfigure}[t]{0.7\textwidth}
+                    \centering
+                    \includegraphics[width=\textwidth]{d1/ample_epddec.pdf}
+                    \caption{\fefuchooselanguage{russian={Моделирование с оптимизированными параметрами},english={Modeling with optimized paramethers}}}
+                \end{subfigure}
+                \vskip -0.25cm
+                \caption{\fefuchooselanguage{russian={Уровни звукового давления (в дБ) для прохождения судна},english={Noise levels (in dB) for vessel transfer}}}
+            \end{figure}
+        \end{frame}
+    }
 
-    \begin{frame}{\fefuchooselanguage{russian={Методика моделирования},english={Modeling method}}}
-        \begin{block}{}
-            \begin{enumerate}
-                \item \fefuchooselanguage{
-                    russian={Провести измерение эффективного спектра источника шума некоторого опорного судна, а также величины $E_{p,ddec}\pa{f_c,d_{CPA}}$ в ближайшей точке прохода},
-                    english={Obtain the effective noise spectrum measurement of a reference vessel, as well as the value $E_{p,ddec}\pa{f_c,d_{CPA}}$ at the closest point of approach}
+	\AtLeastLevel{sml}{
+        \begin{frame}{\fefuchooselanguage{russian={Точность моделирования},english={Modeling accuracy}}}
+    		\vskip -0.25cm
+    		\begin{figure}[h]
+    			\centering
+    			\begin{subfigure}[t]{0.7\textwidth}
+    				\centering
+    				\includegraphics[width=\textwidth]{d1/non_optimzied_20.pdf}
+    				\caption{\fefuchooselanguage{russian={Исходные параметры},english={Initial parameters}}}
+    			\end{subfigure}
+    			\vskip -0.25cm
+    			\begin{subfigure}[t]{0.7\textwidth}
+    				\centering
+    				\includegraphics[width=\textwidth]{d1/optimzied_20.pdf}
+    				\caption{\fefuchooselanguage{russian={Оптимизированные параметры},english={Optimized parameters}}}
+    			\end{subfigure}
+    			\vskip -0.25cm
+    			\caption{
+                    \fefuchooselanguage{
+                        russian={График точности моделирования уровней звукового давления},
+                        english={Accuracy plot of the noise level modeling}
+                    }
                 }
-                \item \fefuchooselanguage{
-                    russian={Выполнить оптимизацию параметров среды согласно предложенному алгоритму},
-                    english={Perform media parameters optimization as described above}
-                }
-                \item \fefuchooselanguage{
-                    russian={Использовать полученные параметры среды при проведении моделирования в рассматриваемой акватории},
-                    english={Use the obtained media parameters for the acoustical modeling in the area}
-                }
-            \end{enumerate}
-        \end{block}
-    \end{frame}
+    		\end{figure}
+    	\end{frame}
+    }
 
-	\begin{frame}{\fefuchooselanguage{russian={Задача мониторинга сейсморазведочных работ},english={Seismic survey assessment}}}
-		\begin{figure}[H]
-			\centering
-			\includegraphics[width=0.8\textwidth]{seismo/pic_map.eps}
-			\caption{
-                \fefuchooselanguage{
-                    russian={Карта глубин в области проведения сейсморазведочных работ и график зависимости скорости звука от глубины},
-                    english={Bathymetric plot of the seismic survey area and a plot of the sound speed profile as a function of depth}
-                }
-            }
-		\end{figure}
-	\end{frame}
+    \AtLeastLevel{sml}{
+        \begin{frame}{\fefuchooselanguage{russian={Методика моделирования},english={Modeling method}}}
+            \begin{block}{}
+                \begin{enumerate}
+                    \item \fefuchooselanguage{
+                        russian={Провести измерение эффективного спектра источника акустического сигнала некоторого опорного судна, а также величины $E_{p,ddec}\pa{f_c,d_{CPA}}$ в ближайшей точке прохода},
+                        english={Obtain the effective noise spectrum measurement of a reference vessel, as well as the value $E_{p,ddec}\pa{f_c,d_{CPA}}$ at the closest point of approach}
+                    }
+                    \item \fefuchooselanguage{
+                        russian={Выполнить оптимизацию параметров среды согласно предложенному алгоритму},
+                        english={Perform media parameters optimization as described above}
+                    }
+                    \item \fefuchooselanguage{
+                        russian={Использовать полученные параметры среды при проведении моделирования в рассматриваемой акватории},
+                        english={Use the obtained media parameters for the acoustical modeling in the area}
+                    }
+                \end{enumerate}
+            \end{block}
+        \end{frame}
+    }
 
-	\begin{frame}{\fefuchooselanguage{russian={Задача мониторинга сейсморазведочных работ},english={Seismic survey assessment}}}
-		\begin{figure}[h]
-			\centering
-			\includegraphics[width=0.8\textwidth]{seismo/pic_signal2.eps}
-			\caption{
-                \fefuchooselanguage{
-                    russian={Изменение акустического давления в приёмниках P1 и P2 и их спектры},
-                    english={Variation of acoustic pressure at receivers P1 and P2 and their spectra}
+	\AtLeastLevel{def}{
+        \begin{frame}{\fefuchooselanguage{russian={Задача мониторинга сейсморазведочных работ},english={Seismic survey assessment}}}
+    		\begin{figure}[H]
+    			\centering
+    			\includegraphics[width=0.8\textwidth]{seismo/pic_map.eps}
+    			\caption{
+                    \fefuchooselanguage{
+                        russian={Карта глубин в области проведения сейсморазведочных работ и график зависимости скорости звука от глубины},
+                        english={Bathymetric plot of the seismic survey area and a plot of the sound speed profile as a function of depth}
+                    }
                 }
-            }
-		\end{figure}
-	\end{frame}
+    		\end{figure}
+    	\end{frame}
+    }
 
-	\begin{frame}{\fefuchooselanguage{russian={Задача мониторинга сейсморазведочных работ},english={Seismic survey assessment}}}
-		\begin{figure}[h]
-			\centering
-			\includegraphics[width=0.8\textwidth]{seismo/pic_waveguide.eps}
-			\caption{
-                \fefuchooselanguage{
-                    russian={Модель волновода и значения акустических параметров среды},
-                    english={Model of the waveguide and media parameters}
+	\AtLeastLevel{sml}{
+        \begin{frame}{\fefuchooselanguage{russian={Задача мониторинга сейсморазведочных работ},english={Seismic survey assessment}}}
+    		\begin{figure}[h]
+    			\centering
+    			\includegraphics[width=0.8\textwidth]{seismo/pic_signal2.eps}
+    			\caption{
+                    \fefuchooselanguage{
+                        russian={Изменение акустического давления в приёмниках P1 и P2 и их спектры},
+                        english={Variation of acoustic pressure at receivers P1 and P2 and their spectra}
+                    }
                 }
-            }
-		\end{figure}
-	\end{frame}
+    		\end{figure}
+    	\end{frame}
+    }
 
-    \AtEndDocument{
+	\AtLeastLevel{sml}{
+        \begin{frame}{\fefuchooselanguage{russian={Задача мониторинга сейсморазведочных работ},english={Seismic survey assessment}}}
+    		\begin{figure}[h]
+    			\centering
+    			\includegraphics[width=0.8\textwidth]{seismo/pic_waveguide.eps}
+    			\caption{
+                    \fefuchooselanguage{
+                        russian={Модель волновода и значения акустических параметров среды},
+                        english={Model of the waveguide and media parameters}
+                    }
+                }
+    		\end{figure}
+    	\end{frame}
+    }
+
+    \AtLeastLevel{all}{
     	\begin{frame}{\fefuchooselanguage{russian={Упрощённая модель батиметрии},english={Simplified wavefuide model}}}
     		\begin{figure}[h]
     			\centering
@@ -1615,107 +1936,102 @@
     	\end{frame}
     }
 
-	\begin{frame}{\fefuchooselanguage{russian={Реальная батиметрия},english={Realistic waveguide model}}}
-		\begin{figure}[h]
-			\centering
-			\includegraphics[width=0.95\textwidth]{seismo/pic_realField.eps}
-			\caption{
+	\AtLeastLevel{def}{
+        \begin{frame}{\fefuchooselanguage{russian={Реальная батиметрия},english={Realistic waveguide model}}}
+    		\begin{figure}[h]
+    			\centering
+    			\includegraphics[width=0.95\textwidth]{seismo/pic_realField.eps}
+    			\caption{
+                    \fefuchooselanguage{
+                        russian={Пространственное распределение уровня звуковой экспозиции при глубине 9 м в волноводе с реальной батиметрией},
+                        english={Spatial distribution of sound exposure level at 9 m in the realistic waveguide model}
+                    }
+                }
+    		\end{figure}
+    	\end{frame}
+    }
+
+	\AtLeastLevel{def}{
+        \begin{frame}{\fefuchooselanguage{russian={Результаты моделирования},english={Modeling results}}}
+    		\begin{figure}[h]
+    			\centering
+    			\includegraphics[width=0.8\textwidth]{seismo/pic_test_sel.eps}
+    			\caption{
+                    \fefuchooselanguage{
+                        russian={График зависимости уровня звуковой экспозиции от расстояния $x$ на прямой $y=0$ и глубине 9 м},
+                        english={Plot of the sound exposure level as a function of distance $x$ along the line $y=0$ at a depth of 9 m}
+                    }
+                }
+    		\end{figure}
+    	\end{frame}
+    }
+
+	\AtLeastLevel{def}{
+        \begin{frame}{\fefuchooselanguage{russian={Результаты моделирования},english={Modeling results}}}
+    		\begin{figure}[h]
+    			\centering
+    			\includegraphics[width=0.9\textwidth]{seismo/pic_signal3.eps}
+    			\caption{
+                    \fefuchooselanguage{
+                        russian={Сравнение импульсных сигналов (\textbf{a}) и их спектров (\textbf{b})},
+                        english={Comparison of pulse signals (\textbf{a}) and their spectra (\textbf{b})}
+                    }
+                }
+    		\end{figure}
+    	\end{frame}
+    }
+
+	\AtLeastLevel{def}{
+        \begin{frame}{\fefuchooselanguage{russian={Выводы},english={Summary}}}
+            \small
+    		\begin{block}{}
                 \fefuchooselanguage{
-                    russian={Пространственное распределение уровня звуковой экспозиции при глубине 9 м в волноводе с реальной батиметрией},
-                    english={Spatial distribution of sound exposure level at 9 m in the realistic waveguide model}
+                    russian={Проведено моделирование акустических полей в задачах оценки уровней звукового давления антропогенных сигналов. Предложен способ оптимизации параметров среды и показана его эффективность. Исследована важность использования широкоугольного уравнения.},
+                    english={Acoustic field modeling was performed for assessing levels of anthropogenic noise. A method for optimizing environmental parameters was proposed, and its effectiveness was demonstrated. The importance of using the wide-angle equation was investigated.}
                 }
-            }
-		\end{figure}
-	\end{frame}
+    		\end{block}
+            \begin{block}{\small \fefuchooselanguage{russian={Личный вклад автора},english={Author contribution}}}
+                \begin{itemize}
+                    \setlength\itemsep{-1mm}
+                    \item \fefuchooselanguage{russian={Моделирование акустического поля одиночного судна},english={Modeling of acoustic field of a bulk carrier vessel}}
+                    \item \fefuchooselanguage{russian={Разработка метода оптимизации параметров среды на основе данных, записанных в точке ближнего прохода},english={Development of environmental parameters optimization method based on the data at the CPA}}
+                    \item \fefuchooselanguage{russian={Реализация алгоритма расчёта импульсов звукового сигнала и SEL на основе записи в опорной точке},english={Implementation of sound pulses and SEL computation based on the data recorded at a reference point}}
+                \end{itemize}
+            \end{block}
+            \vspace{-0.25cm}
+            \begin{block}{\small \fefuchooselanguage{russian={Статьи},english={Papers}}}
+                \begin{refsection}
+                    \vspace{-0.25cm}
+                    \nocite{jmse,petrov2024_2}
+                    \AtNextBibliography{\changefontsizes{7.5pt}}
+                    \printbibliography[heading=none,env=betterlabel,keyword={myarticles}]
+                \end{refsection}
+            \end{block}
+    	\end{frame}
+    }
 
-	\begin{frame}{\fefuchooselanguage{russian={Результаты моделирования},english={Modeling results}}}
-		\begin{figure}[h]
-			\centering
-			\includegraphics[width=0.8\textwidth]{seismo/pic_test_sel.eps}
-			\caption{
-                \fefuchooselanguage{
-                    russian={График зависимости уровня звуковой экспозиции от расстояния $x$ на прямой $y=0$ и глубине 9 м},
-                    english={Plot of the sound exposure level as a function of distance $x$ along the line $y=0$ at a depth of 9 m}
-                }
-            }
-		\end{figure}
-	\end{frame}
+    \AtLeastLevel{def}{\claims}
 
-	\begin{frame}{\fefuchooselanguage{russian={Результаты моделирования},english={Modeling results}}}
-		\begin{figure}[h]
-			\centering
-			\includegraphics[width=0.9\textwidth]{seismo/pic_signal3.eps}
-			\caption{
-                \fefuchooselanguage{
-                    russian={Сравнение импульсных сигналов (\textbf{a}) и их спектров (\textbf{b})},
-                    english={Comparison of pulse signals (\textbf{a}) and their spectra (\textbf{b})}
-                }
-            }
-		\end{figure}
-	\end{frame}
+	\AtLeastLevel{def}{
+        \begin{frame}{\fefuchooselanguage{russian={Научные труды. Статьи},english={Papers}}}
+    		\AtNextBibliography{\changefontsizes{7.5pt}}
+    		\printbibliography[heading=none,env=betterlabel,keyword={myarticles}]
+    	\end{frame}
+    }
 
-	\begin{frame}{\fefuchooselanguage{russian={Выводы},english={Summary}}}
-        \small
-		\begin{block}{}
-            \fefuchooselanguage{
-                russian={Проведено моделирование акустических полей в задачах оценки уровней антропогенных шумов. Предложен способ оптимизации параметров среды и показана его эффективность. Исследована важность использования широкоугольного уравнения.},
-                english={Acoustic field modeling was performed for assessing levels of anthropogenic noise. A method for optimizing environmental parameters was proposed, and its effectiveness was demonstrated. The importance of using the wide-angle equation was investigated.}
-            }
-		\end{block}
-        \begin{block}{\fefuchooselanguage{russian={Личный вклад автора},english={Author contribution}}}
-            \begin{itemize}
-                \item \fefuchooselanguage{russian={Разработка метода оптимизации параметров среды на основе данных, записанных в точке ближнего прохода},english={Development of environmental parameters optimization method based on the data at the CPA}}
-                \item \fefuchooselanguage{russian={Реализация алгоритма расчёта импульсов звукового сигнала и SEL на основе записи в опорной точке},english={Implementation of sound pulses and SEL computation based on the data recorded at a reference point}}
-            \end{itemize}
-        \end{block}
-        \vspace{-0.25cm}
-        \begin{block}{\fefuchooselanguage{russian={Статьи},english={Papers}}}
-            \begin{refsection}
-                \vspace{-0.25cm}
-                \nocite{jmse,petrov2024_2}
-                \AtNextBibliography{\changefontsizes{7.5pt}}
-                \printbibliography[heading=none,env=betterlabel,keyword={myarticles}]
-            \end{refsection}
-        \end{block}
-	\end{frame}
+	\AtLeastLevel{def}{
+        \begin{frame}{\fefuchooselanguage{russian={Научные труды. Материалы конференций},english={Conference papers}}}
+    		\AtNextBibliography{\changefontsizes{8pt}}
+    		\printbibliography[heading=none,env=betterlabel,keyword={myproceedings}]
+    	\end{frame}
+    }
 
-	\begin{frame}{\fefuchooselanguage{russian={Положения, выносимы на зашиту},english={Key claims to be defended}}}
-		\vskip -1cm
-		\begin{block}{}
-			\footnotesize
-			\begin{enumerate}
-				\item \fefuchooselanguage{
-                    russian={Разработана и апробирована методика численного решения псевдодифференциальных модовых параболических уравнений с искусственным ограничением расчётной области путём постановки граничных условий прозрачности или добавления к ней согласованных поглощающих слоёв},
-                    english={A mehod for the numerical solution of pseudodifferential mode parabolic equations has been developed and tested, with the artificial truncation of the computational domain through the implementation of transparent boundary conditions or the perfectly matching layers.}
-                }
-				\item \fefuchooselanguage{
-                    russian={Разработан комплекс программ на языке программирования C++, который может быть использован для моделирования распространения тональных и импульсных сигналов, а также вычисления скалярных и векторных акустических полей антропогенных шумов в океане с возможностью учёта батиметрических и гидрологических данных и структуры слоёв дна, и ориентированный на максимальную производительность},
-                    english={A software suite has been developed in the C++ programming language, which can be used for modeling the propagation of tonal and pulse signals, as well as calculating scalar and vector acoustic fields of anthropogenic noise in the ocean. The program allows to set bathymetric and hydrological data, the structure of seabed layers and other media parameters.}
-                }
-				\item \fefuchooselanguage{
-                    russian={Моделирование антропогенных шумов, связанных с сейсморазведочными работами и судоходством, проведённое с использованием разработанного комплекса прикладных программ, позволило добиться согласия уровней акустической экспозиции (SEL) с данными прямых измерений с точностью до 1 дБ. и согласия значений распределения энергии в децидекадных частотных полосах на различных расстояниях от источника шума с точностью до 5 дБ. для диапазона частот, в котором сосредоточена большая часть энергии сигнала},
-                    english={The modeling of anthropogenic noise related to seismic survey and vessel transfer performed using the developed software achieves a good agreement of sound exposure levels with direct measurements data with an accuracy of up to 1 dB. Additionally, the software achieved agreement of energy distribution values in decidecade frequency bands at various distances from the noise source with an accuracy of up to 5 dB for the frequency range with the most energy.}
-                }
-			\end{enumerate}
-		\end{block}
-	\end{frame}
-
-	\begin{frame}{\fefuchooselanguage{russian={Научные труды. Статьи},english={Papers}}}
-		\AtNextBibliography{\changefontsizes{7.5pt}}
-		\printbibliography[heading=none,env=betterlabel,keyword={myarticles}]
-	\end{frame}
-
-	\begin{frame}{\fefuchooselanguage{russian={Научные труды. Материалы конференций},english={Conference papers}}}
-		\AtNextBibliography{\changefontsizes{8pt}}
-		\printbibliography[heading=none,env=betterlabel,keyword={myproceedings}]
-	\end{frame}
-
-	\begin{frame}
-		\thispagestyle{empty}
-		\addtocounter{framenumber}{-1}
-		\centerline{\Huge \fefuchooselanguage{russian={Спасибо за внимание},english={Thank you for your attention}}}
-	\end{frame}
-
-    \begin{multline}\mathbf{A}\cdot SPD+\mathbf{B}\cdot OTF^\mathbf{D}\cdot\max\left(ATK,SP.ATK\right)+\\\frac{\mathbf{C}}{DTF^\mathbf{E}}\cdot\sqrt{HP\cdot\sqrt[\mathbf{F}+\mathbf{G}]{SP.DEF^\mathbf{F}\cdot DEF^\mathbf{G}}}\end{multline}
+	\AtLeastLevel{def}{
+        \begin{frame}
+    		\thispagestyle{empty}
+%    		\addtocounter{framenumber}{-1}
+    		\centerline{\Huge \fefuchooselanguage{russian={Спасибо за внимание},english={Thank you for your attention}}}
+    	\end{frame}
+    }
 
 \end{document}
